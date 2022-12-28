@@ -1,5 +1,6 @@
 "use client"
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 export function Navbar() {
 
@@ -13,7 +14,7 @@ export function Navbar() {
 
     return (
         <>
-            <div className="navbar w-screen">
+            <div className="navbar w-screen box-border">
                 <div className="navbar-start">
                     <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -27,10 +28,16 @@ export function Navbar() {
                         <li><a>FAQ </a></li>
                     </ul>
                     </div>
-                    <a href="/" className="btn btn-ghost normal-case text-xl">Carbovalent</a>
+                    {/* <a href="/" className="btn btn-ghost normal-case text-xl">Carbovalent</a> */}
+                    <Image 
+                    className="ml-2"
+                        src="/carbovalent_logo.png"
+                        width={220}
+                        height={220}
+                    />
                 </div>
-                <div className="navbar-center hidden lg:flex">
-                    <ul className="menu menu-horizontal px-1">
+                <div className="navbar-center hidden lg:flex mt-1.5">
+                    <ul className="menu menu-horizontal px-1 text-lg">
                         <li><a href="/">Launchpad</a></li>
                         <li><a href="/bridge">Bridge</a></li>
                         <li><a href="/registry">Registry</a></li>
@@ -38,7 +45,7 @@ export function Navbar() {
                         <li><a>FAQ </a></li>
                     </ul>
                 </div>
-                <div className="navbar-end">
+                <div className="navbar-end mr-2">
                     <WalletMultiButtonDynamic />
                 </div>
                 </div>

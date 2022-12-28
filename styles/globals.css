@@ -9,27 +9,12 @@
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-/* Set core body defaults */
-body {
-  min-height: 100vh;
-  text-rendering: optimizeSpeed;
-  line-height: 1.5;
-  padding-bottom: 250px;
-}
-
-/* Inherit fonts for inputs and buttons */
-input,
-button,
-textarea,
-select {
-  font: inherit;
+  max-width: 100%;
 }
 
 :root {
-  --background-color: #1c1e21;
-  --white: #ffffff;
+  --background-color: #fdfdfd;
+  --white: #000000;
   --tw-color1: #a855f7;
   --tw-color1-hover: #9333ea;
 }
@@ -39,10 +24,22 @@ body {
   font-family: "Inter", sans-serif;
   color: var(--white);
   display: flex;
-  margin: 0;
-  text-align: center;
+  text-rendering: optimizeSpeed;
+  max-width: 100%;
 }
 
-h2 {
-  font-size: 2rem;
+
+.table-container > div:first-of-type {
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+}
+.table-container > div:last-of-type {
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+
+.card-actions {
+  display: grid;
+  align-items: end;
+  flex: 1;
 }
