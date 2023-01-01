@@ -3,6 +3,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
 import { useState } from "react";
 import { Loading } from "./components/Loading";
+import Image from 'next/image';
 
 export default function registry() {
   const wallet = useWallet();
@@ -33,7 +34,7 @@ export default function registry() {
       <OpenNavbar />
       <p className="text-center text-3xl font-bold p-5">
         {" "}
-        Solana's Carbon Credit Registry Aggregator{" "}
+        Solana&apos;s Carbon Credit Registry Aggregator{" "}
       </p>
       <p className="text-center text-xl pb-4">
         {" "}
@@ -101,17 +102,18 @@ export default function registry() {
             </div>
           ) : (
             <div className=" grid grid-cols-4 gap-[2.75rem] container mx-auto auto-rows-fr justify-center shadow-lg">
-              {data?.map((project) => {
+              {data?.map((project, idx) => {
               return (
 
                 <div class="font-extralight py-8 px-0 m-auto main-card">
                 <div class="grid justify-items-center px-3 py-2">
                   <div class="flex rounded-full items-center bg-highlight px-2 py-6">
                     <h1 class="text-white w-100 mr-2">68432</h1>
-                    <img
-                      src="./headimg.png"
-                      alt="Tailwind CSS Logo"
-                      class="w-24 h-24 "
+                    <Image
+                      src="/headimg.png"
+                      width={96}
+                      height={96}
+                      alt="Carbovalent Card Logo"
                     />
                   </div>
         
@@ -145,10 +147,11 @@ export default function registry() {
                   <p class="text-sm text-white w-100 mr-2 ">- IN-5-277549035-2-2-0-6484</p>
                   </div>
         
-                  <img
-                    src="./carbovalentlogo.png"
-                    alt="Tailwind CSS Logo"
-                    class="w-20 h-20 overlap-img"
+                  <Image
+                    src="/carbovalentlogo.png"
+                    alt="Carbovalent logo on Card"
+                    width={80}
+                    height={80}
                   />
                 </div>
               </div>

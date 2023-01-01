@@ -379,6 +379,7 @@ const Bridge = () => {
               <Image 
                     className='object-center'
                         src="/orange_nft.png"
+                        alt=''
                         width={490}
                         height={400}
                     />

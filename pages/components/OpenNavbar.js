@@ -25,8 +25,7 @@ export function OpenNavbar() {
     <div className={style.wrapper}>
       <Link href="/">
         <div className={style.logoContainer}>
-          <Image src={carbovalentLogo} height={220} width={220} />
-          {/* <div className={style.logoText}>Carbovalent</div> */}
+          <Image src={carbovalentLogo} height={220} width={220} alt="Carbovalent logo"/>
         </div>
       </Link>
 
