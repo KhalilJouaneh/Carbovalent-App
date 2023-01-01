@@ -231,13 +231,13 @@ const Bridge = () => {
                  Please select the source registry you wish to bridge from. Only unretired credits can be bridged.
                   <br />
                   <br />
-                  <b>Important:</b> Bridging is the migration of carbon credits to Carbovalent's on-chain registry. It does 
+                  <b>Important:</b> Bridging is the migration of carbon credits to Carbovalent&apos;s on-chain registry. It does 
                   not in any way constitute a retirement of the credits from the source registry.
                   </p>
 
                   <select value={registryName} id="dropdown" onChange={handleRegistry} className="block w-70 py-2 px-3 rounded-4xl border-[#1B71E8] bg-[#cdcdcd] rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 font-bold">
                     {registries.map((registry) => (
-                      <option value={registry.value}  onChange={handleRegistry} className="font-semibold"> {registry.label} </option>
+                      <option value={registry.value} key={registry.value} onChange={handleRegistry} className="font-semibold"> {registry.label} </option>
                       ))}
                   </select>
                 </div>
