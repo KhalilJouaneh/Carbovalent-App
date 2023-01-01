@@ -10,11 +10,15 @@ module.exports = {
       height : {
         '128': '42rem',
       },
+      gridAutoRows: {
+        '1fr': 'minmax(0,1fr)',
+      },
     },
     borderRadius: {
       '4xl': '1.75rem',
       '5xl': '2rem',
       '8xl': '4rem',
+      'full': '9999px',
     },
   },
   plugins: [

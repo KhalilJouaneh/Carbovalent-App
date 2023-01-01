@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import dynamic from "next/dynamic";
 import BridgeForm from "./bridge"; 
 import {useWallet} from "@solana/wallet-adapter-react";
-import {Navbar} from './components/Navbar'
+import {OpenNavbar} from './components/OpenNavbar'
 
 // NFT collection address 
 // 5qRjLdA3iqboq9AJn7Y3sdBXs2KHksa5WnrxvQXJJPw6
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
   
   return (
     <>
-    <Navbar />
+    <OpenNavbar />
     </>  
     );
 };

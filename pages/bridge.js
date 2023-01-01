@@ -4,7 +4,7 @@ import {useProgram, useMintNFT, useSDK} from "@thirdweb-dev/react/solana"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useWallet} from "@solana/wallet-adapter-react";
-import {Navbar} from './components/Navbar';
+import { OpenNavbar } from './components/OpenNavbar';
 import Spline from '@splinetool/react-spline';
 import Image from "next/image";
 import { Payload, SIWS } from "@web3auth/sign-in-with-solana";
@@ -197,7 +197,7 @@ const Bridge = () => {
 
     return (
       <>
-      <Navbar />
+      <OpenNavbar />
       {wallet.connected ? (
         // <div className="w-1/2 flex justify-center items-center outline-dashed ">
         <div className="flex justify-center items-center">

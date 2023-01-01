@@ -1,4 +1,4 @@
-import { Navbar } from "./components/Navbar";
+import {OpenNavbar} from './components/OpenNavbar'
 import { useWallet } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
 import { useState } from "react";
@@ -8,11 +8,12 @@ export default function registry() {
   const wallet = useWallet();
 
   const [toggle, setToggle] = useState(true);
-  const [pageIndex, setPageIndex] = useState(0);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("Wind");
 
   const fetcher = async () => {
     const res = await fetch(
-      `https://api.goldstandard.org/credits?query&size=28&page=${pageIndex}&issuances=true`
+      `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageIndex}&issuances=true`
     );
     const data = await res.json();
     return data;
@@ -25,12 +26,12 @@ export default function registry() {
 
   if (error) return "error";
 
-  // if (isLoading) return (<Loading />)
+  if (isLoading) return (<Loading />)
 
   return (
     <>
-      <Navbar />
-      <p className="text-center text-3xl font-bold pb-2">
+      <OpenNavbar />
+      <p className="text-center text-3xl font-bold p-5">
         {" "}
         Solana's Carbon Credit Registry Aggregator{" "}
       </p>
@@ -52,12 +53,12 @@ export default function registry() {
 
       {wallet.connected ? (
         <>
-          {data && !toggle ? (
+          {data && toggle ? (
             <div className="table-container">
               {data.map((project, idx) => {
                 return (
                   <>
-                    <div className="overflow-x-none flex items-center justify-center border w-fit mx-auto border-slate-700">
+                    <div className="overflow-x-none flex items-center justify-center border w-fit mx-auto border-[#1B71E8]">
                       <table className="table-fixed max-w-screen-lg border-separate border-spacing">
                         <thead>
                           <tr>
@@ -99,40 +100,70 @@ export default function registry() {
               })}
             </div>
           ) : (
-            <div className="grid grid-cols-4 gap-[2.75rem] container mx-auto shadow-yelllow-500/50">
+            <div className=" grid grid-cols-4 gap-[2.75rem] container mx-auto auto-rows-fr justify-center shadow-lg">
               {data?.map((project) => {
               return (
-                  <div className="card w-72 bg-[#ffe57a] shadow-xl pl-5 rounded-5xl">
-                    <div className="card-body">
-                      <h2 className="card-title">{project.number_of_credits}</h2>
-                      <h2 className="card-title">
-                        renewable energy carbon credit units
-                      </h2>
 
-                      <h3> Project: {project.project.name}</h3>
-                      <h3> Location: {project.project.country}</h3>
-                      <h3> Source: {project.project.gsf_standards_version}</h3>
-                      <h3> Vintage: {project.vintage} </h3>
-
-                      <div className="card-actions">
-                        <button className="btn btn-primary">Claim</button>
-                      </div>
+                <div class="font-extralight py-8 px-0 m-auto main-card">
+                <div class="grid justify-items-center px-3 py-2">
+                  <div class="flex rounded-full items-center bg-highlight px-2 py-6">
+                    <h1 class="text-white w-100 mr-2">68432</h1>
+                    <img
+                      src="./headimg.png"
+                      alt="Tailwind CSS Logo"
+                      class="w-24 h-24 "
+                    />
+                  </div>
+        
+                  <div class="ml-4">
+                    <p class="text-white px-10">renewable energy carbon credit units</p>
+                  </div>
+                </div>
+        
+        
+                <div class="mt-4 bg-highlight px-4 text-white">
+                  <div class="px-2 py-6 grid grid-rows-4">
+                    <div class="content-center flex-1">
+                      <p class=" ">Project: Wind Energy</p>
+                    </div>
+                    <div class="content-center flex-1">
+                      <p class=" ">Location: India</p>
+                    </div>
+                    <div class="content-center flex-1">
+                      <p class=" ">Source: GS</p>
+                    </div>
+                    <div class="content-center flex-1">
+                      <p class=" ">Vintage: 2020</p>
                     </div>
                   </div>
+                </div>
+        
+        
+                <div class="flex foot rounded-full items-center bg-highlight px-2 py-2 grid-cols-2 mt-5 mx-auto allow-overlap">
+                  <div class="grid grid-rows-2">
+                  <p class="text-sm text-white w-100 mr-2 ">ID: IN-5-277480604-2-2-0-6484</p>
+                  <p class="text-sm text-white w-100 mr-2 ">- IN-5-277549035-2-2-0-6484</p>
+                  </div>
+        
+                  <img
+                    src="./carbovalentlogo.png"
+                    alt="Tailwind CSS Logo"
+                    class="w-20 h-20 overlap-img"
+                  />
+                </div>
+              </div>
                 );
               })}
             </div>
           )}
 
-          <div className="btn-group flex w-screen mt-5 mb-5">
-            <div className="m-auto">
-              <button className="btn">1</button>
-              <button className="btn">2</button>
-              <button className="btn btn-disabled">...</button>
-              <button className="btn">99</button>
-              <button className="btn">100</button>
+            <div className="flex justify-center mt-5 mb-5">
+              <div className="btn-group">
+                <button className="btn" onClick={() => setPageIndex(pageIndex-1)}>«</button>
+                <button className="btn">Page {pageIndex}</button>
+                <button className="btn" onClick={() => setPageIndex(pageIndex+1)}>»</button>
+              </div>
             </div>
-          </div>
         </>
       ) : (
         <>{/* wallet not connected */}</>
