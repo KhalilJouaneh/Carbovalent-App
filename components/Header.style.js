@@ -9,3 +9,4 @@ export const style = {
     headerItem: `text-white px-4 font-bold text-[#000000] hover:text-black cursor-pointer`,
     headerIcon: `text-[#000000] text-3xl font-black px-4 hover:text-black cursor-pointer`,
   }
+

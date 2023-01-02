@@ -1,8 +1,8 @@
-import {OpenNavbar} from './components/OpenNavbar'
+import {OpenNavbar} from '../components/OpenNavbar'
 import { useWallet } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
 import { useState } from "react";
-import { Loading } from "./components/Loading";
+import { Loading } from "../components/Loading";
 import Image from 'next/image';
 
 export default function registry() {
@@ -102,7 +102,7 @@ export default function registry() {
             </div>
           ) : (
             <div className=" grid grid-cols-4 gap-[2.75rem] container mx-auto auto-rows-fr justify-center shadow-lg">
-              {data?.map((project, idx) => {
+              {data?.map((project) => {
               return (
 
                 <div class="font-extralight py-8 px-0 m-auto main-card">

@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/bridge.js", "pages/components/Card.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/bridge.js", "components/Card.js"],
   "exclude": ["node_modules"]
 }

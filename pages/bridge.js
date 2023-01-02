@@ -4,11 +4,9 @@ import {useProgram, useMintNFT, useSDK} from "@thirdweb-dev/react/solana"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useWallet} from "@solana/wallet-adapter-react";
-import { OpenNavbar } from './components/OpenNavbar';
-import Spline from '@splinetool/react-spline';
+import { OpenNavbar } from '../components/OpenNavbar';
 import Image from "next/image";
 import { Payload, SIWS } from "@web3auth/sign-in-with-solana";
-import swal from "sweetalert";
 
 
 const Bridge = () => {
