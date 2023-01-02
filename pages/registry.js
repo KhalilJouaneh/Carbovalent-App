@@ -4,13 +4,15 @@ import useSWR from "swr";
 import { useState } from "react";
 import { Loading } from "../components/Loading";
 import Image from 'next/image';
+import {useStore} from './store';
+
 
 export default function registry() {
   const wallet = useWallet();
 
   const [toggle, setToggle] = useState(true);
   const [pageIndex, setPageIndex] = useState(1);
-  const [searchQuery, setSearchQuery] = useState("Wind");
+  const {searchQuery, setSearchQuery} = useStore();
 
   const fetcher = async () => {
     const res = await fetch(

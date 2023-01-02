@@ -25,7 +25,7 @@ body {
   color: var(--white);
   display: flex;
   text-rendering: optimizeSpeed;
-  max-width: 100%;
+  
 }
 
 

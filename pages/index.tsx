@@ -18,8 +18,6 @@ const WalletMultiButtonDynamic = dynamic(
 
 
 const Home: NextPage = () => {
-  // const {data: myNftCollectionProgram} = useProgram('nft_collection_address', 'nft-collection')
-  // const sdk = useSDK();
   
   return (
     <>
