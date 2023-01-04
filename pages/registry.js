@@ -1,18 +1,18 @@
 import {OpenNavbar} from '../components/OpenNavbar'
 import { useWallet } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Loading } from "../components/Loading";
 import Image from 'next/image';
-import {useStore} from './store';
-
+import { useStore } from '../store/store';
 
 export default function registry() {
   const wallet = useWallet();
 
   const [toggle, setToggle] = useState(true);
   const [pageIndex, setPageIndex] = useState(1);
-  const {searchQuery, setSearchQuery} = useStore();
+  // const [searchQuery, setSearchQuery] = useState("")
+  const searchQuery = useStore((state) => state.searchQuery)
 
   const fetcher = async () => {
     const res = await fetch(
@@ -23,13 +23,16 @@ export default function registry() {
   };
 
   const { data, error, isLoading } = useSWR(
-    `https://api.goldstandard.org/credits?query&size=25&page=${pageIndex}&issuances=true`,
+    `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageIndex}&issuances=true`,
     fetcher
   );
 
   if (error) return "error";
 
-  if (isLoading) return (<Loading />)
+  if (isLoading) return (
+  <Loading />
+  )
+
 
   return (
     <>
@@ -37,10 +40,6 @@ export default function registry() {
       <p className="text-center text-3xl font-bold p-5">
         {" "}
         Solana&apos;s Carbon Credit Registry Aggregator{" "}
-      </p>
-      <p className="text-center text-xl pb-4">
-        {" "}
-        REAL-TIME DATA . NET-ZERO . INSTANT BRIDGING{" "}
       </p>
 
       <div className="flex items-center justify-center pb-5">
@@ -54,7 +53,7 @@ export default function registry() {
         <span className="text-md pr-2">CARDS</span>
       </div>
 
-      {wallet.connected ? (
+      {true ? (
         <>
           {data && toggle ? (
             <div className="table-container">
@@ -165,8 +164,8 @@ export default function registry() {
             <div className="flex justify-center mt-5 mb-5">
               <div className="btn-group">
                 <button className="btn" onClick={() => setPageIndex(pageIndex-1)}>«</button>
-                <button className="btn">Page {pageIndex}</button>
-                <button className="btn" onClick={() => setPageIndex(pageIndex+1)}>»</button>
+                <button className="btn">Page {pageIndex} </button>
+                <button className="btn" onClick={() => setPageIndex(pageIndex+1) && window.scrollTo({top: 0, left:0, behavior: 'smooth'}) }>»</button>
               </div>
             </div>
         </>

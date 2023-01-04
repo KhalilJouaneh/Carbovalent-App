@@ -13,32 +13,6 @@ const Bridge = () => {
     const sdk = useSDK(); //thirdweb instance
     const wallet = useWallet(); //solana wallet object
 
-    let statement = "Sign in with Solana to the app.";
-
-    // const [siwsMessage, setSiwsMessage] = useState<SIWS>();
-    // const [nonce, setNonce] = useState("");
-    // const [sign, setSignature] = useState("");
-
-    // function createSolanaMessage() {
-    //   const payload = new Payload();
-    //   payload.domain = domain;
-  
-    //   payload.address = publicKey!.toString();
-    //   payload.uri = origin;
-    //   payload.statement = statement;
-    //   payload.version = "1";
-    //   payload.chainId = 1;
-  
-    //   let message = new SIWS({ payload });
-  
-    //   // we need the nonce for verification so getting it in a global variable
-    //   setNonce(message.payload.nonce);
-    //   setSiwsMessage(message);
-    //   const messageText = message.prepareMessage();
-    //   const messageEncoded = new TextEncoder().encode(messageText);
-    //   signMessage!(messageEncoded).then((resp) => setSignature(bs58.encode(resp)));
-    // }
-
     const formArray = [1, 2, 3, 4, 5] ;
     const [formNo, setFormNo] = useState(formArray[0])
     const [registryName, setRegistryName] = useState('');

@@ -13,8 +13,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
+    "experimentalDecorators": true,
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/bridge.js", "components/Card.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/bridge.js", "components/Card.js", "store/store.ts"],
   "exclude": ["node_modules"]
 }
