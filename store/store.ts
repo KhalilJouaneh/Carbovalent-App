@@ -2,19 +2,21 @@ import create from 'zustand'
 import {persist} from "zustand/middleware"
 
 type Store = {
-  bears: number,
+  pageNumber: number,
   searchQuery: string,
   updateSearchQuery: (searchQuery: string) => void;
 }
 
 type Actions = {
-  increasePopulation: () => void;
+  incrementPage: () => void;
+  decrementPage: () => void;
 }
 
 export const useStore = create<Store & Actions>()(
     (set) => ({
-      bears: 4,
-      increasePopulation: () => set((state: any) => ({ bears: state.bears + 1 })),
+      pageNumber: 1,
+      incrementPage: () => set((state: any) => ({ pageNumber: state.pageNumber + 1 })),
+      decrementPage: () => set((state: any) => ({ pageNumber: state.pageNumber - 1 })),
       searchQuery: "",
       updateSearchQuery: (searchQuery) => set({ searchQuery }),
     })

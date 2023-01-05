@@ -15,9 +15,6 @@ import { useEffect, useState } from 'react'
 
 export function OpenNavbar() {
 
-  const [increasePopulation] = useStore((state) => [state.increasePopulation])
-  const bears = useStore((state) => state.bears)
-
   const [searchQuery, updateSearchQuery] = useStore((state) => [state.searchQuery, state.updateSearchQuery], shallow)
 
     require("@solana/wallet-adapter-react-ui/styles.css");

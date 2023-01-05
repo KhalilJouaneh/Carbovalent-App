@@ -10,20 +10,19 @@ export default function registry() {
   const wallet = useWallet();
 
   const [toggle, setToggle] = useState(true);
-  const [pageIndex, setPageIndex] = useState(1);
-  // const [searchQuery, setSearchQuery] = useState("")
-  const searchQuery = useStore((state) => state.searchQuery)
+  const [searchQuery, pageNumber, incrementPageNumber, decrementPageNumber] = useStore((state) => [state.searchQuery, state.pageNumber, state.incrementPage, state.decrementPage])
+
 
   const fetcher = async () => {
     const res = await fetch(
-      `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageIndex}&issuances=true`
+      `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true`
     );
     const data = await res.json();
     return data;
   };
 
   const { data, error, isLoading } = useSWR(
-    `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageIndex}&issuances=true`,
+    `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true`,
     fetcher
   );
 
@@ -32,6 +31,14 @@ export default function registry() {
   if (isLoading) return (
   <Loading />
   )
+
+  const handleDecrementPage = (event) => {
+    if (pageNumber === 1) {
+      return null
+    } else {
+      decrementPageNumber()
+    }
+  }
 
 
   return (
@@ -163,9 +170,9 @@ export default function registry() {
 
             <div className="flex justify-center mt-5 mb-5">
               <div className="btn-group">
-                <button className="btn" onClick={() => setPageIndex(pageIndex-1)}>«</button>
-                <button className="btn">Page {pageIndex} </button>
-                <button className="btn" onClick={() => setPageIndex(pageIndex+1) && window.scrollTo({top: 0, left:0, behavior: 'smooth'}) }>»</button>
+                <button className="btn" onClick={handleDecrementPage}>«</button>
+                <button className="btn">Page {pageNumber} </button>
+                <button className="btn" onClick={incrementPageNumber}>»</button>
               </div>
             </div>
         </>
