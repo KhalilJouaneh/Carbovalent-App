@@ -1,0 +1,34 @@
+{
+  "version": "0.1.0",
+  "name": "carbovalent",
+  "constants": [
+    { "name": "USER_SEED", "type": "bytes", "value": "[117, 115, 101, 114]" }
+  ],
+  "instructions": [
+    {
+      "name": "initUser",
+      "accounts": [
+        { "name": "userAccount", "isMut": true, "isSigner": false },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        { "name": "systemProgram", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "name", "type": "string" },
+        { "name": "description", "type": "string" }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "UserAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "name", "type": "string" },
+          { "name": "description", "type": "string" },
+          { "name": "authority", "type": "publicKey" }
+        ]
+      }
+    }
+  ]
+}

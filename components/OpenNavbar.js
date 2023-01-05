@@ -1,43 +1,48 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import dynamic from 'next/dynamic'
-import { MdOutlineAccountBalanceWallet } from 'react-icons/md'
-import { AiOutlineSearch } from 'react-icons/ai'
-import { CgProfile } from 'react-icons/cg'
-import carbovalentLogo from '/public/carbovalent_logo.png'
-import { style } from './Header.style.js'
-import shallow from 'zustand/shallow'
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { AiOutlineSearch } from "react-icons/ai";
+import { CgProfile } from "react-icons/cg";
+import carbovalentLogo from "/public/carbovalent_logo.png";
+import { style } from "./Header.style.js";
+import shallow from "zustand/shallow";
 
-import { useStore } from '../store/store.ts'
+import { useStore } from "../store/store.ts";
 
-import { useEffect, useState } from 'react'
-
+import { useEffect, useState } from "react";
 
 export function OpenNavbar() {
+  const [searchQuery, updateSearchQuery] = useStore(
+    (state) => [state.searchQuery, state.updateSearchQuery],
+    shallow
+  );
 
-  const [searchQuery, updateSearchQuery] = useStore((state) => [state.searchQuery, state.updateSearchQuery], shallow)
+  require("@solana/wallet-adapter-react-ui/styles.css");
 
-    require("@solana/wallet-adapter-react-ui/styles.css");
+  const WalletMultiButtonDynamic = dynamic(
+    async () =>
+      (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
+    { ssr: false }
+  );
 
-    const WalletMultiButtonDynamic = dynamic(
-      async () =>
-        (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
-      { ssr: false }
-    );
-
-
-    const handleKeyDown = (event) => {
-      if (event.key === "Enter") {
-        updateSearchQuery(event.target.value)
-        console.log("after search query: " + searchQuery);
-      }
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      updateSearchQuery(event.target.value);
+      console.log("after search query: " + searchQuery);
     }
+  };
 
   return (
     <div className={style.wrapper}>
       <Link href="/">
         <div className={style.logoContainer}>
-          <Image src={carbovalentLogo} height={220} width={220} alt="Carbovalent logo"/>
+          <Image
+            src={carbovalentLogo}
+            height={220}
+            width={220}
+            alt="Carbovalent logo"
+          />
         </div>
       </Link>
 
@@ -57,23 +62,25 @@ export function OpenNavbar() {
           <div className={style.headerItem}> Registry </div>
         </Link>
         <Link href="/bridge">
-        <div className={style.headerItem}>Bridge</div>
+          <div className={style.headerItem}>Bridge</div>
         </Link>
         <Link href="/">
-        <div className={style.headerItem}>Fractionalize</div>
+          <div className={style.headerItem}>Fractionalize</div>
         </Link>
         <Link href="/">
-        <div className={style.headerItem}>Retire</div>
+          <div className={style.headerItem}>Retire</div>
         </Link>
-        <div className={style.headerIcon}>
-          <CgProfile />
-        </div>
+        <Link href="/account">
+          <div className={style.headerIcon}>
+            <CgProfile />
+          </div>
+        </Link>
         <div className={style.headerIcon}>
           <WalletMultiButtonDynamic />
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 // export default OpenNavbar;
