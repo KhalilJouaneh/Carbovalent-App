@@ -6,8 +6,9 @@ import { Loading } from "../components/Loading";
 import Image from "next/image";
 import Link from "next/link";
 import { useStore } from "../store/store";
-import GoldStandardLogo from "/public/GoldStandard.jpg";
-import BlueCarbonImg from "/public/blue_carbon.png";
+import GoldStandardLogo from "/public/GoldStandard.jpg"
+import BlueCarbonImg from "/public/blue_carbon.png"
+
 
 export default function registry() {
   const wallet = useWallet();
@@ -65,32 +66,34 @@ export default function registry() {
         <>
           {data && toggle ? (
             <div className="table-container">
-              <div className="overflow-x-none flex items-center justify-center w-fit mx-auto border border-[#1B71E8]">
-                <table className="table-fixed max-w-screen-lg border-seperate border-spacing">
-                  <thead>
-                    <tr>
-                      <th>Source</th>
-                      <th>Unit(s)</th>
-                      <th>Credit Type</th>
-                      <th>Project Name</th>
-                      <th>Country</th>
-                      <th>Vintage</th>
-                      <th>Serial Number</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((project, idx) => {
-                      const parseCreditNumber = parseInt(
-                        project.number_of_credits
-                      ).toLocaleString(); //format number of credits with commas
+              {data.map((project, idx) => {
 
-                      const parseProjectName = project.project.name.replace(
-                        / *\([^)]*\) */g,
-                        ""
-                      ); //remove any paranthese from the project name
+                const parseCreditNumber = parseInt(
+                  project.number_of_credits
+                ).toLocaleString(); //format number of credits with commas
 
-                      return (
-<tr>
+                const parseProjectName = project.project.name.replace(
+                  / *\([^)]*\) */g,
+                  ""
+                ); //remove any paranthese from the project name
+
+                return (
+                  <>
+                    <div className="overflow-hidden flex items-center justify-center w-fit mx-auto border border-[#1B71E8]">
+                      <table className="table-fixed max-w-screen-lg border-collapse border-spacing">
+                        <thead>
+                          <tr>
+                            <th>Source</th>
+                            <th>Unit(s)</th>
+                            <th>Credit Type</th>
+                            <th>Project Name</th>
+                            <th>Country</th>
+                            <th>Vintage</th>
+                            <th>Serial Number</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
                             <td className="w-52 ">
                               <Image 
                                 src={GoldStandardLogo}
@@ -135,11 +138,12 @@ export default function registry() {
                               </Link>
                             </td>
                           </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
+                        </tbody>
+                      </table>
+                    </div>
+                  </>
+                );
+              })}
             </div>
           ) : (
             <div className=" grid grid-cols-4 gap-[2.75rem] container mx-auto auto-rows-fr justify-center shadow-lg">
