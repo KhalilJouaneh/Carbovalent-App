@@ -65,8 +65,8 @@ export default function registry() {
         <>
           {data && toggle ? (
             <div className="table-container">
-              <div className="overflow-x-none flex items-center justify-center w-fit mx-auto border border-[#1B71E8]">
-                <table className="table-fixed max-w-screen-lg border-seperate border-spacing">
+              <div className="overflow-x-none flex items-center justify-center w-fit mx-auto">
+                <table className="table-fixed max-w-screen-lg border-collapse border-spacing">
                   <thead>
                     <tr>
                       <th>Source</th>
@@ -90,51 +90,49 @@ export default function registry() {
                       ); //remove any paranthese from the project name
 
                       return (
-<tr>
-                            <td className="w-52 ">
-                              <Image 
-                                src={GoldStandardLogo}
-                                width={60}
-                                height={60}
-                                alt="Gold Standard logo"
-                                className="m-auto"
-                              />
-                            </td>
-                            <td className="w-52 text-center">
-                              <div id="credit-quantity">
-                                {parseCreditNumber}
-                                <Image 
+                        <tr className="border-solid border-[#808080] border-y-2 border-x-0">
+                          <td className="w-52 ">
+                            <Image
+                              src={GoldStandardLogo}
+                              width={60}
+                              height={60}
+                              alt="Gold Standard logo"
+                              className="m-auto"
+                            />
+                          </td>
+                          <td className="w-52 text-center">
+                            <div id="credit-quantity">
+                              {parseCreditNumber}
+                              <Image
                                 src={BlueCarbonImg}
                                 width={30}
                                 height={30}
                                 alt="Blue Carbon Energy logo"
                                 className="float-right m-auto p-1"
                               />
-                              </div>
-                            </td>
-                            <td className="w-64 text-center">
-                              {project.project.type}
-                            </td>
-                            <td className="w-64 h-8 text-center">
-                              {parseProjectName}
-                            </td>
-                            <td className="w-52 text-center">
-                              {project.project.country}
-                            </td>
-                            <td className="w-52 text-center">
-                              {project.vintage}
-                            </td>
-                            <td className="w-52 text-center">
-                              {project.serial_number}
-                            </td>
-                            <td className="w-52 text-center">
-                              <Link href="/bridge" target="_blank">
-                                <button className="btn btn-primary">
-                                  Claim
-                                </button>
-                              </Link>
-                            </td>
-                          </tr>
+                            </div>
+                          </td>
+                          <td className="w-64 text-center">
+                            {project.project.type}
+                          </td>
+                          <td className="w-64 h-8 text-center">
+                            {parseProjectName}
+                          </td>
+                          <td className="w-52 text-center">
+                            {project.project.country}
+                          </td>
+                          <td className="w-52 text-center">
+                            {project.vintage}
+                          </td>
+                          <td className="w-52 text-center">
+                            {project.serial_number}
+                          </td>
+                          <td className="w-52 text-center">
+                            <Link href="/bridge" target="_blank">
+                              <button className="btn btn-primary">Claim</button>
+                            </Link>
+                          </td>
+                        </tr>
                       );
                     })}
                   </tbody>
