@@ -4,7 +4,11 @@ import useSWR from "swr";
 import { useState, useEffect } from "react";
 import { Loading } from "../components/Loading";
 import Image from "next/image";
+import Link from "next/link";
 import { useStore } from "../store/store";
+import GoldStandardLogo from "/public/GoldStandard.jpg"
+import BlueCarbonImg from "/public/blue_carbon.png"
+
 
 export default function registry() {
   const wallet = useWallet();
@@ -46,10 +50,6 @@ export default function registry() {
   return (
     <>
       <OpenNavbar />
-      <p className="text-center text-3xl font-bold p-5">
-        {" "}
-        Solana&apos;s Carbon Credit Registry Aggregator{" "}
-      </p>
 
       <div className="flex items-center justify-center pb-5">
         <span className="text-md pl-2">TABLE</span>
@@ -67,40 +67,75 @@ export default function registry() {
           {data && toggle ? (
             <div className="table-container">
               {data.map((project, idx) => {
+
+                const parseCreditNumber = parseInt(
+                  project.number_of_credits
+                ).toLocaleString(); //format number of credits with commas
+
+                const parseProjectName = project.project.name.replace(
+                  / *\([^)]*\) */g,
+                  ""
+                ); //remove any paranthese from the project name
+
                 return (
                   <>
-                    <div className="overflow-x-none flex items-center justify-center border w-fit mx-auto border-[#1B71E8]">
-                      <table className="table-fixed max-w-screen-lg border-separate border-spacing">
+                    <div className="overflow-hidden flex items-center justify-center w-fit mx-auto border border-[#1B71E8]">
+                      <table className="table-fixed max-w-screen-lg border-collapse border-spacing">
                         <thead>
                           <tr>
-                            <th>name</th>
-                            <th>country</th>
-                            <th>carbon credits</th>
-                            <th>type</th>
-                            <th>vintage</th>
-                            <th>serial number</th>
+                            <th>Source</th>
+                            <th>Unit(s)</th>
+                            <th>Credit Type</th>
+                            <th>Project Name</th>
+                            <th>Country</th>
+                            <th>Vintage</th>
+                            <th>Serial Number</th>
                           </tr>
                         </thead>
-
                         <tbody>
                           <tr>
+                            <td className="w-52 ">
+                              <Image 
+                                src={GoldStandardLogo}
+                                width={60}
+                                height={60}
+                                alt="Gold Standard logo"
+                                className="m-auto"
+                              />
+                            </td>
                             <td className="w-52 text-center">
-                              {project.project.name}
+                              <div id="credit-quantity">
+                                {parseCreditNumber}
+                                <Image 
+                                src={BlueCarbonImg}
+                                width={30}
+                                height={30}
+                                alt="Blue Carbon Energy logo"
+                                className="float-right m-auto p-1"
+                              />
+                              </div>
+                            </td>
+                            <td className="w-64 text-center">
+                              {project.project.type}
+                            </td>
+                            <td className="w-64 h-8 text-center">
+                              {parseProjectName}
                             </td>
                             <td className="w-52 text-center">
                               {project.project.country}
-                            </td>
-                            <td className="w-52 text-center">
-                              {project.number_of_credits}
-                            </td>
-                            <td className="w-52 text-center">
-                              {project.project.type}
                             </td>
                             <td className="w-52 text-center">
                               {project.vintage}
                             </td>
                             <td className="w-52 text-center">
                               {project.serial_number}
+                            </td>
+                            <td className="w-52 text-center">
+                              <Link href="/bridge" target="_blank">
+                                <button className="btn btn-primary">
+                                  Claim
+                                </button>
+                              </Link>
                             </td>
                           </tr>
                         </tbody>
