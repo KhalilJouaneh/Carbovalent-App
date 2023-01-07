@@ -34,49 +34,51 @@ export function OpenNavbar() {
   };
 
   return (
-    <div className={style.wrapper}>
-      <Link href="/">
-        <div className={style.logoContainer}>
-          <Image
-            src={carbovalentLogo}
-            height={220}
-            width={220}
-            alt="Carbovalent logo"
-          />
-        </div>
-      </Link>
-
-      <div className={style.searchBar}>
-        <div className={style.searchIcon}>
-          <AiOutlineSearch />
-        </div>
-        <input
-          className={style.searchInput}
-          placeholder="Search carbon projects, credits, and accounts"
-          onKeyDown={handleKeyDown}
-          // onChange={(e) => updateSearchQuery(e.currentTarget.value)}
-        />
-      </div>
-      <div className={style.headerItems}>
-        <Link href="/registry">
-          <div className={style.headerItem}> Registry </div>
-        </Link>
-        <Link href="/bridge">
-          <div className={style.headerItem}>Bridge</div>
-        </Link>
+    <div className="border-x-0 border-[#E4E8EB] border-y-2">
+      <div className={style.wrapper}>
         <Link href="/">
-          <div className={style.headerItem}>Fractionalize</div>
-        </Link>
-        <Link href="/">
-          <div className={style.headerItem}>Retire</div>
-        </Link>
-        <Link href="/account">
-          <div className={style.headerIcon}>
-            <CgProfile />
+          <div className={style.logoContainer}>
+            <Image
+              src={carbovalentLogo}
+              height={220}
+              width={220}
+              alt="Carbovalent logo"
+            />
           </div>
         </Link>
-        <div className={style.headerIcon}>
-          <WalletMultiButtonDynamic />
+
+        <div className={style.searchBar}>
+          <div className={style.searchIcon}>
+            <AiOutlineSearch />
+          </div>
+          <input
+            className={style.searchInput}
+            placeholder="Search carbon projects, credits, and accounts"
+            onKeyDown={handleKeyDown}
+            // onChange={(e) => updateSearchQuery(e.currentTarget.value)}
+          />
+        </div>
+        <div className={style.headerItems}>
+          <Link href="/registry">
+            <div className={style.headerItem}> Registry </div>
+          </Link>
+          <Link href="/bridge">
+            <div className={style.headerItem}>Bridge</div>
+          </Link>
+          <Link href="/">
+            <div className={style.headerItem}>Fractionalize</div>
+          </Link>
+          <Link href="/">
+            <div className={style.headerItem}>Retire</div>
+          </Link>
+          <Link href="/account">
+            <div className={style.headerIcon}>
+              <CgProfile />
+            </div>
+          </Link>
+          <div className={style.headerIcon}>
+            <WalletMultiButtonDynamic />
+          </div>
         </div>
       </div>
     </div>

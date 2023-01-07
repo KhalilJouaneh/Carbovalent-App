@@ -28,18 +28,31 @@ body {
   
 }
 
-
-.table-container > div:first-of-type {
+/* .table-container > div:first-of-type {
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 }
 .table-container > div:last-of-type {
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
+} */
+
+tr:last-child {
+  border-bottom: none;
 }
 
+/* thead {
+  position: sticky;
+  position: -webkit-sticky;
+  position: -ms-sticky;
+  position: -moz-sticky;
+  position: -o-sticky;
+  top: 0px;
+} */
 
-
+td {
+  padding: 10px;
+}
 
 .card {
   border-radius: 50%/30px;
@@ -113,4 +126,8 @@ body {
   text-transform: capitalize;
   font-size: medium;
   width: 125px;
+}
+
+.wallet-adapter-button-trigger {
+  background-color: #9333ea;
 }

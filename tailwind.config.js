@@ -20,7 +20,7 @@ module.exports = {
       '5xl': '2rem',
       '8xl': '4rem',
       'full': '9999px',
-    },
+    }
   },
   plugins: [
     require('daisyui'),

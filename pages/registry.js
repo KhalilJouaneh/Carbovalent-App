@@ -8,18 +8,36 @@ import Link from "next/link";
 import { useStore } from "../store/store";
 import GoldStandardLogo from "/public/GoldStandard.jpg";
 import BlueCarbonImg from "/public/blue_carbon.png";
+import shallow from "zustand/shallow";
+import { style } from "../components/Header.style.js";
+import { AiOutlineSearch } from "react-icons/ai";
 
 export default function registry() {
   const wallet = useWallet();
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      updateSearchQuery(event.target.value);
+    }
+  };
+
   const [toggle, setToggle] = useState(true);
-  const [searchQuery, pageNumber, incrementPageNumber, decrementPageNumber] =
-    useStore((state) => [
+  const [
+    searchQuery,
+    updateSearchQuery,
+    pageNumber,
+    incrementPageNumber,
+    decrementPageNumber,
+  ] = useStore(
+    (state) => [
       state.searchQuery,
+      state.updateSearchQuery,
       state.pageNumber,
       state.incrementPage,
       state.decrementPage,
-    ]);
+    ],
+    shallow
+  );
 
   const fetcher = async () => {
     const res = await fetch(
@@ -50,15 +68,27 @@ export default function registry() {
     <>
       <OpenNavbar />
 
-      <div className="flex items-center justify-center pb-5">
-        <span className="text-md pl-2">TABLE</span>
+      <div className="pt-[13px]">
+        <div className={style.searchBar}>
+          <div className={style.searchIcon}>
+            <AiOutlineSearch />
+          </div>
+          <input
+            className={style.searchInput}
+            placeholder="Search carbon projects, credits, and accounts"
+            onKeyDown={handleKeyDown}
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-center pb-5 pt-10">
+        <span className="text-md pl-2">CARDS</span>
         <input
           type="checkbox"
           className="toggle toggle-primary"
           onChange={(event) => setToggle(event.currentTarget.checked)}
           checked={toggle}
         />
-        <span className="text-md pr-2">CARDS</span>
+        <span className="text-md pr-2">TABLE</span>
       </div>
 
       {true ? (
@@ -66,7 +96,7 @@ export default function registry() {
           {data && toggle ? (
             <div className="table-container">
               <div className="overflow-x-none flex items-center justify-center w-fit mx-auto">
-                <table className="table-fixed max-w-screen-lg border-collapse border-spacing">
+                <table className="table-fixed max-w-screen-lg border-seperate ">
                   <thead>
                     <tr>
                       <th>Source</th>
@@ -90,7 +120,7 @@ export default function registry() {
                       ); //remove any paranthese from the project name
 
                       return (
-                        <tr className="border-solid border-[#808080] border-y-2 border-x-0">
+                        <tr className="border-solid border-[#E4E8EB] border-y-2 border-x-0">
                           <td className="w-52 ">
                             <Image
                               src={GoldStandardLogo}

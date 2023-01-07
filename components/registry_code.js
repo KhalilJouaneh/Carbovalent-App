@@ -79,9 +79,9 @@ export default function registry() {
 
                 return (
                   <>
-                    <div className="overflow-hidden flex items-center justify-center w-fit mx-auto border border-[#1B71E8]">
-                      <table className="table-fixed max-w-screen-lg border-collapse border-spacing">
-                        <thead>
+                    <div className="overflow-hidden flex items-center justify-center w-fit mx-auto">
+                      <table className="table-fixed max-w-screen-lg border-collapse">
+                        <thead className="bg-[#000000]">
                           <tr>
                             <th>Source</th>
                             <th>Unit(s)</th>
@@ -115,10 +115,10 @@ export default function registry() {
                               />
                               </div>
                             </td>
-                            <td className="w-64 text-center">
+                            <td className="w-52 text-center">
                               {project.project.type}
                             </td>
-                            <td className="w-64 h-8 text-center">
+                            <td className="w-52W">
                               {parseProjectName}
                             </td>
                             <td className="w-52 text-center">
