@@ -156,11 +156,6 @@ export default function registry() {
                         project.number_of_credits
                       ).toLocaleString(); //format number of credits with commas
 
-                      const parseProjectName = project.project.name.replace(
-                        / *\([^)]*\) */g,
-                        ""
-                      ); //remove any paranthese from the project name
-
                       let creditType = project.project.type;
                       const classification = function () {
                         if (
