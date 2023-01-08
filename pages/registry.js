@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useStore } from "../store/store";
 import GoldStandardLogo from "/public/GoldStandard.jpg";
 import BlueCarbonImg from "/public/blue_carbon.png";
+import RenewableCarbonImg from "/public/renewable_energy.png";
 import shallow from "zustand/shallow";
 import { style } from "../components/Header.style.js";
 import { AiOutlineSearch } from "react-icons/ai";
@@ -131,6 +132,7 @@ export default function registry() {
       </div>
 
       {filterToggle ? <RegistryFilter /> : ""}
+
       {true ? (
         <>
           {data && cardTableToggle ? (
@@ -191,7 +193,7 @@ export default function registry() {
                             <div id="credit-quantity">
                               {parseCreditNumber}
                               <Image
-                                src={BlueCarbonImg}
+                                src={classification() ? BlueCarbonImg : RenewableCarbonImg}
                                 width={30}
                                 height={30}
                                 alt="Blue Carbon Energy logo"
