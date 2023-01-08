@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import url('https://fonts.cdnfonts.com/css/avenir');
 
 /* Box sizing rules */
 *,
@@ -21,7 +22,7 @@
 
 body {
   background: var(--background-color);
-  font-family: "Inter", sans-serif;
+  font-family: "Avenir", sans-serif;
   color: var(--white);
   display: flex;
   text-rendering: optimizeSpeed;
@@ -109,6 +110,10 @@ td {
   /* 32px */
 }
 
+th {
+  padding-bottom: 12px;
+}
+
 /* Carbon credit quantity Unit(s) table field */
 #credit-quantity {
   border: 2px solid #808080;
@@ -128,6 +133,15 @@ td {
   width: 125px;
 }
 
-.wallet-adapter-button-trigger {
-  background-color: #9333ea;
+/* toggle button */
+.toggle {
+  background: #888888;
+}
+
+.select {
+  border: 2px #E4E8EB solid;
+}
+.select:focus {
+  border: 2px #000000 solid; 
+  outline: none;
 }

@@ -11,6 +11,9 @@ import BlueCarbonImg from "/public/blue_carbon.png";
 import shallow from "zustand/shallow";
 import { style } from "../components/Header.style.js";
 import { AiOutlineSearch } from "react-icons/ai";
+import { RxTable } from "react-icons/rx";
+import { MdFormatListBulleted } from "react-icons/md";
+import { IoFilter } from "react-icons/io5";
 
 export default function registry() {
   const wallet = useWallet();
@@ -68,27 +71,44 @@ export default function registry() {
     <>
       <OpenNavbar />
 
-      <div className="pt-[13px]">
+      <div className="mt-[13px] flex">
+        <IoFilter size={30} className="my-auto ml-5" />
         <div className={style.searchBar}>
           <div className={style.searchIcon}>
             <AiOutlineSearch />
           </div>
           <input
             className={style.searchInput}
-            placeholder="Search carbon projects, credits, and accounts"
+            placeholder="Search by serial number or country"
             onKeyDown={handleKeyDown}
           />
         </div>
+
+        <select className="select w-full max-w-xs mr-5">
+          <option disabled selected>
+            Select option
+          </option> 
+          <option>Recently issued</option>
+          <option>Units high to low</option>
+          <option>Units low to high</option>
+          <option>Vintage high to low</option>
+          <option>Vintage low to high</option>
+        </select>
       </div>
-      <div className="flex items-center justify-center pb-5 pt-10">
-        <span className="text-md pl-2">CARDS</span>
+
+      <div className="flex items-center justify-center pb-10 pt-10">
+        <span className="mr-5">
+          <RxTable size={27} />
+        </span>
         <input
           type="checkbox"
-          className="toggle toggle-primary"
+          className="toggle"
           onChange={(event) => setToggle(event.currentTarget.checked)}
           checked={toggle}
         />
-        <span className="text-md pr-2">TABLE</span>
+        <span className="ml-5">
+          <MdFormatListBulleted size={30} />
+        </span>
       </div>
 
       {true ? (
@@ -102,7 +122,7 @@ export default function registry() {
                       <th>Source</th>
                       <th>Unit(s)</th>
                       <th>Credit Type</th>
-                      <th>Project Name</th>
+                      <th>Project Type</th>
                       <th>Country</th>
                       <th>Vintage</th>
                       <th>Serial Number</th>
@@ -142,10 +162,10 @@ export default function registry() {
                               />
                             </div>
                           </td>
-                          <td className="w-64 text-center">
+                          <td className="w-64 text-left">
                             {project.project.type}
                           </td>
-                          <td className="w-64 h-8 text-center">
+                          <td className="w-64 h-8 text-left">
                             {parseProjectName}
                           </td>
                           <td className="w-52 text-center">
@@ -154,7 +174,7 @@ export default function registry() {
                           <td className="w-52 text-center">
                             {project.vintage}
                           </td>
-                          <td className="w-52 text-center">
+                          <td className="w-52 text-left">
                             {project.serial_number}
                           </td>
                           <td className="w-52 text-center">

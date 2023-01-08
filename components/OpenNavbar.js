@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
 import carbovalentLogo from "/public/carbovalent_logo.png";
@@ -10,7 +9,6 @@ import shallow from "zustand/shallow";
 
 import { useStore } from "../store/store.ts";
 
-import { useEffect, useState } from "react";
 
 export function OpenNavbar() {
   const [searchQuery, updateSearchQuery] = useStore(
@@ -18,7 +16,7 @@ export function OpenNavbar() {
     shallow
   );
 
-  require("@solana/wallet-adapter-react-ui/styles.css");
+  // require("@solana/wallet-adapter-react-ui/styles.css");
 
   const WalletMultiButtonDynamic = dynamic(
     async () =>
