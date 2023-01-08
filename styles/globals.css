@@ -139,13 +139,14 @@ th {
 
 /* toggle button */
 .toggle {
-  background: #888888;
+  background-color: #888888;
 }
 
 .select {
   border: 2px #E4E8EB solid;
+  background-color: transparent;
 }
 .select:focus {
-  border: 2px #000000 solid; 
+  border: 2px #979797 solid; 
   outline: none;
 }
