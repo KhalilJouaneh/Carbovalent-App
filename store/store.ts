@@ -29,7 +29,7 @@ export const useStore = create<Store & Actions>()(
       filterToggle: true,
       cardTableToggle: true,
       setCardTableToggle: () => set((state:any) => ({cardTableToggle: !state.cardTableToggle})),
-      setFilterToggle: () => ((state: any) => ({filterToggle: !state.filterToggle})),
+      setFilterToggle: () => set((state:any) => ({filterToggle: !state.filterToggle})),
       resetPageNumber: () => set((state: any) => ({ pageNumber: state.pageNumber - state.pageNumber + 1 }))
     })
 )

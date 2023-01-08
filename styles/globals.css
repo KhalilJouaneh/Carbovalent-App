@@ -15,7 +15,7 @@
 
 :root {
   --background-color: #fdfdfd;
-  --white: #000000;
+  --white: #04111D;
   --tw-color1: #a855f7;
   --tw-color1-hover: #9333ea;
 }
@@ -131,10 +131,12 @@ th {
 }
 
 /* Claim Button for table & cards*/
-.btn {
+.btn-primary {
   text-transform: capitalize;
   font-size: medium;
   width: 125px;
+  border-radius: 12.8px;  
+  background-color: #1b71e8;
 }
 
 /* toggle button */
@@ -145,8 +147,21 @@ th {
 .select {
   border: 2px #E4E8EB solid;
   background-color: transparent;
+  border-radius: 12.8px;  
 }
+
+option {
+  font-weight: bold;
+  font-size: 16px;
+  background-color: transparent;
+}
+
 .select:focus {
   border: 2px #979797 solid; 
   outline: none;
+}
+
+/* labels for filters */
+.label:hover {
+  background-color: rgb(228, 232, 235, 0.3);
 }

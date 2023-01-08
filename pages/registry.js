@@ -13,7 +13,7 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { RxTable } from "react-icons/rx";
 import { MdFormatListBulleted } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
-// import classification from "../functionality/classification"
+import { RegistryFilter } from "../components/RegistryFilters";
 
 export default function registry() {
   const wallet = useWallet();
@@ -88,7 +88,6 @@ export default function registry() {
           className="my-auto ml-10 cursor-pointer"
           onClick={(event) => {
             setFilterToggle(filterToggle);
-            console.log(filterToggle);
           }}
         />
 
@@ -103,8 +102,8 @@ export default function registry() {
           />
         </div>
 
-        <select className="select w-full max-w-xs mr-10">
-          <option disabled selected>
+        <select className="select w-full max-w-xs mr-10 text-base">
+          <option disabled selected className="text-base">
             Select option
           </option>
           <option>Recently issued</option>
@@ -115,6 +114,7 @@ export default function registry() {
         </select>
       </div>
 
+      
       <div className="flex items-center justify-center pb-10 pt-10">
         <span className="mr-5">
           <RxTable size={27} />
@@ -130,6 +130,7 @@ export default function registry() {
         </span>
       </div>
 
+      {filterToggle ? <RegistryFilter /> : ""}
       {true ? (
         <>
           {data && cardTableToggle ? (
@@ -199,7 +200,9 @@ export default function registry() {
                             </div>
                           </td>
                           <td className="w-64 text-left">
-                           { classification() ? "Efficiency/Reduction Credits" : "Renewable Energy"}
+                            {classification()
+                              ? "Efficiency/Reduction Credits"
+                              : "Renewable Energy"}
                           </td>
                           <td className="w-64 h-8 text-left">
                             {project.project.type}
