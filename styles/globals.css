@@ -20,9 +20,13 @@
   --tw-color1-hover: #9333ea;
 }
 
+*{
+  font-family: "avenir", sans-serif;
+}
+
 body {
   background: var(--background-color);
-  font-family: "Avenir", sans-serif;
+  font-family: "avenir", sans-serif;
   color: var(--white);
   display: flex;
   text-rendering: optimizeSpeed;
