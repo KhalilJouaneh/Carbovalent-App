@@ -1,7 +1,6 @@
 import { OpenNavbar } from "../components/OpenNavbar";
 import { useWallet } from "@solana/wallet-adapter-react";
 import useSWR from "swr";
-import { useState, useEffect } from "react";
 import { Loading } from "../components/Loading";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,23 +13,29 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { RxTable } from "react-icons/rx";
 import { MdFormatListBulleted } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
+// import classification from "../functionality/classification"
 
 export default function registry() {
   const wallet = useWallet();
 
-  const handleKeyDown = (event) => {
+  const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
-      updateSearchQuery(event.target.value);
+      resetPageNumber(); //set page number to 1 after user searches
+      updateSearchQuery(event.target.value.trim()); //pass query to api call
     }
   };
 
-  const [toggle, setToggle] = useState(true);
   const [
     searchQuery,
     updateSearchQuery,
     pageNumber,
     incrementPageNumber,
     decrementPageNumber,
+    resetPageNumber,
+    cardTableToggle,
+    setCardTableToggle,
+    filterToggle,
+    setFilterToggle,
   ] = useStore(
     (state) => [
       state.searchQuery,
@@ -38,6 +43,11 @@ export default function registry() {
       state.pageNumber,
       state.incrementPage,
       state.decrementPage,
+      state.resetPageNumber,
+      state.cardTableToggle,
+      state.setCardTableToggle,
+      state.filterToggle,
+      state.setFilterToggle,
     ],
     shallow
   );
@@ -64,6 +74,7 @@ export default function registry() {
       return null;
     } else {
       decrementPageNumber();
+      // setPageNumber(pageNumber-1);
     }
   };
 
@@ -72,7 +83,15 @@ export default function registry() {
       <OpenNavbar />
 
       <div className="mt-[13px] flex">
-        <IoFilter size={30} className="my-auto ml-5" />
+        <IoFilter
+          size={30}
+          className="my-auto ml-10 cursor-pointer"
+          onClick={(event) => {
+            setFilterToggle(filterToggle);
+            console.log(filterToggle);
+          }}
+        />
+
         <div className={style.searchBar}>
           <div className={style.searchIcon}>
             <AiOutlineSearch />
@@ -80,14 +99,14 @@ export default function registry() {
           <input
             className={style.searchInput}
             placeholder="Search by serial number or country"
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleSearchQuery}
           />
         </div>
 
-        <select className="select w-full max-w-xs mr-5">
+        <select className="select w-full max-w-xs mr-10">
           <option disabled selected>
             Select option
-          </option> 
+          </option>
           <option>Recently issued</option>
           <option>Units high to low</option>
           <option>Units low to high</option>
@@ -103,8 +122,8 @@ export default function registry() {
         <input
           type="checkbox"
           className="toggle"
-          onChange={(event) => setToggle(event.currentTarget.checked)}
-          checked={toggle}
+          onChange={(event) => setCardTableToggle(event.currentTarget.checked)}
+          checked={cardTableToggle}
         />
         <span className="ml-5">
           <MdFormatListBulleted size={30} />
@@ -113,7 +132,7 @@ export default function registry() {
 
       {true ? (
         <>
-          {data && toggle ? (
+          {data && cardTableToggle ? (
             <div className="table-container">
               <div className="overflow-x-none flex items-center justify-center w-fit mx-auto">
                 <table className="table-fixed max-w-screen-lg border-seperate ">
@@ -139,6 +158,23 @@ export default function registry() {
                         ""
                       ); //remove any paranthese from the project name
 
+                      let creditType = project.project.type;
+                      const classification = function () {
+                        if (
+                          creditType === "Energy Efficiency - Domestic" ||
+                          creditType === "Energy Efficiency - Industrial" ||
+                          creditType === "Energy Efficiency - Public Sector" ||
+                          creditType === "Energy Efficiency Transport Sector" ||
+                          creditType ===
+                            "Energy Efficiency Agriculture Sector" ||
+                          creditType === "Energy Efficiency Commercial Sector"
+                        ) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      };
+
                       return (
                         <tr className="border-solid border-[#E4E8EB] border-y-2 border-x-0">
                           <td className="w-52 ">
@@ -163,10 +199,10 @@ export default function registry() {
                             </div>
                           </td>
                           <td className="w-64 text-left">
-                            {project.project.type}
+                           { classification() ? "Efficiency/Reduction Credits" : "Renewable Energy"}
                           </td>
                           <td className="w-64 h-8 text-left">
-                            {parseProjectName}
+                            {project.project.type}
                           </td>
                           <td className="w-52 text-center">
                             {project.project.country}

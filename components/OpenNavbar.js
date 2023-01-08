@@ -9,14 +9,11 @@ import shallow from "zustand/shallow";
 
 import { useStore } from "../store/store.ts";
 
-
 export function OpenNavbar() {
-  const [searchQuery, updateSearchQuery] = useStore(
-    (state) => [state.searchQuery, state.updateSearchQuery],
+  const [searchQuery, updateSearchQuery, resetPageNumber] = useStore(
+    (state) => [state.searchQuery, state.updateSearchQuery, state.resetPageNumber],
     shallow
   );
-
-  // require("@solana/wallet-adapter-react-ui/styles.css");
 
   const WalletMultiButtonDynamic = dynamic(
     async () =>
@@ -24,10 +21,10 @@ export function OpenNavbar() {
     { ssr: false }
   );
 
-  const handleKeyDown = (event) => {
+  const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
-      updateSearchQuery(event.target.value);
-      console.log("after search query: " + searchQuery);
+      resetPageNumber(); //set page number to 1 after user searches
+      updateSearchQuery((event.target.value).trim()); //pass query to api call
     }
   };
 
@@ -38,8 +35,8 @@ export function OpenNavbar() {
           <div className={style.logoContainer}>
             <Image
               src={carbovalentLogo}
-              height={220}
-              width={220}
+              height={200}
+              width={200}
               alt="Carbovalent logo"
             />
           </div>
@@ -52,8 +49,7 @@ export function OpenNavbar() {
           <input
             className={style.searchInput}
             placeholder="Search carbon projects, credits, and accounts"
-            onKeyDown={handleKeyDown}
-            // onChange={(e) => updateSearchQuery(e.currentTarget.value)}
+            onKeyDown={handleSearchQuery}
           />
         </div>
         <div className={style.headerItems}>
@@ -82,5 +78,3 @@ export function OpenNavbar() {
     </div>
   );
 }
-
-// export default OpenNavbar;

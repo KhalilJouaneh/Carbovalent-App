@@ -6,11 +6,16 @@ type Store = {
   searchQuery: string;
   updateSearchQuery: (searchQuery: string) => void;
   userInitialized : boolean;
+  filterToggle: boolean;
+  cardTableToggle: boolean;
+  resetPageNumber: (pageNummber: number) => void;
 }
 
 type Actions = {
   incrementPage: () => void;
   decrementPage: () => void;
+  setCardTableToggle: () => void; 
+  setFilterToggle: () => void;
 }
 
 export const useStore = create<Store & Actions>()(
@@ -21,19 +26,10 @@ export const useStore = create<Store & Actions>()(
       searchQuery: "",
       updateSearchQuery: (searchQuery) => set({ searchQuery }),
       userInitialized: false,
+      filterToggle: true,
+      cardTableToggle: true,
+      setCardTableToggle: () => set((state:any) => ({cardTableToggle: !state.cardTableToggle})),
+      setFilterToggle: () => ((state: any) => ({filterToggle: !state.filterToggle})),
+      resetPageNumber: () => set((state: any) => ({ pageNumber: state.pageNumber - state.pageNumber + 1 }))
     })
 )
-
-// export const useStore = create<Store & Actions>()(
-//   persist(
-//     (set) => ({
-//       bears: 4,
-//       increasePopulation: () => set((state: any) => ({ bears: state.bears + 1 })),
-//       searchQuery: "China",
-//     }),
-//     {name: "global", getStorage: () =>
-//       localStorage }
-//   )
-// )
-
-
