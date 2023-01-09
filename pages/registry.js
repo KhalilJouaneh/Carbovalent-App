@@ -215,7 +215,7 @@ export default function registry() {
                           </td>
                           <td className="w-52 text-center">
                             <Link href="/bridge" target="_blank">
-                              <button className="btn btn-primary">Claim</button>
+                              <button className="btn claim-btn">Claim</button>
                             </Link>
                           </td>
                         </tr>

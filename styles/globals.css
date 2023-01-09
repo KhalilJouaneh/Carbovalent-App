@@ -129,15 +129,21 @@ th {
   display: inline-block;
   padding: 4px;
   display: flex;
+
 }
 
 /* Claim Button for table & cards*/
-.btn-primary {
+.claim-btn {
   text-transform: capitalize;
   font-size: medium;
   width: 125px;
-  border-radius: 12.8px;  
+  border-radius: 32px;  
   background-color: #1b71e8;
+  border: none;
+}
+
+.claim-btn:hover {
+  background-color: #04111D ;
 }
 
 /* toggle button */
@@ -148,7 +154,7 @@ th {
 .select {
   border: 2px #E4E8EB solid;
   background-color: transparent;
-  border-radius: 12.8px;  
+  border-radius: 25px;  
 }
 
 option {
