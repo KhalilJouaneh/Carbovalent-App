@@ -11,9 +11,6 @@ type Store = {
   resetPageNumber: (pageNummber: number) => void;
 } 
 
-//setColumn(vintage/number_of_credits)
-//setDireciton(asc/desc)
-
 type Actions = {
   incrementPage: () => void;
   decrementPage: () => void;

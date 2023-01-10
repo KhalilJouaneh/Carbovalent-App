@@ -80,7 +80,6 @@ export default function registry() {
       return null;
     } else {
       decrementPageNumber();
-      // setPageNumber(pageNumber-1);
     }
   };
 
@@ -112,7 +111,7 @@ export default function registry() {
     <>
       <OpenNavbar />
 
-      <div className="mt-[13px] flex">
+      <div className="mt-[13px] flex search-container shadow-lg pb-[13px]">
         <IoFilter
           size={30}
           className="my-auto ml-10 cursor-pointer"
@@ -132,7 +131,6 @@ export default function registry() {
           />
         </div>
 
-        {/* onClick={setColumn("number_of_credits") && setDirection("desc")} onClick={setColumn("") && setDirection("")} */}
         <select
           className="select w-full max-w-xs mr-10 text-base"
           onChange={handleSelectedOption}

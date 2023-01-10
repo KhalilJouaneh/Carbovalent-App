@@ -160,18 +160,24 @@ th {
   border: 2px #E4E8EB solid;
   background-color: transparent;
   border-radius: 12.8px;  
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url('../public/down_arrow.png') 96% / 15% no-repeat;
+  background-size: 20px;
 }
 
-option {
-  font-weight: bold;
-  font-size: 16px;
-  background-color: transparent;
-}
 
 .select:focus {
   border: 2px #979797 solid; 
   outline: none;
 }
+option {
+  font-weight: bold;
+  font-size: 17px;
+  background-color: transparent;
+}
+
 
 /* labels for filters */
 .label:hover {
