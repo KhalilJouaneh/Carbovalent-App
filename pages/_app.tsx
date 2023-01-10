@@ -4,6 +4,9 @@ import { Network } from "@thirdweb-dev/sdk/solana";
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import "../styles/wallet.css"
+import "../styles/buttons.css"
+import "../styles/responsive.css"
+import "../styles/card.css"
 
 // Change the network to the one you want to use: "mainnet-beta", "testnet", "devnet", "localhost" or your own RPC endpoint
 const network: Network = "devnet";

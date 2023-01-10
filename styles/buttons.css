@@ -1,0 +1,15 @@
+.filter-div {
+    background-color: transparent;
+    font-size: 16px;
+    color: #04111D;
+    font-weight: bold;
+    cursor: pointer;
+    max-width: 160px;
+    border: 1px solid red; 
+    padding: 0;
+  }
+
+.filter-btn:hover {
+    /* background-color: rgb(228, 232, 235); */
+    background-color: red;
+}

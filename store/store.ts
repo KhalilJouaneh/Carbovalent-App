@@ -9,7 +9,10 @@ type Store = {
   filterToggle: boolean;
   cardTableToggle: boolean;
   resetPageNumber: (pageNummber: number) => void;
-}
+} 
+
+//setColumn(vintage/number_of_credits)
+//setDireciton(asc/desc)
 
 type Actions = {
   incrementPage: () => void;
@@ -30,6 +33,6 @@ export const useStore = create<Store & Actions>()(
       cardTableToggle: true,
       setCardTableToggle: () => set((state:any) => ({cardTableToggle: !state.cardTableToggle})),
       setFilterToggle: () => set((state:any) => ({filterToggle: !state.filterToggle})),
-      resetPageNumber: () => set((state: any) => ({ pageNumber: state.pageNumber - state.pageNumber + 1 }))
+      resetPageNumber: () => set((state: any) => ({ pageNumber: state.pageNumber - state.pageNumber + 1 })),
     })
 )

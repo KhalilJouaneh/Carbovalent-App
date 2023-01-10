@@ -15,10 +15,9 @@ import { RxTable } from "react-icons/rx";
 import { MdFormatListBulleted } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { RegistryFilter } from "../components/RegistryFilters";
+import { useState } from "react";
 
 export default function registry() {
-  const wallet = useWallet();
-
   const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
       resetPageNumber(); //set page number to 1 after user searches
@@ -47,22 +46,28 @@ export default function registry() {
       state.resetPageNumber,
       state.cardTableToggle,
       state.setCardTableToggle,
-      state.filterToggle,
+      state.filterToggle, 
       state.setFilterToggle,
     ],
     shallow
   );
 
+  //sortColunm=number_of_credits, vintage, certified_date (issuance_date)
+  //sortDirection = asc/desc
+
+  const [column, setColumn] = useState("");
+  const [direction, setDirection] = useState("");
+
   const fetcher = async () => {
     const res = await fetch(
-      `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true`
+      `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true&sortColumn=${column}&sortDirection=${direction}`
     );
     const data = await res.json();
     return data;
   };
 
   const { data, error, isLoading } = useSWR(
-    `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true`,
+    `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true&sortColumn=${column}&sortDirection=${direction}`,
     fetcher
   );
 
@@ -78,6 +83,27 @@ export default function registry() {
       // setPageNumber(pageNumber-1);
     }
   };
+
+  const handleSelectedOption = (e) =>  {
+    let selectedOption = e.target.value;
+    if (selectedOption == 1){
+      setDirection("");
+      setColumn("")
+    } else if (selectedOption == 2) {
+      setDirection('desc');
+      setColumn('number_of_credits');
+      console.log("direction" + direction + "column" + column + selectedOption);
+    } else if (selectedOption == 3) {
+      setDirection('asc');
+      setColumn('number_of_credits');
+    } else if (selectedOption == 4) {
+      setDirection('desc');
+      setColumn('vintage');
+    } else if (selectedOption == 5) {
+      setDirection('asc');
+      setColumn('vintage')
+    }
+  }
 
   return (
     <>
@@ -103,19 +129,19 @@ export default function registry() {
           />
         </div>
 
-        <select className="select w-full max-w-xs mr-10 text-base">
+{/* onClick={setColumn("number_of_credits") && setDirection("desc")} onClick={setColumn("") && setDirection("")} */}
+        <select className="select w-full max-w-xs mr-10 text-base" onChange={handleSelectedOption}>
           <option disabled selected className="text-base">
             Select option
           </option>
-          <option>Recently issued</option>
-          <option>Units high to low</option>
-          <option>Units low to high</option>
-          <option>Vintage high to low</option>
-          <option>Vintage low to high</option>
+          <option  value={1} >Recently issued</option>
+          <option value={2}>Units high to low</option>
+          <option  value={3}>Units low to high</option>
+          <option value={4}>Vintage high to low</option>
+          <option value={5}>Vintage low to high</option>
         </select>
       </div>
 
-      
       <div className="flex items-center justify-center pb-10 pt-10">
         <span className="mr-5">
           <RxTable size={27} />
@@ -137,7 +163,7 @@ export default function registry() {
         <>
           {data && cardTableToggle ? (
             <div className="table-container">
-              <div className="overflow-x-none flex items-center justify-center w-fit mx-auto">
+              <div className="flex items-center justify-center w-fit mx-auto">
                 <table className="table-fixed max-w-screen-lg border-seperate ">
                   <thead>
                     <tr>
@@ -188,7 +214,11 @@ export default function registry() {
                             <div id="credit-quantity">
                               {parseCreditNumber}
                               <Image
-                                src={classification() ? BlueCarbonImg : RenewableCarbonImg}
+                                src={
+                                  classification()
+                                    ? BlueCarbonImg
+                                    : RenewableCarbonImg
+                                }
                                 width={30}
                                 height={30}
                                 alt="Blue Carbon Energy logo"
@@ -196,12 +226,12 @@ export default function registry() {
                               />
                             </div>
                           </td>
-                          <td className="w-64 text-left">
+                          <td className="w-64 text-center">
                             {classification()
                               ? "Efficiency/Reduction Credits"
                               : "Renewable Energy"}
                           </td>
-                          <td className="w-64 h-8 text-left">
+                          <td className="w-64 h-8 text-center">
                             {project.project.type}
                           </td>
                           <td className="w-52 text-center">
@@ -210,7 +240,7 @@ export default function registry() {
                           <td className="w-52 text-center">
                             {project.vintage}
                           </td>
-                          <td className="w-52 text-left">
+                          <td className="w-52 text-center">
                             {project.serial_number}
                           </td>
                           <td className="w-52 text-center">
@@ -226,7 +256,7 @@ export default function registry() {
               </div>
             </div>
           ) : (
-            <div className=" grid grid-cols-4 gap-[2.75rem] container mx-auto auto-rows-fr justify-center shadow-lg">
+            <div className="card-container grid grid-cols-3 gap-[2.75rem] mx-auto auto-rows-fr justify-center">
               {data?.map((project) => {
                 return (
                   <div class="font-extralight py-8 px-0 m-auto main-card">

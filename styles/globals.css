@@ -46,6 +46,11 @@ tr:last-child {
   border-bottom: none;
 }
 
+.table-container {
+  overflow-x: auto;
+}
+
+
 /* thead {
   position: sticky;
   position: -webkit-sticky;
@@ -154,7 +159,7 @@ th {
 .select {
   border: 2px #E4E8EB solid;
   background-color: transparent;
-  border-radius: 25px;  
+  border-radius: 12.8px;  
 }
 
 option {

@@ -7,8 +7,6 @@ import {OpenNavbar} from '../components/OpenNavbar'
 // NFT collection address 
 // 5qRjLdA3iqboq9AJn7Y3sdBXs2KHksa5WnrxvQXJJPw6
 
-// Default styles that can be overridden by your app
-require("@solana/wallet-adapter-react-ui/styles.css");
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
