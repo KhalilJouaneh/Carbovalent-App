@@ -46,7 +46,7 @@ export default function registry() {
       state.resetPageNumber,
       state.cardTableToggle,
       state.setCardTableToggle,
-      state.filterToggle, 
+      state.filterToggle,
       state.setFilterToggle,
     ],
     shallow
@@ -84,26 +84,29 @@ export default function registry() {
     }
   };
 
-  const handleSelectedOption = (e) =>  {
+  const handleSelectedOption = (e) => {
     let selectedOption = e.target.value;
-    if (selectedOption == 1){
+    if (selectedOption == 1) {
       setDirection("");
-      setColumn("")
+      setColumn("");
     } else if (selectedOption == 2) {
-      setDirection('desc');
-      setColumn('number_of_credits');
+      setDirection("desc");
+      setColumn("number_of_credits");
       console.log("direction" + direction + "column" + column + selectedOption);
     } else if (selectedOption == 3) {
-      setDirection('asc');
-      setColumn('number_of_credits');
+      setDirection("asc");
+      setColumn("number_of_credits");
     } else if (selectedOption == 4) {
-      setDirection('desc');
-      setColumn('vintage');
+      setDirection("desc");
+      setColumn("vintage");
     } else if (selectedOption == 5) {
-      setDirection('asc');
-      setColumn('vintage')
+      setDirection("asc");
+      setColumn("vintage");
+    } else if (selectedOption == 6) {
+      setDirection("asc");
+      setColumn("certified_date");
     }
-  }
+  };
 
   return (
     <>
@@ -129,16 +132,20 @@ export default function registry() {
           />
         </div>
 
-{/* onClick={setColumn("number_of_credits") && setDirection("desc")} onClick={setColumn("") && setDirection("")} */}
-        <select className="select w-full max-w-xs mr-10 text-base" onChange={handleSelectedOption}>
+        {/* onClick={setColumn("number_of_credits") && setDirection("desc")} onClick={setColumn("") && setDirection("")} */}
+        <select
+          className="select w-full max-w-xs mr-10 text-base"
+          onChange={handleSelectedOption}
+        >
           <option disabled selected className="text-base">
             Select option
           </option>
-          <option  value={1} >Recently issued</option>
+          <option value={1}>Recently issued</option>
           <option value={2}>Units high to low</option>
-          <option  value={3}>Units low to high</option>
+          <option value={3}>Units low to high</option>
           <option value={4}>Vintage high to low</option>
           <option value={5}>Vintage low to high</option>
+          <option value={6}>Oldest</option>
         </select>
       </div>
 
