@@ -134,7 +134,7 @@ th {
   display: inline-block;
   padding: 4px;
   display: flex;
-
+  padding: 10px;
 }
 
 /* Claim Button for table & cards*/
@@ -183,3 +183,20 @@ option {
 .label:hover {
   background-color: rgb(228, 232, 235, 0.3);
 }
+
+.steps .step-primary + .step-primary:before, .steps .step-primary:after {
+  background: #1B71E8;
+ 
+}
+
+.steps {
+  font-weight: bold;
+}
+
+.pencilIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}
+

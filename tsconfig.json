@@ -16,6 +16,6 @@
     "incremental": true,
     "experimentalDecorators": true,
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/bridge.js", "components/Card.js", "store/store.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/bridge.js", "components/Card.js", "store/store.ts", "pages/fractionalize.js"],
   "exclude": ["node_modules"]
 }

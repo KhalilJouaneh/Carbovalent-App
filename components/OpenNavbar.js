@@ -59,7 +59,7 @@ export function OpenNavbar() {
           <Link href="/bridge">
             <div className={style.headerItem}>Bridge</div>
           </Link>
-          <Link href="/">
+          <Link href="/fractionalize">
             <div className={style.headerItem}>Fractionalize</div>
           </Link>
           <Link href="/">

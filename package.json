@@ -12,6 +12,8 @@
     "fs": false
   },
   "dependencies": {
+    "@metaplex-foundation/js": "^0.17.12",
+    "@metaplex-foundation/mpl-token-metadata": "^2.5.2",
     "@noble/ed25519": "^1.7.1",
     "@project-serum/anchor": "^0.26.0",
     "@solana/wallet-adapter-base": "^0.9.20",
@@ -28,9 +30,6 @@
     "daisyui": "^2.46.0",
     "flowbite": "^1.5.5",
     "immer": "^9.0.16",
-    "mobx": "^6.7.0",
-    "mobx-react": "^7.6.0",
-    "mobx-state-tree": "^5.1.7",
     "next": "^13",
     "react": "^18.2",
     "react-dom": "^18.2.0",

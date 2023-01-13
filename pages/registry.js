@@ -16,6 +16,7 @@ import { MdFormatListBulleted } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { RegistryFilter } from "../components/RegistryFilters";
 import { useState } from "react";
+import {Footer} from '../components/Footer';
 
 export default function registry() {
   const handleSearchQuery = (event) => {
@@ -334,6 +335,7 @@ export default function registry() {
               </button>
             </div>
           </div>
+          <Footer />
         </>
       ) : (
         <>{/* wallet not connected */}</>
