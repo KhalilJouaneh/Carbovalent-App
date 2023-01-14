@@ -8,6 +8,7 @@ import "../styles/buttons.css"
 import "../styles/responsive.css"
 import "../styles/card.css"
 import "../styles/account.css"
+import "../styles/fractionalize.css"
 
 // Change the network to the one you want to use: "mainnet-beta", "testnet", "devnet", "localhost" or your own RPC endpoint
 const network: Network = "devnet";

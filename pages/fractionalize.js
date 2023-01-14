@@ -5,6 +5,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { OpenNavbar } from "../components/OpenNavbar";
 import { Footer } from "../components/Footer";
+import { ListAll } from "../functionality/ListAll";
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = new Metaplex(connection);
@@ -14,7 +15,7 @@ function fractionalize() {
   );
 
   const [nft, setNft] = useState(null);
-  const [uri, setUri] = useState("https://gateway.ipfscdn.io/ipfs/QmRPvkXbGBaQkDusj5Zb7ZwsyAcgMoKFRiG3F3L5A41AQu/0");
+  const [uri, setUri] = useState("");
 
   const fetchNft = async () => {
     const asset = await metaplex
@@ -43,7 +44,7 @@ function fractionalize() {
     const res = await fetch(`${uri}`);
     const data = await res.json();
     // return JSON.stringify(data);
-    return data
+    return data;
   };
 
   const { data, error, isLoading } = useSWR(`${uri}`, fetcher);
@@ -54,7 +55,9 @@ function fractionalize() {
   return (
     <div>
       <OpenNavbar />
-      <div>
+      <ListAll />
+      <Footer />
+      {/* <div>
         <h1>NFT Mint Address</h1>
         <div>
           <input
@@ -65,19 +68,19 @@ function fractionalize() {
           <br />
           <button onClick={fetchNft}>Fetch</button>
         </div>
-        
-        {data && Object.keys(data).map((key, index) => {
-        return (
-          <div key={index}>
-            <h2>
-              {key}: {data[key]}
-            </h2>
 
-            <hr />
-          </div>
-        );
-      })}
-        
+        {data &&
+          Object.keys(data).map((key, index) => {
+            return (
+              <div key={index}>
+                <h2>
+                  {key}: {data[key]}
+                </h2>
+
+                <hr />
+              </div>
+            );
+          })}
 
         {nft && (
           <div>
@@ -86,7 +89,7 @@ function fractionalize() {
             <img src={nft.json.image} />
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
