@@ -8,9 +8,30 @@ import Image from "next/image";
 import useSWR from "swr";
 import { Loading } from "../components/Loading";
 import { Footer } from "../components/Footer";
+import bs58 from "bs58";
 
 const Bridge = () => {
   const wallet = useWallet(); //solana wallet object
+  const message_from_backend = "Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/"
+
+  const handleSignMessage = () => {
+    if (typeof window !== "undefined" && wallet) {
+      window.welcomeMessage = "";
+      const { signature, publicKey } = window.solana.signMessage(
+        new TextEncoder().encode(message_from_backend),
+        "utf8"
+      );
+      const signatureUint8Array = new Uint8Array(signature);
+
+      fetch("/backend", {
+        method: "POST",
+        body: JSON.stringify({
+          public_key: wallet.publicKey?.toBase58(),
+          signature: bs58.encode(signatureUint8Array),
+        }),
+      });
+    }
+  }
 
   const formArray = [1, 2, 3, 4, 5];
   const [formNo, setFormNo] = useState(formArray[0]);
@@ -45,7 +66,8 @@ const Bridge = () => {
       setSearchQuery(serialNumber);
       setFormNo(formNo + 1);
     } else if (formNo === 3) {
-      setFormNo(formNo + 1);
+      handleSignMessage();
+      setFormNo(formNo + 1); 
     } else if (formNo === 4) {
       // let GSretirementData = getRetirmentInfo(serialNumber)
       // mintCarbonNFT();

@@ -1,0 +1,17 @@
+  const handleSignMessage = () => {
+    if (typeof window !== "undefined" && wallet) {
+      window.welcomeMessage = "";
+      const { signature, publicKey } = window.solana.signMessage(
+        new TextEncoder().encode(message_from_backend),
+        "utf8"
+      );
+      const signatureUint8Array = new Uint8Array(signature);
+
+      fetch("/backend", {
+        method: "POST",
+        body: JSON.stringify({
+          public_key: wallet.publicKey?.toBase58(),
+          signature: bs58.encode(signatureUint8Array),
+        }),
+      });
+    }

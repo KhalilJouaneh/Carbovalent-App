@@ -35,7 +35,7 @@ export function Footer() {
         </div>
         <div className="md:place-self-center md:justify-self-end">
           <div className="grid grid-flow-col gap-4">
-            <a>
+            <a href="http://www.twitter.com/carbovalent" target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"

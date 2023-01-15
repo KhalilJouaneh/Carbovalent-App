@@ -5,7 +5,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { OpenNavbar } from "../components/OpenNavbar";
 import { Footer } from "../components/Footer";
-import { ListAll } from "../functionality/ListAll";
+import { ListAll } from "../utils/ListAll";
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = new Metaplex(connection);
