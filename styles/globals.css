@@ -64,49 +64,8 @@ td {
   padding: 10px;
 }
 
-.card {
-  border-radius: 50%/30px;
-  /* text-shadow: 1.5px 0px rgb(188, 187, 187); */
-  box-shadow: 3.5px 0px rgba(0, 0, 0, 0.5);
-  /* background-color: #fedd77; for yellow card */
-  background-color: #5fbbff;
-}
-
-.card-actions {
-  display: grid;
-  align-items: end;
-  flex: 1;
-}
-
-.card-details {
-  /* background-color: #ffea5d; for yellow card */
-}
 
 
-.main-card {
-  border-radius: 50%/30px;
-  /* TEXT SHADOW: offset-x | offset-y | color */
-  text-shadow: 1.5px 0px rgb(188, 187, 187);
-  background-color: #5fbbff;
-  width: 20rem;
-  box-shadow: 3.5px 0px rgba(0, 0, 0, 0.5);
-}
-
-.bg-highlight {
-  /* background-color: #ffea5d; for yellow card*/
-  background-color: #4bc1ff;
-}
-
-.allow-overlap {
-  max-height: 3rem;
-  max-width: 20rem;
-}
-
-.overlap-img {
-  /* Shifts the img 1 rem right  without altering parent div*/
-  position: relative;
-  left: 1rem;
-}
 
 .text-xsm{
   font-size: .7rem;

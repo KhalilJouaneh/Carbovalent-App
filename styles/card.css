@@ -1,3 +1,41 @@
 .card-container {
-    max-width: 920px;
+  max-width: 920px;
+}
+
+.main-card {
+  border-radius: 50%/30px;
+  /* TEXT SHADOW: offset-x | offset-y | color */
+  text-shadow: 1.5px 0px rgb(188, 187, 187);
+  background-color: #8bdbd8;
+  width: auto;
+  height: 500px;
+  box-shadow: 3.5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.card-content  {
+    font-size: 16px;
+    padding: 3px;
+}
+
+.bg-highlight {
+  background-color: #7ad0c5;
+}
+
+
+.foot {
+  border-bottom-left-radius: 10% 37%;
+  border-bottom-right-radius: 10% 37%;
+  border-top-left-radius: 10% 37%;
+  border-top-right-radius: 10% 37%;
+}
+
+.allow-overlap {
+  max-height: 3rem;
+  max-width: 20rem;
+}
+
+.overlap-img {
+  /* Shifts the img 1 rem right  without altering parent div*/
+  position: relative;
+  left: 1rem;
 }

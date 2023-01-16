@@ -16,7 +16,7 @@ import { MdFormatListBulleted } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { RegistryFilter } from "../components/RegistryFilters";
 import { useState } from "react";
-import {Footer} from '../components/Footer';
+import { Footer } from "../components/Footer";
 
 export default function registry() {
   const handleSearchQuery = (event) => {
@@ -264,58 +264,56 @@ export default function registry() {
           ) : (
             <div className="card-container grid grid-cols-3 gap-[2.75rem] mx-auto auto-rows-fr justify-center">
               {data?.map((project) => {
+                const parseCreditNumber = parseInt(
+                  project.number_of_credits
+                ).toLocaleString(); //format number of credits with commas
+
                 return (
-                  <div class="font-extralight py-8 px-0 m-auto main-card">
-                    <div class="grid justify-items-center px-3 py-2">
-                      <div class="flex rounded-full items-center bg-highlight px-2 py-6">
-                        <h1 class="text-white w-100 mr-2">68432</h1>
-                        <Image
+                  <div className="font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card">
+                    <div className="grid  justify-items-center px-3 py-2">
+                      <div className="flex w-11/12 rounded-full items-center bg-highlight px-2 py-3">
+                        <p className="text-white w-100 mx-auto">{project.id}</p>
+                        <img
                           src="/headimg.png"
-                          width={96}
-                          height={96}
-                          alt="Carbovalent Card Logo"
+                          alt="Tailwind CSS Logo"
+                          class="w-12 h-12 ml-auto"
                         />
                       </div>
 
-                      <div class="ml-4">
-                        <p class="text-white px-10">
+                      <div className="mx-auto">
+                        <p className="text-white px-10">
                           renewable energy carbon credit units
                         </p>
                       </div>
                     </div>
-
-                    <div class="mt-4 bg-highlight px-4 text-white">
-                      <div class="px-2 py-6 grid grid-rows-4">
-                        <div class="content-center flex-1">
-                          <p class=" ">Project: Wind Energy</p>
+                    <div className="mt-4 bg-highlight  text-base text-white text-content">
+                      <div className="grid grid-rows-4">
+                        <div className="card-content">
+                          Project: {project.project.type}
                         </div>
-                        <div class="content-center flex-1">
-                          <p class=" ">Location: India</p>
+                        <div className="card-content">
+                          Unit(s): {parseCreditNumber}
                         </div>
-                        <div class="content-center flex-1">
-                          <p class=" ">Source: GS</p>
+                        <div className="card-content ">
+                          Location: {project.project.country}
                         </div>
-                        <div class="content-center flex-1">
-                          <p class=" ">Vintage: 2020</p>
+                        <div className="card-content">Source: Gold Standard</div>
+                        <div className="card-content">
+                          Vintage: {project.vintage}
                         </div>
                       </div>
                     </div>
-
-                    <div class="flex foot rounded-full items-center bg-highlight px-2 py-2 grid-cols-2 mt-5 mx-auto allow-overlap">
-                      <div class="grid grid-rows-2">
-                        <p class="text-sm text-white w-100 mr-2 ">
-                          ID: IN-5-277480604-2-2-0-6484
-                        </p>
-                        <p class="text-sm text-white w-100 mr-2 ">
-                          - IN-5-277549035-2-2-0-6484
+                    <div className="flex foot w-10/12 rounded-full items-center bg-highlight px-2 py-5 grid-cols-2 mt-5 mx-auto allow-overlap ">
+                      <div className="grid grid-rows-1 h-fit">
+                        <p className="text-[10px] text-white w-100 mr-2 ">
+                          {project.serial_number}
                         </p>
                       </div>
 
-                      <Image
+                      <img
                         src="/carbovalentlogo.png"
-                        alt="Carbovalent logo on Card"
-                        width={80}
-                        height={80}
+                        alt="Carbovalent Logo"
+                        className="w-20 h-20 overlap-img ml-auto mr-1 mb-1"
                       />
                     </div>
                   </div>

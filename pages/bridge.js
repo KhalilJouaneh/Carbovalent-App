@@ -2,44 +2,135 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useWallet } from "@solana/wallet-adapter-react";
 import { OpenNavbar } from "../components/OpenNavbar";
 import Image from "next/image";
 import useSWR from "swr";
 import { Loading } from "../components/Loading";
 import { Footer } from "../components/Footer";
 import bs58 from "bs58";
+import axios from "axios";
+// import { confirmTransactionFromFrontend } from "shyft-js";
+import { useWallet } from "@solana/wallet-adapter-react";
+import {
+  clusterApiUrl,
+  Connection,
+  Keypair,
+  LAMPORTS_PER_SOL,
+} from "@solana/web3.js";
+import { createMint } from "@solana/spl-token";
+
+import { signAndConfirmTransaction } from "../utils/utilityfunc.js";
 
 const Bridge = () => {
   const wallet = useWallet(); //solana wallet object
-  const message_from_backend = "Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/"
+  const xKey = "7DmQi-SJmO16yq6u"; //shyft api key
+  const message_from_backend = `Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/`;
 
-  const handleSignMessage = () => {
+  function handleSignMessage() {
     if (typeof window !== "undefined" && wallet) {
-      window.welcomeMessage = "";
-      const { signature, publicKey } = window.solana.signMessage(
-        new TextEncoder().encode(message_from_backend),
-        "utf8"
-      );
-      const signatureUint8Array = new Uint8Array(signature);
+      return new Promise((resolve) => {
+        window.welcomeMessage = "";
+        const { signature, publicKey } = window.solana.signMessage(
+          new TextEncoder().encode(message_from_backend),
+          "utf8"
+        );
+        const signatureUint8Array = new Uint8Array(signature);
 
-      fetch("/backend", {
-        method: "POST",
-        body: JSON.stringify({
-          public_key: wallet.publicKey?.toBase58(),
-          signature: bs58.encode(signatureUint8Array),
-        }),
+        fetch("/backend", {
+          method: "POST",
+          body: JSON.stringify({
+            public_key: wallet.publicKey?.toBase58(),
+            signature: bs58.encode(signatureUint8Array),
+          }),
+        });
+
+        resolve();
       });
     }
   }
 
   const formArray = [1, 2, 3, 4, 5];
   const [formNo, setFormNo] = useState(formArray[0]);
+  const [copied, setCopied] = useState(false); //copy to clipboard button on form 1
   const [registryName, setRegistryName] = useState("");
   const [serialNumber, setSerialNumber] = useState("");
+  const [projectName, setProjectName] = useState("");
+  const [country, setCountry] = useState("");
+  const [Quantity, setQuantity] = useState("");
+  const [vintage, setVintage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const [copied, setCopied] = useState(false); //copy to clipboard button on form 1
+  const [mssg, setMssg] = useState("");
+  const callback = (signature, result) => {
+    console.log("Signature ", signature);
+    console.log("result ", result);
+
+    try {
+      if (signature.err === null) {
+        setMssg("Minting successful. You can check your wallet");
+      } else {
+        setMssg("Signature Failed");
+      }
+    } catch (error) {
+      setMssg("Signature Failed, but check your wallet");
+    }
+  };
+
+  function mintNft() {
+    // e.preventDefault();
+    let formData = new FormData();
+
+    let attrib = [
+      { trait_type: "name", value: { projectName } },
+      { trait_type: "country", value: { country } },
+      { trait_type: "quantity", value: { Quantity } },
+      { trait_type: "source registry", value: "Gold Standard" },
+      { trait_type: "vintage", value: { vintage } },
+      { trait_type: "serial number", value: { serialNumber } },
+    ];
+
+    formData.append("network", "devnet");
+    formData.append("creator_wallet", wallet.publicKey);
+    formData.append("name", "work");
+    formData.append("description", "Carbovalent NFT");
+    formData.append("symbol", "CAR");
+    formData.append("image", "https://arweave.net/[arweave_img_tx_id]?ext=png");
+    formData.append("attributes", JSON.stringify(attrib));
+    formData.append("external_url", "www.carbovalent.com");
+    formData.append("max_supply", 1);
+    formData.append("fee_payer", wallet.publicKey);
+
+    let nftUrl = `https://api.shyft.to/sol/v2/nft/create`;
+    axios({
+      // Endpoint to send files
+      url: nftUrl,
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+        "x-api-key": xKey,
+        Accept: "*/*",
+        "Access-Control-Allow-Origin": "*",
+      },
+      data: formData,
+    })
+      // Handle the response from backend here
+      .then(async (res) => {
+        console.log(res.data);
+        const transaction = res.data.result.encoded_transaction; //encoded transaction
+        // confirmTransactionFromFrontend(WalletAdapterNetwork.Devnet, transaction, wallet);
+        const ret_result = await signAndConfirmTransaction(
+          "devnet",
+          transaction,
+          callback
+        );
+        console.log(ret_result);
+      })
+
+      // Catch errors if any
+      .catch((err) => {
+        console.warn(err);
+      });
+  }
 
   const handleRegistry = (e) => {
     if (e.target.value === "null") {
@@ -59,23 +150,29 @@ const Bridge = () => {
     }
   };
 
-  const next = () => {
+  // const  next = () => {
+  function next() {
     if (formNo === 1 && registryName) {
       setFormNo(formNo + 1);
     } else if (formNo === 2 && serialNumber) {
       setSearchQuery(serialNumber);
       setFormNo(formNo + 1);
     } else if (formNo === 3) {
-      handleSignMessage();
-      setFormNo(formNo + 1); 
+      handleSignMessage().then(() => {
+        setFormNo(formNo + 1);
+      });
     } else if (formNo === 4) {
-      // let GSretirementData = getRetirmentInfo(serialNumber)
-      // mintCarbonNFT();
-      // setFormNo(formNo + 1)
+      setSearchQuery(serialNumber);
+      setCountry(data[0].project.country);
+      setQuantity(data[0].number_of_credits);
+      setVintage(data[0].vintage);
+      setProjectName(data[0].project.name);
+
+      mintNft();
     } else {
       toast.error("Please fillup all input field");
     }
-  };
+  }
 
   const pre = () => {
     setFormNo(formNo - 1);
@@ -124,14 +221,20 @@ const Bridge = () => {
             <ToastContainer />
             <div className="p-7">
               <div className="flex justify-center items-center">
-              
-                
                 <ul className="steps">
                   <li className="step step-primary"></li>
-                  <li className={`${formNo >= 2 ? "step step-primary" : "step"}`}></li>
-                  <li className={`${formNo >= 3 ? "step step-primary" : "step"}`}></li>
-                  <li className={`${formNo >= 4 ? "step step-primary" : "step"}`}></li>
-                  <li className={`${formNo >= 5 ? "step step-primary" : "step"}`}></li>
+                  <li
+                    className={`${formNo >= 2 ? "step step-primary" : "step"}`}
+                  ></li>
+                  <li
+                    className={`${formNo >= 3 ? "step step-primary" : "step"}`}
+                  ></li>
+                  <li
+                    className={`${formNo >= 4 ? "step step-primary" : "step"}`}
+                  ></li>
+                  <li
+                    className={`${formNo >= 5 ? "step step-primary" : "step"}`}
+                  ></li>
                 </ul>
               </div>
 
@@ -187,7 +290,7 @@ const Bridge = () => {
               {formNo === 2 && (
                 <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5">
                   <div className="flex flex-col mb-2 max-w-xl">
-                    <h4 class="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
+                    <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Issuance Serial Number
                     </h4>
                     <p className="text-lg font-bold leading-relaxed mt-3 mb-7 text-left">
@@ -234,7 +337,7 @@ const Bridge = () => {
               {formNo === 3 && (
                 <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5">
                   <div className="flex flex-col mb-2 max-w-xl">
-                    <h4 class="text-3xl leading-normal mt-2 mb-2">
+                    <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Initiate Bridge
                     </h4>
 
@@ -298,7 +401,7 @@ const Bridge = () => {
               {formNo === 4 && (
                 <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5">
                   <div className="flex flex-col mb-2 max-w-xl">
-                    <h4 class="text-3xl leading-normal mt-2 mb-2">
+                    <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Retirement Serial Number
                     </h4>
 
@@ -331,7 +434,6 @@ const Bridge = () => {
                     </p>
 
                     <input
-                      value={serialNumber}
                       onChange={handleSerialNumber}
                       className="input input-info bordered w-full max-w-full bg-inherit"
                       type="text"
@@ -352,7 +454,7 @@ const Bridge = () => {
                       onClick={next}
                       className="px-3 py-2 text-lg rounded-4xl w-full text-white bg-blue-500"
                     >
-                      Mint NFT
+                      Migrate Credits
                     </button>
                   </div>
                 </div>
