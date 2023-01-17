@@ -81,17 +81,17 @@ const Bridge = () => {
     let formData = new FormData();
 
     let attrib = [
-      { trait_type: "name", value: { projectName } },
-      { trait_type: "country", value: { country } },
-      { trait_type: "quantity", value: { Quantity } },
-      { trait_type: "source registry", value: "Gold Standard" },
-      { trait_type: "vintage", value: { vintage } },
-      { trait_type: "serial number", value: { serialNumber } },
+      { trait_type: "name", value: { projectName } } +
+        { trait_type: "country", value: { country } } +
+        { trait_type: "quantity", value: { Quantity } } +
+        { trait_type: "source registry", value: "Gold Standard" } +
+        { trait_type: "vintage", value: { vintage } } +
+        { trait_type: "serial number", value: { serialNumber } },
     ];
 
     formData.append("network", "devnet");
     formData.append("creator_wallet", wallet.publicKey);
-    formData.append("name", "work");
+    formData.append("name", "second try");
     formData.append("description", "Carbovalent NFT");
     formData.append("symbol", "CAR");
     formData.append("image", "https://arweave.net/[arweave_img_tx_id]?ext=png");
@@ -156,18 +156,16 @@ const Bridge = () => {
       setFormNo(formNo + 1);
     } else if (formNo === 2 && serialNumber) {
       setSearchQuery(serialNumber);
+      setCountry(data[0].project.country);
+      setQuantity(data[0].number_of_credits);
+      setVintage(data[0].vintage);
+      setProjectName(data[0].project.name);
       setFormNo(formNo + 1);
     } else if (formNo === 3) {
       handleSignMessage().then(() => {
         setFormNo(formNo + 1);
       });
     } else if (formNo === 4) {
-      setSearchQuery(serialNumber);
-      setCountry(data[0].project.country);
-      setQuantity(data[0].number_of_credits);
-      setVintage(data[0].vintage);
-      setProjectName(data[0].project.name);
-
       mintNft();
     } else {
       toast.error("Please fillup all input field");
