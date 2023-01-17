@@ -268,11 +268,28 @@ export default function registry() {
                   project.number_of_credits
                 ).toLocaleString(); //format number of credits with commas
 
+                let creditType = project.project.type;
+                      const classification = function () {
+                        if (
+                          creditType === "Energy Efficiency - Domestic" ||
+                          creditType === "Energy Efficiency - Industrial" ||
+                          creditType === "Energy Efficiency - Public Sector" ||
+                          creditType === "Energy Efficiency Transport Sector" ||
+                          creditType ===
+                            "Energy Efficiency Agriculture Sector" ||
+                          creditType === "Energy Efficiency Commercial Sector"
+                        ) {
+                          return true;
+                        } else {
+                          return false;
+                        }
+                      };
+
                 return (
                   <div className="font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card">
                     <div className="grid  justify-items-center px-3 py-2">
                       <div className="flex w-11/12 rounded-full items-center bg-highlight px-2 py-3">
-                        <p className="text-white w-100 mx-auto">{project.id}</p>
+                        <p className="text-white text-[36px] mx-auto">{parseCreditNumber}</p>
                         <img
                           src="/headimg.png"
                           alt="Tailwind CSS Logo"
@@ -289,13 +306,12 @@ export default function registry() {
                     <div className="mt-4 bg-highlight  text-base text-white text-content">
                       <div className="grid grid-rows-4">
                         <div className="card-content">
-                          Project: {project.project.type}
-                        </div>
-                        <div className="card-content">
-                          Unit(s): {parseCreditNumber}
+                        Type: {classification()
+                              ? "E/R Credits"
+                              : "Renewable Energy"}
                         </div>
                         <div className="card-content ">
-                          Location: {project.project.country}
+                          Country: {project.project.country}
                         </div>
                         <div className="card-content">Source: Gold Standard</div>
                         <div className="card-content">
@@ -303,7 +319,7 @@ export default function registry() {
                         </div>
                       </div>
                     </div>
-                    <div className="flex foot w-10/12 rounded-full items-center bg-highlight px-2 py-5 grid-cols-2 mt-5 mx-auto allow-overlap ">
+                    <div className="flex foot w-10/12 rounded-full items-center bg-highlight px-2 py-5 grid-cols-2 mt-12 mx-auto allow-overlap ">
                       <div className="grid grid-rows-1 h-fit">
                         <p className="text-[10px] text-white w-100 mr-2 ">
                           {project.serial_number}
