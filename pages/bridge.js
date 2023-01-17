@@ -56,7 +56,7 @@ const Bridge = () => {
   const [serialNumber, setSerialNumber] = useState("");
   const [projectName, setProjectName] = useState("");
   const [country, setCountry] = useState("");
-  const [Quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [vintage, setVintage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -76,27 +76,26 @@ const Bridge = () => {
     }
   };
 
+  let attrib = [
+    { "trait_type": "name", "value": projectName },
+      { "trait_type": "country", "value": country },
+      { "trait_type": "quantity", "value": quantity },
+      { "trait_type": "source registry", "value": "Gold Standard" },
+      { "trait_type": "vintage", "value": vintage },
+      { "trait_type": "serial number", "value": serialNumber }
+];
+
   function mintNft() {
     // e.preventDefault();
     let formData = new FormData();
 
-    let attrib = [
-      { trait_type: "name", value: { projectName } } +
-        { trait_type: "country", value: { country } } +
-        { trait_type: "quantity", value: { Quantity } } +
-        { trait_type: "source registry", value: "Gold Standard" } +
-        { trait_type: "vintage", value: { vintage } } +
-        { trait_type: "serial number", value: { serialNumber } },
-    ];
-
     formData.append("network", "devnet");
     formData.append("creator_wallet", wallet.publicKey);
-    formData.append("name", "second try");
-    formData.append("description", "Carbovalent NFT");
+    formData.append("name", "hundo");
+    formData.append("description", "cmon get a hundo");
     formData.append("symbol", "CAR");
-    formData.append("image", "https://arweave.net/[arweave_img_tx_id]?ext=png");
     formData.append("attributes", JSON.stringify(attrib));
-    formData.append("external_url", "www.carbovalent.com");
+    formData.append("external_url", "www.carbovalent.com"); 
     formData.append("max_supply", 1);
     formData.append("fee_payer", wallet.publicKey);
 
@@ -229,9 +228,6 @@ const Bridge = () => {
                   ></li>
                   <li
                     className={`${formNo >= 4 ? "step step-primary" : "step"}`}
-                  ></li>
-                  <li
-                    className={`${formNo >= 5 ? "step step-primary" : "step"}`}
                   ></li>
                 </ul>
               </div>
@@ -453,29 +449,6 @@ const Bridge = () => {
                       className="px-3 py-2 text-lg rounded-4xl w-full text-white bg-blue-500"
                     >
                       Migrate Credits
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {formNo === 5 && (
-                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5">
-                  <div className="flex flex-col mb-2 max-w-xl">
-                    <div className="h-98">
-                      <Image
-                        className="object-center"
-                        src="/orange_nft.png"
-                        alt=""
-                        width={490}
-                        height={400}
-                      />
-                    </div>
-
-                    <button
-                      onClick={pre}
-                      className="px-3 py-2 text-lg rounded-4xl w-full text-white bg-blue-500 mt-10"
-                    >
-                      Previous
                     </button>
                   </div>
                 </div>

@@ -134,6 +134,7 @@ function profile() {
         <br />
         description : {user?.description}
       </p>
+      <Footer />
     </>
   );
 }
