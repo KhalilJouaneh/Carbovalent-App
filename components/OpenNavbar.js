@@ -15,6 +15,7 @@ export function OpenNavbar() {
     shallow
   );
 
+
   const WalletMultiButtonDynamic = dynamic(
     async () =>
       (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
@@ -53,7 +54,7 @@ export function OpenNavbar() {
           />
         </div>
         <div className={style.headerItems}>
-          <Link href="/registry">
+          <Link href="/">
             <div className={style.headerItem}> Registry </div>
           </Link>
           <Link href="/bridge">
@@ -62,7 +63,7 @@ export function OpenNavbar() {
           <Link href="/fractionalize">
             <div className={style.headerItem}>Fractionalize</div>
           </Link>
-          <Link href="/">
+          <Link href="/retire">
             <div className={style.headerItem}>Retire</div>
           </Link>
           <Link href="/account">

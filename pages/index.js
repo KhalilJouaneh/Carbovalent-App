@@ -18,7 +18,8 @@ import { RegistryFilter } from "../components/RegistryFilters";
 import { useState } from "react";
 import { Footer } from "../components/Footer";
 
-export default function registry() {
+
+export default function Registry() {
   const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
       resetPageNumber(); //set page number to 1 after user searches

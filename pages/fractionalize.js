@@ -57,39 +57,6 @@ function fractionalize() {
       <OpenNavbar />
       <ListAll />
       <Footer />
-      {/* <div>
-        <h1>NFT Mint Address</h1>
-        <div>
-          <input
-            type="text"
-            value={address}
-            onChange={(event) => setAddress(event.target.value)}
-          />
-          <br />
-          <button onClick={fetchNft}>Fetch</button>
-        </div>
-
-        {data &&
-          Object.keys(data).map((key, index) => {
-            return (
-              <div key={index}>
-                <h2>
-                  {key}: {data[key]}
-                </h2>
-
-                <hr />
-              </div>
-            );
-          })}
-
-        {nft && (
-          <div>
-            <h1>{nft.name}</h1>
-            <h1>{nft.uri}</h1>
-            <img src={nft.json.image} />
-          </div>
-        )}
-      </div> */}
     </div>
   );
 }

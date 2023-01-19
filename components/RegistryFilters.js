@@ -16,7 +16,7 @@ export function RegistryFilter() {
             <div className="collapse-content">
               <label className="label cursor-pointer text-base max-w-[160px]">
                 <span className="text-base">Claimed</span>
-                <input type="checkbox" checked className="checkbox" />
+                <input type="checkbox" className="checkbox" disabled />
               </label>
             </div>
           </div>

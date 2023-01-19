@@ -3,3 +3,39 @@
     
     /* padding-bottom: 100%; */
 }
+
+.fract-container {
+    width: fit-content;
+}
+
+.card {
+    width: 250px;
+    border-radius: 15px;
+}
+
+.card:focus{
+    border: 5px solid red;
+}
+
+.card-body {
+    border: 1px solid #979797;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.fract-img {
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+}
+
+.card-title {
+    padding-top: 10px;
+    font-weight: bold;
+    padding-left: 10px;
+}
+.card-buttons {
+    padding-bottom: 30px;
+    padding-top: 30px;
+    padding-left: 10px;
+}
+
