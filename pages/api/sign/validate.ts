@@ -1,5 +1,5 @@
 import { Transaction } from "@solana/web3.js";
-import { MEMO_PROGRAM_ID, NONCE } from "@utils/globals";
+import { MEMO_PROGRAM_ID, NONCE } from "../../../utils/globals";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export type SignValidateData = {

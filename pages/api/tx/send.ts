@@ -1,6 +1,6 @@
 import { Connection, Transaction } from "@solana/web3.js";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NETWORK } from "@utils/endpoints";
+import { NETWORK } from "../../../utils/endpoints";
 
 export type TxSendData = {
   txSignature: string;

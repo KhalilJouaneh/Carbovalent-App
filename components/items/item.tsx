@@ -18,19 +18,26 @@ export function Item({ data }: Props) {
   const collection = data.collectionName;
 
   return (
-    <div className="card shadow-xl bg-neutral text-neutral-content">
-      {data.imageUrl && (
-        <figure className="relative h-80">
-          <img
-            className="object-cover h-80 w-96 aspect-square	"
-            src={data.imageUrl}
-            alt={`Picture of ${name}`}
-          />
-        </figure>
-      )}
-      <div className="card-body p-4 items-center text-center">
-        <h2 className="card-title m-0">{name}</h2>
-        {collection && <p>{collection}</p>}
+    <div className="font-extralight px-0 m-auto">
+      <div className="justify-items-center px-3 py-2">
+        <div className="grid  justify-items-center">
+          <div className="card shadow-xl">
+            {data.imageUrl && (
+              <figure>
+                <img
+                  className="fract-img	"
+                  src={data.imageUrl}
+                  alt={`Picture of ${name}`}
+                />
+              </figure>
+            )}
+
+            <div className="card-body">
+              <h2 className="card-title">{name}</h2>
+              {/* {collection && <p>{collection}</p>} */}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

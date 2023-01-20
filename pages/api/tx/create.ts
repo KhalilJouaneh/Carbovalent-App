@@ -6,7 +6,7 @@ import {
   Transaction,
 } from "@solana/web3.js";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NETWORK } from "@utils/endpoints";
+import { NETWORK } from "../../../utils/endpoints";
 import {
   createAssociatedTokenAccountInstruction,
   createTransferCheckedInstruction,
@@ -14,7 +14,7 @@ import {
   getAssociatedTokenAddress,
   getMint,
 } from "@solana/spl-token";
-import { DEFAULT_TOKEN, DEFAULT_WALLET } from "@utils/globals";
+import { DEFAULT_TOKEN, DEFAULT_WALLET } from "../../../utils/globals";
 
 export type TxCreateData = {
   tx: string;

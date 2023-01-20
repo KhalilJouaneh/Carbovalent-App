@@ -1,22 +1,18 @@
 import { useWallet } from "@solana/wallet-adapter-react";
 import React from "react";
-import { fetcher, useDataFetch } from "../../utils/use-data-fetch";
-import { ItemList } from "./item-list";
-import { ItemData } from "./item";
-import { Button, ButtonState } from "./button";
+import { fetcher, useDataFetch } from "../utils/use-data-fetch";
+import { Button, ButtonState } from "../components/items/button";
 import { toast } from "react-hot-toast";
 import { Transaction } from "@solana/web3.js";
-import { SignCreateData } from "../../pages/api/sign/create";
-import { SignValidateData } from "../../pages/api/sign/validate";
+import { SignCreateData } from "../pages/api/sign/create";
+import { SignValidateData } from "../pages/api/sign/validate";
 import { useEffect, useState } from "react";
-import {Loading} from "../Loading"
+import {Loading} from "./Loading"
 
-export function HomeContent() {
+export function SignMessage() {
   const { publicKey, signTransaction } = useWallet();
   const [signState, setSignState] = useState<ButtonState>("initial");
-  const { data, error } = useDataFetch<Array<ItemData>>(
-    publicKey && signState === "success" ? `/api/items/${publicKey}` : null
-  );
+
   const prevPublickKey = React.useRef<string>(publicKey?.toBase58() || "");
 
   // Reset the state if wallet changes or disconnects
@@ -52,6 +48,8 @@ export function HomeContent() {
           // Request signature from wallet
           const signedTx = await signTransaction(tx);
 
+        
+
           // Validate signed transaction
           await fetcher<SignValidateData>("/api/sign/validate", {
             method: "POST",
@@ -62,7 +60,7 @@ export function HomeContent() {
           });
 
           setSignState("success");
-          toast.success("Message signed", { id: signToastId });
+          toast.success("Bridge Initiated", { id: signToastId });
         } catch (error: any) {
           setSignState("error");
           toast.error("Error verifying wallet, please reconnect wallet", {
@@ -71,63 +69,18 @@ export function HomeContent() {
         }
       }
     }
+  
 
     sign();
   }, [signState, signTransaction, publicKey]);
 
-  const onSignClick = () => {
-    setSignState("initial");
-  };
 
-  if (error) {
-    return (
-      <p className="text-center p-4">
-        Failed to load items, please try connecting again
-      </p>
-    );
-  }
+  // if (publicKey && signState === "success" ) {
+  //   return <Loading />
+  // }
 
-  if (publicKey && signState === "success" && !data) {
-    return <Loading />
-  }
-
-  const hasFetchedData = publicKey && signState === "success" && data;
 
   return (
-    <div className="">
-      {hasFetchedData ? (
-        <div>
-          <ItemList items={data} />
-        </div>
-      ) : (
-        <div className="text-center">
-          {!publicKey && (
-           
-                <h2 className="font-bold">
-                  Please connect your wallet to get a list of your NFTs
-                </h2>
-          
-          )}
-
-          
-          {publicKey && signState === "error" && (
-            <div className=" border-2 border-primary mb-5">
-              <div className=" items-center text-center">
-                <h2 className="card-title text-center mb-2">
-                  Please verify your wallet manually
-                </h2>
-                <Button
-                  state={signState}
-                  onClick={onSignClick}
-                  className="btn-primary"
-                >
-                  Verify wallet
-                </Button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+       <></>
   );
 }

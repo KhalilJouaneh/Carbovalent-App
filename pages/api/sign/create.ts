@@ -5,8 +5,8 @@ import {
   TransactionInstruction,
 } from "@solana/web3.js";
 import { NextApiRequest, NextApiResponse } from "next";
-import { NETWORK } from "@utils/endpoints";
-import { MEMO_PROGRAM_ID, NONCE } from "@utils/globals";
+import { NETWORK } from "../../../utils/endpoints";
+import { MEMO_PROGRAM_ID, NONCE } from "../../../utils/globals";
 
 export type SignCreateData = {
   tx: string;

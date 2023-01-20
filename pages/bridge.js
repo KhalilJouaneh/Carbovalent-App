@@ -1,6 +1,6 @@
 "use client";
-import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { useState, useEffect, useRef } from "react";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { OpenNavbar } from "../components/OpenNavbar";
 import Image from "next/image";
@@ -11,18 +11,22 @@ import bs58 from "bs58";
 import axios from "axios";
 // import { confirmTransactionFromFrontend } from "shyft-js";
 import { useWallet } from "@solana/wallet-adapter-react";
-import {
-  clusterApiUrl,
-  Connection,
-  Keypair,
-  LAMPORTS_PER_SOL,
-} from "@solana/web3.js";
 import { createMint } from "@solana/spl-token";
+import { SignCreateData } from "./api/sign/create";
+import { SignValidateData } from "./api/sign/validate";
+import { Button, ButtonState } from "../components/items/button";
+import { Transaction } from "@solana/web3.js";
+import { fetcher, useDataFetch } from "../utils/use-data-fetch";
+import { toast } from "react-hot-toast";
 
 import { signAndConfirmTransaction } from "../utils/utilityfunc.js";
 
+import { SignMessage } from "../components/SignMessage";
+
 const Bridge = () => {
   const wallet = useWallet(); //solana wallet object
+
+
   const xKey = "7DmQi-SJmO16yq6u"; //shyft api key
   const message_from_backend = `Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/`;
 
@@ -77,13 +81,13 @@ const Bridge = () => {
   };
 
   let attrib = [
-    { "trait_type": "name", "value": projectName },
-      { "trait_type": "country", "value": country },
-      { "trait_type": "quantity", "value": quantity },
-      { "trait_type": "source registry", "value": "Gold Standard" },
-      { "trait_type": "vintage", "value": vintage },
-      { "trait_type": "serial number", "value": serialNumber }
-];
+    { trait_type: "name", value: projectName },
+    { trait_type: "country", value: country },
+    { trait_type: "quantity", value: quantity },
+    { trait_type: "source registry", value: "Gold Standard" },
+    { trait_type: "vintage", value: vintage },
+    { trait_type: "serial number", value: serialNumber },
+  ];
 
   function mintNft() {
     // e.preventDefault();
@@ -95,7 +99,7 @@ const Bridge = () => {
     formData.append("description", "cmon get a hundo");
     formData.append("symbol", "CAR");
     formData.append("attributes", JSON.stringify(attrib));
-    formData.append("external_url", "www.carbovalent.com"); 
+    formData.append("external_url", "www.carbovalent.com");
     formData.append("max_supply", 1);
     formData.append("fee_payer", wallet.publicKey);
 
@@ -161,9 +165,7 @@ const Bridge = () => {
       setProjectName(data[0].project.name);
       setFormNo(formNo + 1);
     } else if (formNo === 3) {
-      handleSignMessage().then(() => {
-        setFormNo(formNo + 1);
-      });
+      setFormNo(formNo + 1);
     } else if (formNo === 4) {
       mintNft();
     } else {
@@ -212,6 +214,7 @@ const Bridge = () => {
   return (
     <>
       <OpenNavbar />
+
       {true ? (
         <>
           <div className="flex justify-center items-center">
@@ -235,7 +238,7 @@ const Bridge = () => {
               {formNo === 1 && (
                 <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5 box-border">
                   <div className="flex flex-col mb-2 max-w-xl">
-                    <h4 class="text-3xl leading-normal mt-2 mb-2 m-auto font-bold">
+                    <h4 className="text-3xl leading-normal mt-2 mb-2 m-auto font-bold">
                       Select Source Registry
                     </h4>
 
@@ -394,6 +397,7 @@ const Bridge = () => {
 
               {formNo === 4 && (
                 <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5">
+                  <SignMessage />
                   <div className="flex flex-col mb-2 max-w-xl">
                     <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Retirement Serial Number
@@ -408,7 +412,7 @@ const Bridge = () => {
                       <br />
                       <button
                         onClick={copyToClipboard}
-                        class="bg-white text-gray-700 font-semibold py-4 px-4 border rounded-4xl border-blue-500 text-left italic min-w-fit"
+                        className="bg-white text-gray-700 font-semibold py-4 px-4 border rounded-4xl border-blue-500 text-left italic min-w-fit"
                       >
                         {copied
                           ? "Copied"
