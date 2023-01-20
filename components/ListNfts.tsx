@@ -112,13 +112,6 @@ export function ListNfts() {
 
   return (
     <>
-      <Head>
-        <title>NextJS Solana Starter Kit</title>
-        <meta
-          name="description"
-          content="Everything you need to start your Solana dApp"
-        />
-      </Head>
         <PageContainer>
           <HomeContent />
         </PageContainer>

@@ -6,8 +6,7 @@ import useSWR from "swr";
 import { OpenNavbar } from "../components/OpenNavbar";
 import { Footer } from "../components/Footer";
 import { ListAll } from "../utils/ListAll";
-import {ListNfts} from "../components/ListNfts";
-
+import { ListNfts } from "../components/ListNfts";
 
 const connection = new Connection(clusterApiUrl("devnet"));
 const metaplex = new Metaplex(connection);
@@ -57,10 +56,10 @@ function fractionalize() {
   return (
     <div>
       <OpenNavbar />
-      {/* <ListAll /> */}
-      <ListNfts />
-      <Footer />
-    </div>
+        {/* <ListAll /> */}
+        <ListNfts />
+        <Footer />
+      </div>
   );
 }
 

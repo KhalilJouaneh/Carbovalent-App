@@ -163,7 +163,7 @@ export default function Registry() {
         </span>
       </div>
 
-      {filterToggle ? <RegistryFilter /> : ""}
+      {/* {filterToggle ? <RegistryFilter /> : ""} */}
 
       {true ? (
         <>
@@ -287,7 +287,7 @@ export default function Registry() {
                 return (
                   <div className={`font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card ${classification() ? "bg-[#8bdbd8]" : "bg-[#7df399]"}`}>
                     <div className="grid  justify-items-center px-3 py-2">
-                      <div className={`flex w-11/12 rounded-full items-center bg-highlight px-2 py-3 ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
+                      <div className={`flex w-11/12 rounded-full items-center px-2 py-3 ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
                         <p className="text-white text-[36px] mx-auto">
                           {parseCreditNumber}
                         </p>
@@ -304,7 +304,7 @@ export default function Registry() {
                         </p>
                       </div>
                     </div>
-                    <div className={`mt-4 bg-highlight  text-base text-white text-content ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
+                    <div className={`mt-4 text-base text-white text-content ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
                       <div className="grid grid-rows-4">
                         <div className="card-content">
                           Type:{" "}

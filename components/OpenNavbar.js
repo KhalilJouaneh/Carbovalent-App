@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { AiOutlineSearch } from "react-icons/ai";
+import { HiOutlineShoppingCart } from "react-icons/hi";
 import { CgProfile } from "react-icons/cg";
 import carbovalentLogo from "/public/carbovalent_logo.png";
 import { style } from "./Header.style.js";
@@ -11,10 +12,13 @@ import { useStore } from "../store/store.ts";
 
 export function OpenNavbar() {
   const [searchQuery, updateSearchQuery, resetPageNumber] = useStore(
-    (state) => [state.searchQuery, state.updateSearchQuery, state.resetPageNumber],
+    (state) => [
+      state.searchQuery,
+      state.updateSearchQuery,
+      state.resetPageNumber,
+    ],
     shallow
   );
-
 
   const WalletMultiButtonDynamic = dynamic(
     async () =>
@@ -25,7 +29,7 @@ export function OpenNavbar() {
   const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
       resetPageNumber(); //set page number to 1 after user searches
-      updateSearchQuery((event.target.value).trim()); //pass query to api call
+      updateSearchQuery(event.target.value.trim()); //pass query to api call
     }
   };
 
@@ -71,6 +75,9 @@ export function OpenNavbar() {
               <CgProfile />
             </div>
           </Link>
+          <div className={style.headerIcon}>
+            <HiOutlineShoppingCart />
+          </div>
           <div className={style.headerIcon}>
             <WalletMultiButtonDynamic />
           </div>

@@ -21,6 +21,8 @@
     border: 1px solid #979797;
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
+    padding-left: 10px;
+    height: 125px;
 }
 
 .fract-img {
@@ -31,7 +33,7 @@
 .card-title {
     padding-top: 10px;
     font-weight: bold;
-    padding-left: 10px;
+    padding-left: 3px;
 }
 .card-buttons {
     padding-bottom: 30px;
@@ -39,3 +41,16 @@
     padding-left: 10px;
 }
 
+
+.fract-btn {
+    text-transform: capitalize;
+    font-size: medium;
+    padding: 15px;
+    border-radius: 32px;  
+    background-color: #1b71e8;
+    border: none;
+  }
+
+  .fract-btn:hover {
+    background-color: #ADD8E6 ;
+  }

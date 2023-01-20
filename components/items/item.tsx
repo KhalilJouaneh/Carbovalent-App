@@ -1,4 +1,6 @@
 import React from "react";
+import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useState } from "react";
 
 export type ItemData = {
   collectionAddress: string;
@@ -16,6 +18,13 @@ type Props = {
 export function Item({ data }: Props) {
   const name = data.name;
   const collection = data.collectionName;
+  const tokenAddress = data.tokenAddress
+  const [nft, setSelectedNft] = useState([])
+
+  function fractionalize() {
+
+  }
+
 
   return (
     <div className="font-extralight px-0 m-auto">
@@ -34,7 +43,8 @@ export function Item({ data }: Props) {
 
             <div className="card-body">
               <h2 className="card-title">{name}</h2>
-              {/* {collection && <p>{collection}</p>} */}
+              {/* <AiOutlinePlusCircle size={35} className="mt-4 ml-4" /> */}
+              <button className="btn fract-btn mt-3" onClick={fractionalize}>Fractionalize</button>
             </div>
           </div>
         </div>

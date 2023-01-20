@@ -11,9 +11,6 @@
   height: 500px;
   box-shadow: 3.5px 0px rgba(0, 0, 0, 0.5);
 }
-.bg-highlight {
-  /* background-color: #7ad0c5; */
-}
 
 .card-content  {
     font-size: 22px;
@@ -23,8 +20,6 @@
     clear: both;
     overflow: hidden;
 }
-
-
 
 .foot {
   border-bottom-left-radius: 10% 37%;
