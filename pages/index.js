@@ -18,7 +18,6 @@ import { RegistryFilter } from "../components/RegistryFilters";
 import { useState } from "react";
 import { Footer } from "../components/Footer";
 
-
 export default function Registry() {
   const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
@@ -270,27 +269,28 @@ export default function Registry() {
                 ).toLocaleString(); //format number of credits with commas
 
                 let creditType = project.project.type;
-                      const classification = function () {
-                        if (
-                          creditType === "Energy Efficiency - Domestic" ||
-                          creditType === "Energy Efficiency - Industrial" ||
-                          creditType === "Energy Efficiency - Public Sector" ||
-                          creditType === "Energy Efficiency Transport Sector" ||
-                          creditType ===
-                            "Energy Efficiency Agriculture Sector" ||
-                          creditType === "Energy Efficiency Commercial Sector"
-                        ) {
-                          return true;
-                        } else {
-                          return false;
-                        }
-                      };
+                const classification = function () {
+                  if (
+                    creditType === "Energy Efficiency - Domestic" ||
+                    creditType === "Energy Efficiency - Industrial" ||
+                    creditType === "Energy Efficiency - Public Sector" ||
+                    creditType === "Energy Efficiency Transport Sector" ||
+                    creditType === "Energy Efficiency Agriculture Sector" ||
+                    creditType === "Energy Efficiency Commercial Sector"
+                  ) {
+                    return true;
+                  } else {
+                    return false;
+                  }
+                };
 
                 return (
-                  <div className="font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card">
+                  <div className={`font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card ${classification() ? "bg-[#8bdbd8]" : "bg-[#7df399]"}`}>
                     <div className="grid  justify-items-center px-3 py-2">
-                      <div className="flex w-11/12 rounded-full items-center bg-highlight px-2 py-3">
-                        <p className="text-white text-[36px] mx-auto">{parseCreditNumber}</p>
+                      <div className={`flex w-11/12 rounded-full items-center bg-highlight px-2 py-3 ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
+                        <p className="text-white text-[36px] mx-auto">
+                          {parseCreditNumber}
+                        </p>
                         <img
                           src="/headimg.png"
                           alt="Tailwind CSS Logo"
@@ -304,17 +304,20 @@ export default function Registry() {
                         </p>
                       </div>
                     </div>
-                    <div className="mt-4 bg-highlight  text-base text-white text-content">
+                    <div className={`mt-4 bg-highlight  text-base text-white text-content ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
                       <div className="grid grid-rows-4">
                         <div className="card-content">
-                        Type: {classification()
-                              ? "E/R Credits"
-                              : "Renewable Energy"}
+                          Type:{" "}
+                          {classification()
+                            ? "E/R Credits"
+                            : "Renewable Energy"}
                         </div>
                         <div className="card-content ">
                           Country: {project.project.country}
                         </div>
-                        <div className="card-content">Source: Gold Standard</div>
+                        <div className="card-content">
+                          Source: Gold Standard
+                        </div>
                         <div className="card-content">
                           Vintage: {project.vintage}
                         </div>

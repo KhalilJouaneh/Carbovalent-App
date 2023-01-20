@@ -9,7 +9,7 @@ import { Transaction } from "@solana/web3.js";
 import { SignCreateData } from "../../pages/api/sign/create";
 import { SignValidateData } from "../../pages/api/sign/validate";
 import { useEffect, useState } from "react";
-import {Loading} from "../Loading"
+import { Loading } from "../Loading";
 
 export function HomeContent() {
   const { publicKey, signTransaction } = useWallet();
@@ -20,7 +20,7 @@ export function HomeContent() {
   const prevPublickKey = React.useRef<string>(publicKey?.toBase58() || "");
 
   // Reset the state if wallet changes or disconnects
- useEffect(() => {
+  useEffect(() => {
     if (publicKey && publicKey.toBase58() !== prevPublickKey.current) {
       prevPublickKey.current === publicKey.toBase58();
       setSignState("initial");
@@ -88,7 +88,7 @@ export function HomeContent() {
   }
 
   if (publicKey && signState === "success" && !data) {
-    return <Loading />
+    return <Loading />;
   }
 
   const hasFetchedData = publicKey && signState === "success" && data;
@@ -102,29 +102,37 @@ export function HomeContent() {
       ) : (
         <div className="text-center">
           {!publicKey && (
-           
-                <h2 className="font-bold">
-                  Please connect your wallet to get a list of your NFTs
-                </h2>
-          
+            <h2 className="font-bold">
+              Please connect your wallet to get a list of your NFTs
+            </h2>
           )}
 
-          
-          {publicKey && signState === "error" && (
-            <div className=" border-2 border-primary mb-5">
-              <div className=" items-center text-center">
-                <h2 className="card-title text-center mb-2">
-                  Please verify your wallet manually
-                </h2>
+          {publicKey && signState === "error" ? (
+            <div className="flex h-screen w-screen">
+              <div className="m-auto">
+    
                 <Button
                   state={signState}
                   onClick={onSignClick}
                   className="btn-primary"
                 >
-                  Verify wallet
+                  Verify Wallet
                 </Button>
               </div>
             </div>
+          ) : (
+            <div className="flex h-screen w-screen">
+            <div className="m-auto">
+  
+              <Button
+                state={signState}
+                onClick={onSignClick}
+                className="btn-primary"
+              >
+                Verify Wallet
+              </Button>
+            </div>
+          </div>
           )}
         </div>
       )}
