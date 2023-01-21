@@ -3,6 +3,48 @@
     align-items: center;
     justify-content: center;
     margin: auto;
+    grid-column: 2;
+    grid-row: 1;
+    color: white;
   }
+
+.banner-container  {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: 1fr;
+  align-items: center;
+  justify-content: center;
+}
   
-  
+.avatar {
+  grid-column: 1/2;
+  margin-bottom: -190px;
+  margin-left: 20px;
+}
+
+.info-container {
+  margin-top: 60px;
+  margin-left: 20px;
+}
+
+.user-name {
+  display: flex;
+  font-size: 36px;
+}
+
+.user-status {
+  border: 1px solid #04111D;
+  border-radius: 35px;
+  padding: 12px;
+  margin: auto;
+  display: flex;
+  font-size: 18px;
+}
+
+.user-info {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+}

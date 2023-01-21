@@ -14,6 +14,7 @@ import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
 import { publicKey } from "@project-serum/anchor/dist/cjs/utils";
 import { Footer } from "../components/Footer";
 import { FaPencilAlt } from "react-icons/fa";
+import { IoMdCheckmarkCircle } from "react-icons/io";
 
 function profile() {
   const [user, setUser] = useState({});
@@ -22,14 +23,12 @@ function profile() {
 
   //get program key
   const PROGRAM_KEY = new PublicKey(
-    "CAtKEAG8paT41cUBWyunaBsmwFuH5k5BV9Vrhdw6AuE1"
+    "8FvudSSuBV2eBmafz1cQLDMADc1Hzzw96AdWEhe8UBEs"
   );
 
   const anchorWallet = useAnchorWallet();
   const { connection } = useConnection();
   const wallet = useWallet();
-
-  // console.log(wallet.publicKey?.toString());
 
   const program = useMemo(() => {
     if (anchorWallet) {
@@ -72,15 +71,16 @@ function profile() {
     if (program && publicKey) {
       try {
         setTransactionPending(true);
-        const name = "tester";
-        const description = "Carbovalent user";
+        const name = "Unamed";
+        const business = false;
+        let status = "Carbon Neutral 2023";
         const [userPda] = await findProgramAddressSync(
           [utf8.encode("user"), wallet.publicKey.toBuffer()],
           program.programId
         );
 
         await program.methods
-          .initUser(name, description)
+          .signupUser(name, business, status)
           .accounts({
             userAccount: userPda,
             authority: wallet.publicKey,
@@ -97,12 +97,14 @@ function profile() {
     }
   };
 
+  const currentYear = new Date().getFullYear() 
+
   return (
     <>
       <OpenNavbar />
-      <div className="h-64 bg-[#1B71E8] flex">
+      <div className="banner-container h-64 bg-[#1B71E8] ">
         <label className="pencilIcon">
-          <FaPencilAlt size={20} />
+          <FaPencilAlt size={30} />
           <input
             type="file"
             accept="image/*"
@@ -110,30 +112,40 @@ function profile() {
             className="hidden"
           />
         </label>
-      </div>
-
-      <button
-        className=" btn btn-active flex m-auto mt-5"
-        onClick={() => {
-          initUser();
-        }}
-      >
-        Initialize User
-      </button>
-
-      <div className="avatar placeholder">
-        <div className="w-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 bg-neutral-focus text-neutral-content ml-10 -mt-10 ">
-          <span className="text-3xl">K</span>
+        <div className="avatar placeholder">
+          <div className="w-32 rounded-full ring ring-[#1b71e8] bg-neutral-focus text-neutral-content ">
+            <span className="text-3xl">K</span>
+          </div>
         </div>
       </div>
 
-      <p>
-        <br />
-        <br />
-        username: {user?.name}
-        <br />
-        description : {user?.description}
-      </p>
+      {user?.name ? (
+        <div className="info-container pb-10">
+          <div className="user-name">{user?.name}</div>
+          <div className="user-info">
+            <p className="opacity-75">
+              {user?.business ? "Business Organization" : "Individual Account"}
+            </p>
+
+            <div className="user-status">
+              <b>Status: &nbsp; </b>{" "}
+              <p className="flex text-[#61f761]">
+                {user?.status} {currentYear} &nbsp; <IoMdCheckmarkCircle size={30} />
+              </p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <button
+          className=" btn btn-active flex m-auto mt-5"
+          onClick={() => {
+            initUser();
+          }}
+        >
+          Initialize User
+        </button>
+      )}
+
       <Footer />
     </>
   );

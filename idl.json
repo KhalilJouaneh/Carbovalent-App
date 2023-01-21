@@ -6,7 +6,7 @@
   ],
   "instructions": [
     {
-      "name": "initUser",
+      "name": "signupUser",
       "accounts": [
         { "name": "userAccount", "isMut": true, "isSigner": false },
         { "name": "authority", "isMut": true, "isSigner": true },
@@ -14,7 +14,8 @@
       ],
       "args": [
         { "name": "name", "type": "string" },
-        { "name": "description", "type": "string" }
+        { "name": "business", "type": "bool" },
+        { "name": "status", "type": "string" }
       ]
     }
   ],
@@ -25,7 +26,8 @@
         "kind": "struct",
         "fields": [
           { "name": "name", "type": "string" },
-          { "name": "description", "type": "string" },
+          { "name": "business", "type": "bool" },
+          { "name": "status", "type": "string" },
           { "name": "authority", "type": "publicKey" }
         ]
       }
