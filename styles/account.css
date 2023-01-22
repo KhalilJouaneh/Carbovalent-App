@@ -29,12 +29,15 @@
 }
 
 .user-status {
-  border: 1px solid #04111d;
+  border: 1px solid #5c6169;
   border-radius: 35px;
   padding: 12px;
   margin: auto;
   display: flex;
   font-size: 18px;
+  -moz-box-shadow: 0 0 4px #808080;
+  -webkit-box-shadow: 0 0 4px #808080;
+  box-shadow: 0 0 4px #808080;
 }
 
 .user-info {
@@ -62,6 +65,10 @@
   font-weight: 600;
   display: flex;
   padding-bottom: 15px;
+}
+
+.recent-date {
+  color: #5c6169;
 }
 
 .chart-container {
@@ -125,9 +132,17 @@ hr.goal-hr {
 }
 
 .recent-quantity {
-  /* font-weight: bold; */
   /* font-size: large; */
+  font-weight: bold;
   overflow: hidden;
   padding: 4px;
   display: flex;
 }
+
+.account-info-container {
+  /* margin-left: 120px; */
+  display: grid;
+  place-items: left;
+}
+
+

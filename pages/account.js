@@ -187,22 +187,27 @@ function profile() {
 
       {user?.name ? (
         <div className="info-container pb-10">
-          <div className="user-name">
-            {user?.name} &nbsp;
-            <IoMdCheckmarkCircle size={30} className="text-[#1b71e8] mt-3" />
-          </div>
-          <div className="user-info">
-            <p className="opacity-75">
-              {user?.business ? "Business Organization" : "Individual Account"}{" "}
-              Joined January {currentYear}
-            </p>
+          <div className="account-info-container">
+            <div className="user-name">
+              {user?.name} &nbsp;
+              <IoMdCheckmarkCircle size={30} className="text-[#1b71e8] mt-3" />
+            </div>
 
-            <div className="user-status">
-              <b>Status: &nbsp; </b>{" "}
-              <p className="flex text-[#40c47c]">
-                {user?.status} {currentYear} &nbsp;{" "}
-                <IoMdCheckmarkCircle size={30} />
+            <div className="user-info">
+              <p className="opacity-75">
+                {user?.business
+                  ? "Business Organization"
+                  : "Individual Account"}{" "}
+                Joined January {currentYear}
               </p>
+
+              <div className="user-status">
+                <b>Status: &nbsp; </b>{" "}
+                <p className="flex text-[#40c47c]">
+                  {user?.status} {currentYear} &nbsp;{" "}
+                  <IoMdCheckmarkCircle size={30} />
+                </p>
+              </div>
             </div>
           </div>
 
@@ -265,7 +270,9 @@ function profile() {
                         />
                       </div>
                     </td>
-                    <td className="w-52 text-center">11/09/2022 9:51AM</td>
+                    <td className="w-52 text-center recent-date">
+                      11/09/2022 9:51AM
+                    </td>
                     <td className="w-36 text-center">
                       <TbSquareCheck size={35} />
                     </td>
@@ -286,7 +293,9 @@ function profile() {
                         />
                       </div>
                     </td>
-                    <td className="w-52 text-center">12/08/2022 11:41AM</td>
+                    <td className="w-52 text-center recent-date ">
+                      12/08/2022 11:41AM
+                    </td>
                     <td className="w-36 text-center">
                       <TbSquareCheck size={35} />
                     </td>
@@ -307,7 +316,9 @@ function profile() {
                         />
                       </div>
                     </td>
-                    <td className="w-52 text-center">01/01/2023 3:43PM</td>
+                    <td className="w-52 text-center recent-date">
+                      01/01/2023 3:43PM
+                    </td>
                     <td className="w-36 text-center">
                       <TbSquareCheck size={35} />
                     </td>
@@ -327,7 +338,9 @@ function profile() {
                         />
                       </div>
                     </td>
-                    <td className="w-52 text-center">01/17/2023 7:49PM</td>
+                    <td className="w-52 text-center recent-date">
+                      01/17/2023 7:49PM
+                    </td>
                     <td className="w-36 text-center">
                       <TbSquareCheck size={35} />
                     </td>
