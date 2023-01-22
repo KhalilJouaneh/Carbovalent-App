@@ -15,6 +15,7 @@ import { publicKey } from "@project-serum/anchor/dist/cjs/utils";
 import { Footer } from "../components/Footer";
 import { FaPencilAlt } from "react-icons/fa";
 import { IoMdCheckmarkCircle } from "react-icons/io";
+import { TbFaceId } from "react-icons/tb";
 
 function profile() {
   const [user, setUser] = useState({});
@@ -97,7 +98,7 @@ function profile() {
     }
   };
 
-  const currentYear = new Date().getFullYear() 
+  const currentYear = new Date().getFullYear();
 
   return (
     <>
@@ -113,15 +114,23 @@ function profile() {
           />
         </label>
         <div className="avatar placeholder">
-          <div className="w-32 rounded-full ring ring-[#1b71e8] bg-neutral-focus text-neutral-content ">
-            <span className="text-3xl">K</span>
+          <div className="w-32 rounded-full ring ring-[#1b71e8] text-neutral-content  bg-[#808080]">
+            <label className="cursor-pointer	">
+              <input
+                type="file"
+                accept="image/*"
+                tabIndex="-1"
+                className="hidden"
+              />
+              <TbFaceId size={80} />
+            </label>
           </div>
         </div>
       </div>
 
       {user?.name ? (
         <div className="info-container pb-10">
-          <div className="user-name">{user?.name}</div>
+          <div className="user-name">{user?.name} &nbsp; <IoMdCheckmarkCircle size={30} className="text-[#1b71e8] mt-3"/></div>
           <div className="user-info">
             <p className="opacity-75">
               {user?.business ? "Business Organization" : "Individual Account"}
@@ -130,9 +139,19 @@ function profile() {
             <div className="user-status">
               <b>Status: &nbsp; </b>{" "}
               <p className="flex text-[#61f761]">
-                {user?.status} {currentYear} &nbsp; <IoMdCheckmarkCircle size={30} />
+                {user?.status} {currentYear} &nbsp;{" "}
+                <IoMdCheckmarkCircle size={30} />
               </p>
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 place-items-center h-screen pt-5">
+            <div className="chart-container">
+             
+            </div>
+            <div className="chart-container"></div>
+            <div className="chart-container"></div>
+            <div className="chart-container"></div>
           </div>
         </div>
       ) : (

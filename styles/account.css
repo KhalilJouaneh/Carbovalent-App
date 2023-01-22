@@ -1,21 +1,22 @@
 .pencilIcon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    grid-column: 2;
-    grid-row: 1;
-    color: white;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  grid-column: 2;
+  grid-row: 1;
+  color: white;
+  cursor: pointer;
+}
 
-.banner-container  {
+.banner-container {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(3, 1fr);
   grid-template-rows: 1fr;
   align-items: center;
   justify-content: center;
 }
-  
+
 .avatar {
   grid-column: 1/2;
   margin-bottom: -190px;
@@ -33,7 +34,7 @@
 }
 
 .user-status {
-  border: 1px solid #04111D;
+  border: 1px solid #04111d;
   border-radius: 35px;
   padding: 12px;
   margin: auto;
@@ -47,4 +48,17 @@
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
+}
+
+.chart-container {
+  border: 2px solid #808080;
+  border-radius: 75px;
+  box-shadow: 20px;
+  height: 100%;
+  width: 75%;
+  -moz-box-shadow: 0 0 12px #808080;
+  -webkit-box-shadow: 0 0 12px #808080;
+  box-shadow: 0 0 12px #808080;
+  /* overflow: hidden;
+  white-space: nowrap; */
 }
