@@ -207,7 +207,7 @@ export default function Registry() {
 
                       return (
                         <tr className="border-solid border-[#E4E8EB] border-y-2 border-x-0">
-                          <td className="w-52 ">
+                          <td className="w-52">
                             <Image
                               src={GoldStandardLogo}
                               width={60}

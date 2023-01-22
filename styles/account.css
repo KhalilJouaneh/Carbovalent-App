@@ -23,11 +23,6 @@
   margin-left: 20px;
 }
 
-.info-container {
-  margin-top: 60px;
-  margin-left: 20px;
-}
-
 .user-name {
   display: flex;
   font-size: 36px;
@@ -50,15 +45,89 @@
   font-size: 18px;
 }
 
-.chart-container {
-  border: 2px solid #808080;
-  border-radius: 75px;
-  box-shadow: 20px;
-  height: 100%;
-  width: 75%;
+.ring {
   -moz-box-shadow: 0 0 12px #808080;
   -webkit-box-shadow: 0 0 12px #808080;
   box-shadow: 0 0 12px #808080;
+}
+
+.info-container {
+  margin-top: 60px;
+  margin-left: 20px;
+}
+
+.chart-title {
+  font-size: 26px;
+  color: #5c6169;
+  font-weight: 600;
+  display: flex;
+  padding-bottom: 15px;
+}
+
+.chart-container {
+  padding: 40px;
+  border: 2px solid #808080;
+  border-radius: 75px;
+  -moz-box-shadow: 0 0 12px #808080;
+  -webkit-box-shadow: 0 0 12px #808080;
+  box-shadow: 0 0 12px #808080;
+  margin-bottom: 30px;
   /* overflow: hidden;
   white-space: nowrap; */
+}
+
+.goal-circle {
+  border-radius: 50%;
+  width: 300px;
+  height: 300px;
+  padding: 35% 0;
+  /* align-items: center; */
+  background: transparent;
+  border: 6px solid #02b151;
+  color: #02b151;
+  text-align: center;
+  font-size: 58px;
+}
+
+hr.goal-hr {
+  margin-top: 25px;
+  border: 1px solid #808080;
+  width: 100%;
+}
+
+/* .goal-text {
+  border: 2px solid #02b151;
+} */
+
+.buy-btn {
+  border: 3px solid #00b050;
+  border-radius: 5px;
+  /* padding-left: 25px;
+  padding-right: 25px; */
+  width: 80px;
+  color: #00b050;
+  font-weight: bold;
+}
+.retire-btn {
+  border: 3px solid #337fea;
+  border-radius: 5px;
+  width: 80px;
+  color: #337fea;
+  font-weight: bold;
+}
+
+.sell-btn {
+  border: 3px solid #c00000;
+  border-radius: 5px;
+  width: 80px;
+  color: #c00000;
+  font-weight: bold;
+}
+
+.recent-quantity {
+  /* font-weight: bold; */
+  /* font-size: large; */
+  overflow: hidden;
+  padding: 4px;
+  display: flex;
 }
