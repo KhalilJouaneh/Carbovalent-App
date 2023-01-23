@@ -11,7 +11,7 @@ import { SignValidateData } from "../api/sign/validate";
 import { useEffect, useState } from "react";
 import { Loading } from "../../components/Loading";
 
-export function HomeContent() {
+export default function HomeContent() {
   const { publicKey, signTransaction } = useWallet();
   const [signState, setSignState] = useState<ButtonState>("initial");
   const { data, error } = useDataFetch<Array<ItemData>>(
