@@ -171,7 +171,7 @@ function profile() {
           />
         </label>
         <div className="avatar placeholder">
-          <div className="w-32 rounded-full ring ring-[#1b71e8] text-neutral-content  bg-[#808080]">
+          <div className="w-32 rounded-full ring ring-[#1b71e8] text-neutral-content bg-[#808080]">
             <label className="cursor-pointer	">
               <input
                 type="file"
@@ -204,8 +204,7 @@ function profile() {
               <div className="user-status">
                 <b>Status: &nbsp; </b>{" "}
                 <p className="flex text-[#40c47c]">
-                  {user?.status} {currentYear} &nbsp;{" "}
-                  <IoMdCheckmarkCircle size={30} />
+                  {user?.status} &nbsp; <IoMdCheckmarkCircle size={30} />
                 </p>
               </div>
             </div>
@@ -379,14 +378,18 @@ function profile() {
           </div>
         </div>
       ) : (
-        <button
-          className=" btn btn-active flex m-auto mt-5"
-          onClick={() => {
-            initUser();
-          }}
-        >
-          Initialize User
-        </button>
+        <div className="flex h-screen w-screen">
+          <div className="m-auto">
+            <button
+              className="init-btn flex m-auto "
+              onClick={() => {
+                initUser();
+              }}
+            >
+              Initialize User
+            </button>
+          </div>
+        </div>
       )}
 
       <Footer />
