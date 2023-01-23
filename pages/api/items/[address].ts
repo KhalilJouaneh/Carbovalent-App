@@ -1,7 +1,7 @@
 import { NETWORK } from "../../../utils/endpoints";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { ItemData } from "../../items/item";
+import { ItemData } from "../../../components/items/item";
 import { fetcher } from "../../../utils/use-data-fetch";
 
 export type NftResponse = { nfts: Array<ItemData> };

@@ -6,12 +6,12 @@ import { ItemData } from "./item";
 import { Button, ButtonState } from "./button";
 import { toast } from "react-hot-toast";
 import { Transaction } from "@solana/web3.js";
-import { SignCreateData } from "../api/sign/create";
-import { SignValidateData } from "../api/sign/validate";
+import { SignCreateData } from "../../pages/api/sign/create";
+import { SignValidateData } from "../../pages/api/sign/validate";
 import { useEffect, useState } from "react";
-import { Loading } from "../../components/Loading";
+import { Loading } from "../Loading";
 
-export default function HomeContent() {
+export  function HomeContent() {
   const { publicKey, signTransaction } = useWallet();
   const [signState, setSignState] = useState<ButtonState>("initial");
   const { data, error } = useDataFetch<Array<ItemData>>(

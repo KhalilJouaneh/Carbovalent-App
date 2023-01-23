@@ -1,5 +1,5 @@
-import { HomeContent } from "../pages/items/home-content";
-import { ButtonState } from "../pages/items/button";
+import { HomeContent } from "./items/home-content";
+import { ButtonState } from "./items/button";
 import { PublicKey, Transaction } from "@solana/web3.js";
 import { PageContainer } from "./layout/page-container";
 import { TxConfirmData } from "../pages/api/tx/confirm";

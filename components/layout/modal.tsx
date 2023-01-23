@@ -1,4 +1,4 @@
-import { Button, ButtonState } from "../../pages/items/button";
+import { Button, ButtonState } from "../items/button";
 import { DEFAULT_WALLET } from "../../utils/globals";
 import React from "react";
 

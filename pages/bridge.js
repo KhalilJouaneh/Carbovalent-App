@@ -14,7 +14,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import { createMint } from "@solana/spl-token";
 import { SignCreateData } from "./api/sign/create";
 import { SignValidateData } from "./api/sign/validate";
-import { Button, ButtonState } from "./items/button";
+import { Button, ButtonState } from "../components/items/button";
 import { Transaction } from "@solana/web3.js";
 import { fetcher, useDataFetch } from "../utils/use-data-fetch";
 import { toast } from "react-hot-toast";
