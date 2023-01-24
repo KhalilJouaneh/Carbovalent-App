@@ -5,7 +5,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { OpenNavbar } from "../components/OpenNavbar";
 import { Footer } from "../components/Footer";
-import { ListAll } from "../utils/ListAll";
+import { ListFract } from "../utils/ListFract";
 import { ListNfts } from "../components/ListNfts";
 
 const connection = new Connection(clusterApiUrl("devnet"));
@@ -56,8 +56,8 @@ function fractionalize() {
   return (
     <div>
       <OpenNavbar />
-        {/* <ListAll /> */}
-        <ListNfts />
+        <ListFract />
+        {/* <ListNfts /> */}
         <Footer />
       </div>
   );

@@ -76,7 +76,7 @@ export function OpenNavbar() {
             </div>
           </Link>
           <div className={style.headerIcon}>
-            <HiOutlineShoppingCart />
+              <HiOutlineShoppingCart/>
           </div>
           <div className={style.headerIcon}>
             <WalletMultiButtonDynamic />

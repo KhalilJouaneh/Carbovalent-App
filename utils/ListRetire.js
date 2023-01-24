@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Loading } from "../components/Loading";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 
-export const ListAll = () => {
+export const ListRetire = () => {
   const xKey = "7DmQi-SJmO16yq6u";
   const [network, setNetwork] = useState("devnet");
   const [loading, setLoading] = useState(false);
@@ -15,7 +15,7 @@ export const ListAll = () => {
   const wallet = useWallet(); //solana wallet object
 
   const [nftSelected, setNftSelected] = useState([]);
-  const [nftAddr, setNftAddr] = useState('');
+  const [nftAddr, setNftAddr] = useState("");
 
   const [nfts, setNfts] = useState();
   const [acess, setAccess] = useState();
@@ -25,7 +25,7 @@ export const ListAll = () => {
 
   useEffect(() => {
     setLoading(true);
-    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallet.publicKey}&refresh=refresh`;
+    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=mainnet-beta&address=${wallet.publicKey}&refresh=refresh`;
     //add the wallet address which you want to check as an authentication parameter
     //access will be granted if and only if an NFT with this update authority is present in your wallet
 
@@ -99,7 +99,7 @@ export const ListAll = () => {
     e.preventDefault();
 
     //Note, we are not mentioning update_authority here for now
-    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallet.publicKey}`;
+    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=mainnet-beta&address=${wallet.publicKey}`;
     axios({
       // Endpoint to send files
       url: nftUrl,
@@ -127,7 +127,7 @@ export const ListAll = () => {
     <>
       <div className="grd-back">
         <div className="container-lg">
-          {!wallet.publicKey && <></>}
+          {/* {!wallet.publicKey && <></>}
           {wallet.publicKey && (
             <div className="w-50 border border-primary rounded-3 mx-auto">
               <div className="form-container p-3">
@@ -157,45 +157,54 @@ export const ListAll = () => {
                 </form>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
       {loading ? <Loading /> : <></>}
 
-      <div className="fract-container grid grid-cols-3 gap-[1rem] mx-auto auto-rows-fr justify-center">
-        {nfts ? (
-          nfts.map((nft) => {
-            return (
-              <div class="font-extralight py-8 px-0 m-auto">
-                <div class="justify-items-center px-3 py-2">
-                  <div className="grid  justify-items-center">
-                    <div className="card shadow-xl">
-                      <figure>
-                        <img
-                          src={nft.image_uri}
-                          width={250}
-                          height={250}
-                          className="fract-img"
-                          alt=""
-                        />
-                      </figure>
-                      <div className="card-body">
-                        <h2 className="card-title">{nft.name}</h2>
-                        <div className="card-buttons">
-                          <AiOutlinePlusCircle size={35} />
+      {!wallet.publicKey ? (
+        <Loading />
+      ) : (
+        <div className="fract-container grid grid-cols-3 gap-[1rem] mx-auto auto-rows-fr justify-center">
+          {nfts ? (
+            nfts.map((nft) => {
+              return (
+                <div class="font-extralight py-8 px-0 m-auto">
+                  <div class="justify-items-center px-3 py-2">
+                    <div className="grid  justify-items-center">
+                      <div className="card shadow-xl">
+                        <figure>
+                          <img
+                            src={nft.image_uri}
+                            width={250}
+                            height={250}
+                            className="fract-img"
+                            alt=""
+                          />
+                        </figure>
+                        <div className="card-body">
+                          <h2 className="card-title">
+                            {nft.name ? nft.name : "No name"}
+                          </h2>
+                          <div className="card-buttons">
+                            {/* <AiOutlinePlusCircle size={35} /> */}
+                            <button className="btn fract-btn">
+                              Retire
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
-        ) : (
-          <></>
-        )}
-      </div>
+              );
+            })
+          ) : (
+            <></>
+          )}
+        </div>
+      )}
     </>
   );
 };
