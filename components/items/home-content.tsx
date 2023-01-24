@@ -107,7 +107,7 @@ export  function HomeContent() {
             </h2>
           )}
 
-          {publicKey && signState === "error" ? (
+          {/* {publicKey && signState === "error" ? (
             <div className="flex h-screen w-screen">
               <div className="m-auto">
     
@@ -133,7 +133,7 @@ export  function HomeContent() {
               </Button>
             </div>
           </div>
-          )}
+          )} */}
         </div>
       )}
     </div>
