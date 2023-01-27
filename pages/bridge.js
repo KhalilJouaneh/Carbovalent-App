@@ -11,21 +11,30 @@ import bs58 from "bs58";
 import axios from "axios";
 // import { confirmTransactionFromFrontend } from "shyft-js";
 import { useWallet } from "@solana/wallet-adapter-react";
+import {
+  Metaplex,
+  walletAdapterIdentity,
+  bundlrStorage,
+  toMetaplexFile,
+} from "@metaplex-foundation/js";
+import {
+  DataV2,
+  createCreateMetadataAccountV2Instruction,
+  createUpdateMetadataAccountV2Instruction,
+} from "@metaplex-foundation/mpl-token-metadata";
+
 import { createMint } from "@solana/spl-token";
-import { SignCreateData } from "./api/sign/create";
-import { SignValidateData } from "./api/sign/validate";
-import { Button, ButtonState } from "../components/items/button";
-import { Transaction } from "@solana/web3.js";
-import { fetcher, useDataFetch } from "../utils/use-data-fetch";
 import { toast } from "react-hot-toast";
-
 import { signAndConfirmTransaction } from "../utils/utilityfunc.js";
-
 import { SignMessage } from "../components/SignMessage";
+import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
 
 const Bridge = () => {
   const wallet = useWallet(); //solana wallet object
-
+  const connection = new Connection(clusterApiUrl("devnet"));
+  const mx = Metaplex.make(connection);
+  mx.use(walletAdapterIdentity(wallet));
 
   const xKey = "7DmQi-SJmO16yq6u"; //shyft api key
   const message_from_backend = `Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/`;
@@ -120,7 +129,6 @@ const Bridge = () => {
       .then(async (res) => {
         console.log(res.data);
         const transaction = res.data.result.encoded_transaction; //encoded transaction
-        // confirmTransactionFromFrontend(WalletAdapterNetwork.Devnet, transaction, wallet);
         const ret_result = await signAndConfirmTransaction(
           "devnet",
           transaction,
@@ -134,6 +142,25 @@ const Bridge = () => {
         console.warn(err);
       });
   }
+
+  const mintMetaplex = async () => {
+    // const { uri } = await mx.nfts().uploadMetadata({
+    //   name: "Carbovalent",
+    //   description: "On-chain carbon credits",
+    //   image:
+    //     "https://ucrxxe2cisit4blwej4qzpb2oh62e4wncwtdmrqwzlyjjsssgssq.arweave.net/oKN7k0JEkT4FdiJ5DLw6cf2ics0VpjZGFsrwlMpSNKU?ext=png",
+    // });
+
+    await mx.nfts().createSft(
+      {
+        tokenStandard: TokenStandard.FungibleAsset,
+        uri: "https://arweave.net/fPj_wkDLRfIA-e2zH_GFXH4Iq7rsA5YDgq-mmbUhUQE",
+        name: "random",
+        sellerFeeBasisPoints: 100,
+      },
+      { commitment: "confirmed" }
+    );
+  };
 
   const handleRegistry = (e) => {
     if (e.target.value === "null") {
@@ -167,7 +194,8 @@ const Bridge = () => {
     } else if (formNo === 3) {
       setFormNo(formNo + 1);
     } else if (formNo === 4) {
-      mintNft();
+      // mintNft();
+      mintMetaplex();
     } else {
       toast.error("Please fillup all input field");
     }

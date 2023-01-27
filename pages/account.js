@@ -129,7 +129,7 @@ function profile() {
     if (program && publicKey) {
       try {
         setTransactionPending(true);
-        const name = "Unamed";
+        const name = "Unnamed";
         const business = false;
         let status = "Carbon Neutral 2023";
         const [userPda] = await findProgramAddressSync(
