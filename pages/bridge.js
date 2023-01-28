@@ -15,26 +15,43 @@ import {
   Metaplex,
   walletAdapterIdentity,
   bundlrStorage,
+  findMetadataPda,
   toMetaplexFile,
+  NFTSettingService,
+  UploadMetadataInput,
 } from "@metaplex-foundation/js";
 import {
   DataV2,
   createCreateMetadataAccountV2Instruction,
   createUpdateMetadataAccountV2Instruction,
+  TokenStandard,
 } from "@metaplex-foundation/mpl-token-metadata";
-
+import fs from "fs";
 import { createMint } from "@solana/spl-token";
 import { toast } from "react-hot-toast";
 import { signAndConfirmTransaction } from "../utils/utilityfunc.js";
 import { SignMessage } from "../components/SignMessage";
-import { clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
-import { TokenStandard } from "@metaplex-foundation/mpl-token-metadata";
+import {
+  clusterApiUrl,
+  Connection,
+  PublicKey,
+  Transaction,
+  SystemProgram,
+} from "@solana/web3.js";
+import carbovalentLogo from "../public/carbovalentlogo.png";
 
 const Bridge = () => {
   const wallet = useWallet(); //solana wallet object
   const connection = new Connection(clusterApiUrl("devnet"));
   const mx = Metaplex.make(connection);
-  mx.use(walletAdapterIdentity(wallet));
+
+  mx.use(walletAdapterIdentity(wallet)).use(
+    bundlrStorage({
+      address: "https://devnet.bundlr.network",
+      providerUrl: "https://api.devnet.solana.com",
+      timeout: 60000,
+    })
+  );
 
   const xKey = "7DmQi-SJmO16yq6u"; //shyft api key
   const message_from_backend = `Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/`;
@@ -72,6 +89,7 @@ const Bridge = () => {
   const [quantity, setQuantity] = useState("");
   const [vintage, setVintage] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [issuanceStatus, setIssuanceStatus] = useState("true");
 
   const [mssg, setMssg] = useState("");
   const callback = (signature, result) => {
@@ -144,19 +162,41 @@ const Bridge = () => {
   }
 
   const mintMetaplex = async () => {
-    // const { uri } = await mx.nfts().uploadMetadata({
-    //   name: "Carbovalent",
-    //   description: "On-chain carbon credits",
-    //   image:
-    //     "https://ucrxxe2cisit4blwej4qzpb2oh62e4wncwtdmrqwzlyjjsssgssq.arweave.net/oKN7k0JEkT4FdiJ5DLw6cf2ics0VpjZGFsrwlMpSNKU?ext=png",
-    // });
+    const { uri } = await mx
+      .nfts()
+      .uploadMetadata({
+        name: "Carbovalent",
+        description:
+          "A batch of tokenized carbon credits on the Carbovalent protocol",
+        attributes: attrib,
+        image: "https://metadata.y00ts.com/y/13117.png",
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
-    await mx.nfts().createSft(
+    // const {tokenUri} = await mx.nfts().UploadMetadataInput({
+    //   name: "Test token",
+    //   symbol: "TEST",
+    //   description: "this is a test token",
+    //   image: "https://shdw-drive.genesysgo.net/CZnAAma1VVFXF8PE3h5b9nMy3UJwpkQQqu2gKpFgEmLZ/3985.png"
+    // })
+
+    // const onChainMetadataToken = {
+    //   name: tokenUri.name,
+    //   symbol: tokenUri.symbol,
+    //   uri: "update later",
+    //   sellerFeeBasisPoints: 0,
+    //   creators: null,
+    // } as DataV2;
+
+    await mx.nfts().create(
       {
-        tokenStandard: TokenStandard.FungibleAsset,
-        uri: "https://arweave.net/fPj_wkDLRfIA-e2zH_GFXH4Iq7rsA5YDgq-mmbUhUQE",
-        name: "random",
-        sellerFeeBasisPoints: 100,
+        // tokenStandard: TokenStandard.FungibleAsset,
+        uri: uri,
+        name: "Carbon Credit Batch",
+        sellerFeeBasisPoints: 0,
+        isMutable: false,
       },
       { commitment: "confirmed" }
     );
@@ -185,6 +225,8 @@ const Bridge = () => {
     if (formNo === 1 && registryName) {
       setFormNo(formNo + 1);
     } else if (formNo === 2 && serialNumber) {
+      //save state of issued credits
+      setSearchQuery(serialNumber);
       setSearchQuery(serialNumber);
       setCountry(data[0].project.country);
       setQuantity(data[0].number_of_credits);
@@ -194,7 +236,17 @@ const Bridge = () => {
     } else if (formNo === 3) {
       setFormNo(formNo + 1);
     } else if (formNo === 4) {
-      // mintNft();
+      //switch API to retired credits
+      setIssuanceStatus("false");
+      setFormNo(formNo + 1);
+      // mintNft() => Shyft API;
+    } else if (formNo === 5) {
+      //save state of retired credits
+      setSearchQuery(serialNumber);
+      setCountry(data[0].project.country);
+      setQuantity(data[0].number_of_credits);
+      setVintage(data[0].vintage);
+      setProjectName(data[0].project.name);
       mintMetaplex();
     } else {
       toast.error("Please fillup all input field");
@@ -207,31 +259,35 @@ const Bridge = () => {
 
   //copy to clipboard button on form 1 arrow function
   const copyToClipboard = () => {
-    navigator.clipboard.writeText("C1V-R-669").then(
-      () => {
-        setCopied(true);
-        toast.success("Copied to clipboard");
-        // changing back to default state after 2 seconds.
-        setTimeout(() => {
-          setCopied(false);
-        }, 2000);
-      },
-      (err) => {
-        console.log("failed to copy", err.mesage);
-      }
-    );
+    navigator.clipboard
+      .writeText(
+        `This action is a migration of carbon credits to the Carbovalent on-chain registry. Holder wallet: ${wallet.publicKey}`
+      )
+      .then(
+        () => {
+          setCopied(true);
+          toast.success("Copied to clipboard");
+          // changing back to default state after 2 seconds.
+          setTimeout(() => {
+            setCopied(false);
+          }, 2000);
+        },
+        (err) => {
+          console.log("failed to copy", err.mesage);
+        }
+      );
   };
 
   const fetcher = async () => {
     const res = await fetch(
-      `https://api.goldstandard.org/credits?query=${searchQuery}&issuances=true&size=1`
+      `https://api.goldstandard.org/credits?query=${searchQuery}&issuances=${issuanceStatus}&size=1`
     );
     const data = await res.json();
     return data;
   };
 
   const { data, error, isLoading } = useSWR(
-    `https://api.goldstandard.org/credits?query=${searchQuery}&issuances=true&size=1`,
+    `https://api.goldstandard.org/credits?query=${searchQuery}&issuances=${issuanceStatus}&size=1`,
     fetcher
   );
 
@@ -259,6 +315,9 @@ const Bridge = () => {
                   ></li>
                   <li
                     className={`${formNo >= 4 ? "step step-primary" : "step"}`}
+                  ></li>
+                  <li
+                    className={`${formNo >= 5 ? "step step-primary" : "step"}`}
                   ></li>
                 </ul>
               </div>
@@ -332,7 +391,6 @@ const Bridge = () => {
                     </p>
 
                     <input
-                      // value={serialNumber}
                       onChange={handleSerialNumber}
                       className="input input-info bordered w-full max-w-full bg-inherit"
                       type="text"
@@ -480,8 +538,72 @@ const Bridge = () => {
                       onClick={next}
                       className="px-3 py-2 text-lg rounded-4xl w-full text-white bg-blue-500"
                     >
-                      Migrate Credits
+                      Next
                     </button>
+                  </div>
+                </div>
+              )}
+
+              {formNo === 5 && (
+                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5">
+                  <div className="flex flex-col mb-2 max-w-xl">
+                    <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
+                      Bridge Credits
+                    </h4>
+
+                    <p className="text-lg font-semibold leading-relaxed mt-3 mb-7 text-left ">
+                      Please take your time to review the retirment data before
+                      submitting to bridge.
+                      <br />
+                      <br />
+                      <b>Important</b>: Bridging carbon credits to the Solana
+                      network is a one-way and permanent process.
+                    </p>
+
+                    <div className=" rounded-5xl outline-dashed outline-[#1B71E8] p-5">
+                      <div className="flex flex-col mb-2">
+                        <label htmlFor="projectName">PROJECT NAME</label>
+                        <b>{data[0].id}</b>
+                      </div>
+                      <div className="flex flex-col mb-2">
+                        <label htmlFor="thana">SERIAL NUMBER</label>
+                        <b>{serialNumber}</b>
+                      </div>
+                      <div className="flex flex-col mb-2">
+                        <label htmlFor="post">REGISTRY</label>
+                        <b>Gold Standard</b>
+                      </div>
+                      <div className="flex flex-col mb-2">
+                        <label htmlFor="post">COUNTRY</label>
+                        <b> {data[0].project.country}</b>
+                      </div>
+                      <div className="flex flex-col mb-2">
+                        <label htmlFor="post">QUANTITY</label>
+                        <b>{data[0].number_of_credits} </b>
+                      </div>
+
+                      <div className="flex flex-col mb-2">
+                        <label htmlFor="post">VINTAGE</label>
+                        <b>{data[0].vintage}</b>
+                      </div>
+                    </div>
+
+                    <div className="mt-4 gap-3 flex justify-center items-center">
+                      <button
+                        onClick={pre}
+                        className="rounded-4xl px-3 py-2 text-lg rounded-md w-full text-white bg-blue-500"
+                      >
+                        Previous
+                      </button>
+
+                      <button
+                        onClick={next}
+                        id="verify"
+                        className="rounded-4xl px-3 py-2 text-lg rounded-md w-full text-white bg-blue-500"
+                      >
+                        Bridge Credits
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}
