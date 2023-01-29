@@ -199,16 +199,16 @@ const Bridge = () => {
           : "https://qa2fcdfanoz3n7mleg5wbfofzngnksvcdbxc6ul6oocd6eqmlcqq.arweave.net/gDRRDKBrs7b9iyG7YJXFy0zVSqIYbi9RfnOEPxIMWKE",
       });
 
-      // await mx.nfts().create(
-      //   {
-      //     uri: uri,
-      //     name: "Carbon Credit Batch",
-      //     sellerFeeBasisPoints: 0,
-      //     isMutable: true,
-      //     isCollection: true,
-      //   },
-      //   { commitment: "confirmed" }
-      // );
+      await mx.nfts().create(
+        {
+          uri: uri,
+          name: "Carbon Credit Batch",
+          sellerFeeBasisPoints: 0,
+          isMutable: true,
+          isCollection: true,
+        },
+        { commitment: "confirmed" }
+      );
 
       await mx.tokens().createTokenWithMint({
         decimals: 0,
