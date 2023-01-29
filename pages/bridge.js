@@ -162,25 +162,29 @@ const Bridge = () => {
   }
 
   const mintMetaplex = async () => {
-    
-    const { uri } = await mx.nfts().uploadMetadata({
-      name: "Carbovalent",
-      description:
-        "A batch of tokenized carbon credits on the Carbovalent protocol",
-      attributes: attrib,
-      image: "https://metadata.y00ts.com/y/13117.png",
-    });
+    try {
+      const { uri } = await mx.nfts().uploadMetadata({
+        name: "Carbovalent",
+        description:
+          "A batch of tokenized carbon credits on the Carbovalent protocol",
+        attributes: attrib,
+        image: "https://metadata.y00ts.com/y/13117.png",
+      });
 
-    await mx.nfts().create(
-      {
-        uri: uri,
-        name: "Carbon Credit Batch",
-        sellerFeeBasisPoints: 0,
-        isMutable: false,
-      },
-      { commitment: "confirmed" }
-    );
-
+      await mx.nfts().create(
+        {
+          uri: uri,
+          name: "Carbon Credit Batch",
+          sellerFeeBasisPoints: 0,
+          isMutable: false,
+        },
+        { commitment: "confirmed" }
+      );
+    } catch (err) {
+      if (err.message !== "User rejected the request.") {
+        throw err;
+      }
+    }
   };
 
   const handleRegistry = (e) => {

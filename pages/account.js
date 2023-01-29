@@ -102,11 +102,7 @@ function profile() {
     }
   }, [connection, anchorWallet]);
 
-  // useEffect(() => {
-  //   setHydrated(true);
-  // }, []);
 
-  
   useEffect(() => {
     const start = async () => {
       setHydrated(true);
@@ -135,6 +131,7 @@ function profile() {
     if (!hydrated) {
         return null;
     }
+    
     const initUser = async () => {
     if (program) {
       try {
