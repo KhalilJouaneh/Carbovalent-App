@@ -115,8 +115,7 @@ const Bridge = () => {
       projectType === "Energy Efficiency - Industrial" ||
       projectType === "Energy Efficiency - Public Sector" ||
       projectType === "Energy Efficiency Transport Sector" ||
-      projectType ===
-        "Energy Efficiency Agriculture Sector" ||
+      projectType === "Energy Efficiency Agriculture Sector" ||
       projectType === "Energy Efficiency Commercial Sector"
     ) {
       return true;
@@ -129,9 +128,14 @@ const Bridge = () => {
     { trait_type: "Project Name", value: projectName },
     { trait_type: "Country", value: country },
     { trait_type: "Carbon Credit Units", value: quantity },
-    { trait_type: "Carbon Type", value:  classification() ? "Efficiency/Reduction Credits": "Renewable Energy"},
-    { trait_type: "Project Developer", value: projectDeveloper},
-    { trait_type: "Status", value: "Bridged"},
+    {
+      trait_type: "Carbon Type",
+      value: classification()
+        ? "Efficiency/Reduction Credits"
+        : "Renewable Energy",
+    },
+    { trait_type: "Project Developer", value: projectDeveloper },
+    { trait_type: "Status", value: "Bridged" },
     { trait_type: "Source Registry", value: "Gold Standard" },
     { trait_type: "Vintage", value: vintage },
     { trait_type: "Serial Number", value: serialNumber },
@@ -143,8 +147,8 @@ const Bridge = () => {
 
     formData.append("network", "devnet");
     formData.append("creator_wallet", wallet.publicKey);
-    formData.append("name", "carbo");
-    formData.append("description", "Tokenized carbon credits");
+    formData.append("name", "Carbovalent");
+    formData.append("description", "A batch of tokenized carbon credits on the Carbovalent protocol");
     formData.append("symbol", "CAR");
     formData.append("attributes", JSON.stringify(attrib));
     formData.append("external_url", "www.carbovalent.com");
@@ -189,26 +193,36 @@ const Bridge = () => {
         description:
           "A batch of tokenized carbon credits on the Carbovalent protocol",
         attributes: attrib,
-        image: "https://mihqv6vpi2l6vkhk2knx64kcfvabbf2filzrpwi6j4l6qzvins3a.arweave.net/Yg8K-q9Gl-qo6tKbf3FCLUAQl0VC8xfZHk8X6GaobLY",
+        // image: "https://mihqv6vpi2l6vkhk2knx64kcfvabbf2filzrpwi6j4l6qzvins3a.arweave.net/Yg8K-q9Gl-qo6tKbf3FCLUAQl0VC8xfZHk8X6GaobLY",
+        image: classification()
+          ? "https://fsvotd7amqfv4zrzoz3zttjnzponin3edggnw4zp5rcmjrd4jhka.arweave.net/LKrpj-BkC15mOXZ3mc0ty9zUN2QZjNtzL-xExMR8SdQ"
+          : "https://qa2fcdfanoz3n7mleg5wbfofzngnksvcdbxc6ul6oocd6eqmlcqq.arweave.net/gDRRDKBrs7b9iyG7YJXFy0zVSqIYbi9RfnOEPxIMWKE",
       });
 
-      await mx.nfts().create(
-        {
-          uri: uri,
-          name: "Carbon Credit Batch",
-          sellerFeeBasisPoints: 0,
-          isMutable: true,
-          isCollection: true,
-        },
-        { commitment: "confirmed" }
-      );
+      // await mx.nfts().create(
+      //   {
+      //     uri: uri,
+      //     name: "Carbon Credit Batch",
+      //     sellerFeeBasisPoints: 0,
+      //     isMutable: true,
+      //     isCollection: true,
+      //   },
+      //   { commitment: "confirmed" }
+      // );
+
+      await mx.tokens().createTokenWithMint({
+        decimals: 0,
+        owner: wallet.publicKey,
+        tokenName: "Solana Carbon Tonne",
+        tokenSymbol: "SCT",
+        initialSupply: quantity,
+      })
     } catch (err) {
       if (err.message !== "User rejected the request.") {
         throw err;
       }
     }
   };
-
 
   const handleRegistry = (e) => {
     if (e.target.value === "null") {

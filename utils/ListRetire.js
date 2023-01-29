@@ -25,7 +25,7 @@ export const ListRetire = () => {
 
   useEffect(() => {
     setLoading(true);
-    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=mainnet-beta&address=${wallet.publicKey}&refresh=refresh`;
+    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=${network}&address=${wallet.publicKey}&refresh=refresh`;
     //add the wallet address which you want to check as an authentication parameter
     //access will be granted if and only if an NFT with this update authority is present in your wallet
 
@@ -189,6 +189,9 @@ export const ListRetire = () => {
                           </h2>
                           <div className="card-buttons">
                             {/* <AiOutlinePlusCircle size={35} /> */}
+                            <button className="btn fract-btn">
+                              Fractionalize
+                            </button>
                             <button className="btn fract-btn">
                               Retire
                             </button>
