@@ -89,6 +89,7 @@ const Bridge = () => {
   const [quantity, setQuantity] = useState("");
   const [vintage, setVintage] = useState("");
   const [projectType, setProjectType] = useState("");
+  const [projectDeveloper, setProjectDeveloper] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [issuanceStatus, setIssuanceStatus] = useState("true");
 
@@ -127,8 +128,10 @@ const Bridge = () => {
   let attrib = [
     { trait_type: "Project Name", value: projectName },
     { trait_type: "Country", value: country },
-    { trait_type: "Quantity", value: quantity},
+    { trait_type: "Carbon Credit Units", value: quantity },
     { trait_type: "Carbon Type", value:  classification() ? "Efficiency/Reduction Credits": "Renewable Energy"},
+    { trait_type: "Project Developer", value: projectDeveloper},
+    { trait_type: "Status", value: "Bridged"},
     { trait_type: "Source Registry", value: "Gold Standard" },
     { trait_type: "Vintage", value: vintage },
     { trait_type: "Serial Number", value: serialNumber },
@@ -194,7 +197,7 @@ const Bridge = () => {
           uri: uri,
           name: "Carbon Credit Batch",
           sellerFeeBasisPoints: 0,
-          isMutable: false,
+          isMutable: true,
           isCollection: true,
         },
         { commitment: "confirmed" }
@@ -243,6 +246,7 @@ const Bridge = () => {
       setVintage(data[0].vintage);
       setProjectName(data[0].project.name);
       setProjectType(data[0].project.type);
+      setProjectDeveloper(data[0].project.project_developer);
       setFormNo(formNo + 1);
     } else if (formNo === 5) {
       //save state of retired credits
