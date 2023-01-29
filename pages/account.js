@@ -41,6 +41,7 @@ function profile() {
   const [user, setUser] = useState({});
   const [initialized, setInitialized] = useState(false);
   const [transactionPending, setTransactionPending] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
 
   const barChartData = [
     {
@@ -77,6 +78,7 @@ function profile() {
     { name: "Group C", value: 300 },
     { name: "Group D", value: 200 },
   ];
+
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
   //get program key
@@ -100,33 +102,41 @@ function profile() {
     }
   }, [connection, anchorWallet]);
 
+  // useEffect(() => {
+  //   setHydrated(true);
+  // }, []);
+
+  
   useEffect(() => {
     const start = async () => {
+      setHydrated(true);
       if (program && wallet) {
         try {
-          setTransactionPending(true);
+          // setTransactionPending(true);
           const [userPda] = await findProgramAddressSync(
             [utf8.encode("user"), wallet.publicKey.toBuffer()],
             program.programId
-          );
-          const user = await program.account.userAccount.fetch(userPda);
-          if (user) {
-            setInitialized(true);
-            setUser(user);
-            console.log(user);
+            );
+            const user = await program.account.userAccount.fetch(userPda);
+            if (user) {
+              setInitialized(true);
+              setUser(user);
+              console.log(user);
+            }
+          } catch (error) {
+            console.log("No User");
+            // setInitialized(false);
           }
-        } catch (error) {
-          console.log("No User");
-          setInitialized(false);
         }
-      }
-    };
-
-    start();
-  }, [program, wallet.publicKey, transactionPending]);
-
-  const initUser = async () => {
-    if (program && publicKey) {
+      };
+      start();
+    }, [program, wallet.publicKey, transactionPending]);
+    
+    if (!hydrated) {
+        return null;
+    }
+    const initUser = async () => {
+    if (program) {
       try {
         setTransactionPending(true);
         const name = "Unnamed";
@@ -155,10 +165,10 @@ function profile() {
     }
   };
 
-  const currentYear = new Date().getFullYear();
+  // const currentYear = new Date().getFullYear();
 
   return (
-    <>
+    <div>
       <OpenNavbar />
       <div className="banner-container h-64 bg-[#1B71E8] ">
         <label className="pencilIcon">
@@ -185,28 +195,34 @@ function profile() {
         </div>
       </div>
 
-      {user?.name ? (
-        <div className="info-container pb-10">
+
+      {/* {true ? ( */}
+      {!user?.name ? (
+        <div className="info-container pb-10" >
           <div className="account-info-container">
             <div className="user-name">
-              {user?.name} &nbsp;
+              {/* {user?.name} &nbsp; */}
+              Unnamed &nbsp;
               <IoMdCheckmarkCircle size={30} className="text-[#1b71e8] mt-3" />
             </div>
 
             <div className="user-info">
               <p className="opacity-75">
-                {user?.business
+                {/* {user?.business
                   ? "Business Organization"
-                  : "Individual Account"}{" "}
-                Joined January {currentYear}
+                  : "Individual Account"}{" "} */}
+                Individual Account
+                Joined January 
               </p>
 
               <div className="user-status">
-                <b>Status: &nbsp; </b>{" "}
-                <p className="flex text-[#40c47c]">
-                  {user?.status} &nbsp; <IoMdCheckmarkCircle size={30} />
-                </p>
+                <b>Status: &nbsp; </b>
+                <div className="flex text-[#40c47c]">
+                  {/* {user?.status} &nbsp; <IoMdCheckmarkCircle size={30} /> */}
+                  Carbon Neutral 2023 &nbsp; <IoMdCheckmarkCircle size={30} />
+                </div>
               </div>
+
             </div>
           </div>
 
@@ -214,7 +230,7 @@ function profile() {
             {/* row 1 column 1  */}
             <div className="chart-container">
               <p className="chart-title">
-                Retirement Overview <IoInformationCircleSharp />{" "}
+                Retirement Overview <IoInformationCircleSharp />
               </p>
               <BarChart
                 width={500}
@@ -240,9 +256,9 @@ function profile() {
 
             {/* row 1 column 2 */}
             <div className="chart-container">
-              <p className="chart-title">
-                Goal Overview <IoInformationCircleSharp />{" "}
-              </p>
+              <div className="chart-title">
+                Goal Overview <IoInformationCircleSharp />
+              </div>
               <div className="goal-circle">100%</div>
 
               {/* <hr className="goal-hr" /> */}
@@ -250,7 +266,7 @@ function profile() {
             </div>
 
             {/* row 2 column 1 */}
-            <div className="chart-container">
+            <div className="chart-container" >
               <p className="chart-title">Recent </p>
               <table className="table-fixed  border-seperate">
                 <tbody>
@@ -377,6 +393,7 @@ function profile() {
             </div>
           </div>
         </div>
+
       ) : (
         <div className="flex h-screen w-screen">
           <div className="m-auto">
@@ -393,7 +410,7 @@ function profile() {
       )}
 
       <Footer />
-    </>
+    </div>
   );
 }
 

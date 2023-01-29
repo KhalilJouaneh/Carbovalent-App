@@ -1,5 +1,3 @@
-import { ThirdwebProvider } from "@thirdweb-dev/react/solana";
-import { Network } from "@thirdweb-dev/sdk/solana";
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
 import "../styles/wallet.css";
@@ -64,9 +62,9 @@ const wallets = useMemo(
 )
 {
   return (
-    <WalletProvider autoConnect wallets={wallets}>
+    <WalletProvider autoConnect wallets={wallets} >
       <WalletModalProvider>
-          <Component {...pageProps}/>
+          <Component {...pageProps} suppressHydrationWarning={true}/>
         </WalletModalProvider>
     </WalletProvider>
   )

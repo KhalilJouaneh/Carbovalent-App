@@ -162,37 +162,17 @@ const Bridge = () => {
   }
 
   const mintMetaplex = async () => {
-    const { uri } = await mx
-      .nfts()
-      .uploadMetadata({
-        name: "Carbovalent",
-        description:
-          "A batch of tokenized carbon credits on the Carbovalent protocol",
-        attributes: attrib,
-        image: "https://metadata.y00ts.com/y/13117.png",
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    // const {tokenUri} = await mx.nfts().UploadMetadataInput({
-    //   name: "Test token",
-    //   symbol: "TEST",
-    //   description: "this is a test token",
-    //   image: "https://shdw-drive.genesysgo.net/CZnAAma1VVFXF8PE3h5b9nMy3UJwpkQQqu2gKpFgEmLZ/3985.png"
-    // })
-
-    // const onChainMetadataToken = {
-    //   name: tokenUri.name,
-    //   symbol: tokenUri.symbol,
-    //   uri: "update later",
-    //   sellerFeeBasisPoints: 0,
-    //   creators: null,
-    // } as DataV2;
+    
+    const { uri } = await mx.nfts().uploadMetadata({
+      name: "Carbovalent",
+      description:
+        "A batch of tokenized carbon credits on the Carbovalent protocol",
+      attributes: attrib,
+      image: "https://metadata.y00ts.com/y/13117.png",
+    });
 
     await mx.nfts().create(
       {
-        // tokenStandard: TokenStandard.FungibleAsset,
         uri: uri,
         name: "Carbon Credit Batch",
         sellerFeeBasisPoints: 0,
@@ -200,6 +180,7 @@ const Bridge = () => {
       },
       { commitment: "confirmed" }
     );
+
   };
 
   const handleRegistry = (e) => {
