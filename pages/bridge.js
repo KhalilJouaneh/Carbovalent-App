@@ -88,6 +88,7 @@ const Bridge = () => {
   const [country, setCountry] = useState("");
   const [quantity, setQuantity] = useState("");
   const [vintage, setVintage] = useState("");
+  const [projectType, setProjectType] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [issuanceStatus, setIssuanceStatus] = useState("true");
 
@@ -107,13 +108,30 @@ const Bridge = () => {
     }
   };
 
+  const classification = function () {
+    if (
+      projectType === "Energy Efficiency - Domestic" ||
+      projectType === "Energy Efficiency - Industrial" ||
+      projectType === "Energy Efficiency - Public Sector" ||
+      projectType === "Energy Efficiency Transport Sector" ||
+      projectType ===
+        "Energy Efficiency Agriculture Sector" ||
+      projectType === "Energy Efficiency Commercial Sector"
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   let attrib = [
-    { trait_type: "name", value: projectName },
-    { trait_type: "country", value: country },
-    { trait_type: "quantity", value: quantity },
-    { trait_type: "source registry", value: "Gold Standard" },
-    { trait_type: "vintage", value: vintage },
-    { trait_type: "serial number", value: serialNumber },
+    { trait_type: "Project Name", value: projectName },
+    { trait_type: "Country", value: country },
+    { trait_type: "Quantity", value: quantity},
+    { trait_type: "Carbon Type", value:  classification() ? "Efficiency/Reduction Credits": "Renewable Energy"},
+    { trait_type: "Source Registry", value: "Gold Standard" },
+    { trait_type: "Vintage", value: vintage },
+    { trait_type: "Serial Number", value: serialNumber },
   ];
 
   function mintNft() {
@@ -122,8 +140,8 @@ const Bridge = () => {
 
     formData.append("network", "devnet");
     formData.append("creator_wallet", wallet.publicKey);
-    formData.append("name", "hundo");
-    formData.append("description", "cmon get a hundo");
+    formData.append("name", "carbo");
+    formData.append("description", "Tokenized carbon credits");
     formData.append("symbol", "CAR");
     formData.append("attributes", JSON.stringify(attrib));
     formData.append("external_url", "www.carbovalent.com");
@@ -161,14 +179,14 @@ const Bridge = () => {
       });
   }
 
-  const mintMetaplex = async () => {
+  const mintRefrenceNft = async () => {
     try {
       const { uri } = await mx.nfts().uploadMetadata({
         name: "Carbovalent",
         description:
           "A batch of tokenized carbon credits on the Carbovalent protocol",
         attributes: attrib,
-        image: "https://metadata.y00ts.com/y/13117.png",
+        image: "https://mihqv6vpi2l6vkhk2knx64kcfvabbf2filzrpwi6j4l6qzvins3a.arweave.net/Yg8K-q9Gl-qo6tKbf3FCLUAQl0VC8xfZHk8X6GaobLY",
       });
 
       await mx.nfts().create(
@@ -177,6 +195,7 @@ const Bridge = () => {
           name: "Carbon Credit Batch",
           sellerFeeBasisPoints: 0,
           isMutable: false,
+          isCollection: true,
         },
         { commitment: "confirmed" }
       );
@@ -186,6 +205,7 @@ const Bridge = () => {
       }
     }
   };
+
 
   const handleRegistry = (e) => {
     if (e.target.value === "null") {
@@ -210,29 +230,23 @@ const Bridge = () => {
     if (formNo === 1 && registryName) {
       setFormNo(formNo + 1);
     } else if (formNo === 2 && serialNumber) {
-      //save state of issued credits
       setSearchQuery(serialNumber);
-      setSearchQuery(serialNumber);
-      setCountry(data[0].project.country);
-      setQuantity(data[0].number_of_credits);
-      setVintage(data[0].vintage);
-      setProjectName(data[0].project.name);
       setFormNo(formNo + 1);
     } else if (formNo === 3) {
+      setIssuanceStatus("false");
       setFormNo(formNo + 1);
     } else if (formNo === 4) {
       //switch API to retired credits
-      setIssuanceStatus("false");
-      setFormNo(formNo + 1);
-      // mintNft() => Shyft API;
-    } else if (formNo === 5) {
-      //save state of retired credits
       setSearchQuery(serialNumber);
       setCountry(data[0].project.country);
       setQuantity(data[0].number_of_credits);
       setVintage(data[0].vintage);
       setProjectName(data[0].project.name);
-      mintMetaplex();
+      setProjectType(data[0].project.type);
+      setFormNo(formNo + 1);
+    } else if (formNo === 5) {
+      //save state of retired credits
+      mintRefrenceNft();
     } else {
       toast.error("Please fillup all input field");
     }
@@ -421,11 +435,12 @@ const Bridge = () => {
                     <div className=" rounded-5xl outline-dashed outline-[#1B71E8] p-5">
                       <div className="flex flex-col mb-2">
                         <label htmlFor="projectName">PROJECT NAME</label>
-                        <b>{data[0].id}</b>
+                        <b>{data[0].project.name}</b>
                       </div>
                       <div className="flex flex-col mb-2">
                         <label htmlFor="thana">SERIAL NUMBER</label>
-                        <b>{serialNumber}</b>
+                        {/* <b>{serialNumber}</b> */}
+                        <b>{data[0].serial_number}</b>
                       </div>
                       <div className="flex flex-col mb-2">
                         <label htmlFor="post">REGISTRY</label>
@@ -548,7 +563,7 @@ const Bridge = () => {
                     <div className=" rounded-5xl outline-dashed outline-[#1B71E8] p-5">
                       <div className="flex flex-col mb-2">
                         <label htmlFor="projectName">PROJECT NAME</label>
-                        <b>{data[0].id}</b>
+                        <b>{data[0].project.name}</b>
                       </div>
                       <div className="flex flex-col mb-2">
                         <label htmlFor="thana">SERIAL NUMBER</label>
