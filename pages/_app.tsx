@@ -5,7 +5,7 @@ import "../styles/buttons.css";
 import "../styles/responsive.css";
 import "../styles/card.css";
 import "../styles/account.css";
-import "../styles/fractionalize.css";
+import "../styles/retire.css";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletProvider } from "@solana/wallet-adapter-react";

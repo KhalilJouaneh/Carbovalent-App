@@ -1,43 +1,23 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { OpenNavbar } from "../components/OpenNavbar";
-import Image from "next/image";
 import useSWR from "swr";
 import { Loading } from "../components/Loading";
 import { Footer } from "../components/Footer";
 import bs58 from "bs58";
 import axios from "axios";
-// import { confirmTransactionFromFrontend } from "shyft-js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
   Metaplex,
   walletAdapterIdentity,
   bundlrStorage,
-  findMetadataPda,
-  toMetaplexFile,
-  NFTSettingService,
-  UploadMetadataInput,
 } from "@metaplex-foundation/js";
-import {
-  DataV2,
-  createCreateMetadataAccountV2Instruction,
-  createUpdateMetadataAccountV2Instruction,
-  TokenStandard,
-} from "@metaplex-foundation/mpl-token-metadata";
-import fs from "fs";
-import { createMint } from "@solana/spl-token";
-import { toast } from "react-hot-toast";
 import { signAndConfirmTransaction } from "../utils/utilityfunc.js";
 import { SignMessage } from "../components/SignMessage";
-import {
-  clusterApiUrl,
-  Connection,
-  PublicKey,
-  Transaction,
-  SystemProgram,
-} from "@solana/web3.js";
+import { clusterApiUrl, Connection } from "@solana/web3.js";
+// import { ToastContainer } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+import toast, { Toaster } from "react-hot-toast";
 import carbovalentLogo from "../public/carbovalentlogo.png";
 
 const Bridge = () => {
@@ -90,6 +70,7 @@ const Bridge = () => {
   const [vintage, setVintage] = useState("");
   const [projectType, setProjectType] = useState("");
   const [projectDeveloper, setProjectDeveloper] = useState("");
+  const [projectMethodology, setProjectMethodology] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [issuanceStatus, setIssuanceStatus] = useState("true");
 
@@ -125,20 +106,22 @@ const Bridge = () => {
   };
 
   let attrib = [
-    { trait_type: "Project Name", value: projectName },
+    { trait_type: "Project_Name", value: projectName },
     { trait_type: "Country", value: country },
-    { trait_type: "Carbon Credit Units", value: quantity },
+    { trait_type: "Carbon_Credit_Units_(tC02e)", value: quantity },
+    { trait_type: "Units_Retired_(tC02e)", value: 0 },
     {
-      trait_type: "Carbon Type",
+      trait_type: "Carbon_Type",
       value: classification()
         ? "Efficiency/Reduction Credits"
         : "Renewable Energy",
     },
-    { trait_type: "Project Developer", value: projectDeveloper },
-    { trait_type: "Status", value: "Bridged" },
-    { trait_type: "Source Registry", value: "Gold Standard" },
     { trait_type: "Vintage", value: vintage },
-    { trait_type: "Serial Number", value: serialNumber },
+    { trait_type: "Status", value: "Bridged" },
+    { trait_type: "Project_Developer", value: projectDeveloper },
+    { trait_type: "Methodology", value: projectMethodology },
+    { trait_type: "Source_Registry", value: "Gold Standard" },
+    { trait_type: "Serial_Number", value: serialNumber },
   ];
 
   function mintNft() {
@@ -148,7 +131,10 @@ const Bridge = () => {
     formData.append("network", "devnet");
     formData.append("creator_wallet", wallet.publicKey);
     formData.append("name", "Carbovalent");
-    formData.append("description", "A batch of tokenized carbon credits on the Carbovalent protocol");
+    formData.append(
+      "description",
+      "A batch of tokenized carbon credits on the Carbovalent protocol"
+    );
     formData.append("symbol", "CAR");
     formData.append("attributes", JSON.stringify(attrib));
     formData.append("external_url", "www.carbovalent.com");
@@ -193,7 +179,6 @@ const Bridge = () => {
         description:
           "A batch of tokenized carbon credits on the Carbovalent protocol",
         attributes: attrib,
-        // image: "https://mihqv6vpi2l6vkhk2knx64kcfvabbf2filzrpwi6j4l6qzvins3a.arweave.net/Yg8K-q9Gl-qo6tKbf3FCLUAQl0VC8xfZHk8X6GaobLY",
         image: classification()
           ? "https://fsvotd7amqfv4zrzoz3zttjnzponin3edggnw4zp5rcmjrd4jhka.arweave.net/LKrpj-BkC15mOXZ3mc0ty9zUN2QZjNtzL-xExMR8SdQ"
           : "https://qa2fcdfanoz3n7mleg5wbfofzngnksvcdbxc6ul6oocd6eqmlcqq.arweave.net/gDRRDKBrs7b9iyG7YJXFy0zVSqIYbi9RfnOEPxIMWKE",
@@ -202,21 +187,16 @@ const Bridge = () => {
       await mx.nfts().create(
         {
           uri: uri,
-          name: "Carbon Credit Batch",
+          name: `Carbon Credit Batch`,
           sellerFeeBasisPoints: 0,
           isMutable: true,
           isCollection: true,
         },
         { commitment: "confirmed" }
       );
+      setFormNo(formNo + 1);
 
-      await mx.tokens().createTokenWithMint({
-        decimals: 0,
-        owner: wallet.publicKey,
-        tokenName: "Solana Carbon Tonne",
-        tokenSymbol: "SCT",
-        initialSupply: quantity,
-      })
+      toast.success("Succesful bridging");
     } catch (err) {
       if (err.message !== "User rejected the request.") {
         throw err;
@@ -260,11 +240,15 @@ const Bridge = () => {
       setVintage(data[0].vintage);
       setProjectName(data[0].project.name);
       setProjectType(data[0].project.type);
+      setProjectMethodology(data[0].project.methodology);
       setProjectDeveloper(data[0].project.project_developer);
       setFormNo(formNo + 1);
     } else if (formNo === 5) {
       //save state of retired credits
+      setFormNo(formNo + 1);
       mintRefrenceNft();
+    } else if (formNo === 6) {
+      setFormNo(formNo - formNo + 1);
     } else {
       toast.error("Please fillup all input field");
     }
@@ -314,12 +298,19 @@ const Bridge = () => {
 
   return (
     <>
+      <Toaster
+        position="top-right"
+        containerStyle={{
+          top: 20,
+          bottom: 20,
+        }}
+      />
       <OpenNavbar />
 
       {true ? (
         <>
           <div className="flex justify-center items-center">
-            <ToastContainer />
+            {/* <ToastContainer /> */}
             <div className="p-7">
               <div className="flex justify-center items-center">
                 <ul className="steps">
@@ -335,6 +326,9 @@ const Bridge = () => {
                   ></li>
                   <li
                     className={`${formNo >= 5 ? "step step-primary" : "step"}`}
+                  ></li>
+                  <li
+                    className={`${formNo >= 6 ? "step step-primary" : "step"}`}
                   ></li>
                 </ul>
               </div>
@@ -360,6 +354,7 @@ const Bridge = () => {
                     <select
                       className="select w-full max-w-xs text-base mx-auto"
                       onChange={handleRegistry}
+                      required
                     >
                       <option disabled selected className="text-base">
                         Select registry
@@ -450,7 +445,7 @@ const Bridge = () => {
                       network is a one-way and permanent process.
                     </p>
 
-                    <div className=" rounded-5xl outline-dashed outline-[#1B71E8] p-5">
+                    <div className=" rounded-5xl outline-double outline-[#1B71E8] p-5">
                       <div className="flex flex-col mb-2">
                         <label htmlFor="projectName">PROJECT NAME</label>
                         <b>{data[0].project.name}</b>
@@ -578,7 +573,7 @@ const Bridge = () => {
                       network is a one-way and permanent process.
                     </p>
 
-                    <div className=" rounded-5xl outline-dashed outline-[#1B71E8] p-5">
+                    <div className=" rounded-5xl outline-double outline-[#1B71E8] p-5">
                       <div className="flex flex-col mb-2">
                         <label htmlFor="projectName">PROJECT NAME</label>
                         <b>{data[0].project.name}</b>
@@ -622,6 +617,37 @@ const Bridge = () => {
                         Bridge Credits
                       </button>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {formNo === 6 && (
+                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5 ">
+                  <div className="flex flex-col mb-2 max-w-xl">
+                    <p className="text-center text-[20px] pb-5">
+                      You have succesfully migrated{" "}
+                      <b>{quantity} carbon credits</b> to Carbovalent's meta
+                      registry. Find bridged carbon credits in the connected
+                      Solana wallet.
+                    </p>
+                    <img
+                      src={
+                        classification()
+                          ? "https://fsvotd7amqfv4zrzoz3zttjnzponin3edggnw4zp5rcmjrd4jhka.arweave.net/LKrpj-BkC15mOXZ3mc0ty9zUN2QZjNtzL-xExMR8SdQ"
+                          : "https://qa2fcdfanoz3n7mleg5wbfofzngnksvcdbxc6ul6oocd6eqmlcqq.arweave.net/gDRRDKBrs7b9iyG7YJXFy0zVSqIYbi9RfnOEPxIMWKE"
+                      }
+                      className="refrencenft-img"
+                    />
+                  </div>
+
+                  <div className="mt-4 gap-3 flex justify-center items-center">
+                    <button
+                      onClick={next}
+                      id="verify"
+                      className="rounded-4xl px-3 py-2 text-lg rounded-md  text-white bg-blue-500 w-[200px]"
+                    >
+                      Done
+                    </button>
                   </div>
                 </div>
               )}

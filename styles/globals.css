@@ -159,3 +159,13 @@ option {
   margin: auto;
 }
 
+.refrencenft-img {
+  height: auto;
+  width: auto;
+  max-width: auto;
+  max-height: 350px;
+  margin: auto;
+  border-radius: 32px;
+  margin-bottom: 25px;
+}
+

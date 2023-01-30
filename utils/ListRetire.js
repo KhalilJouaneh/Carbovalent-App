@@ -6,6 +6,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Loading } from "../components/Loading";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import {
+  Metaplex,
+  walletAdapterIdentity,
+  bundlrStorage,
+} from "@metaplex-foundation/js";
 
 export const ListRetire = () => {
   const xKey = "7DmQi-SJmO16yq6u";
@@ -13,6 +18,16 @@ export const ListRetire = () => {
   const [loading, setLoading] = useState(false);
   const [dataFetched, setDataFetched] = useState();
   const wallet = useWallet(); //solana wallet object
+  const connection = new Connection(clusterApiUrl("devnet"));
+  const mx = Metaplex.make(connection);
+
+  mx.use(walletAdapterIdentity(wallet)).use(
+    bundlrStorage({
+      address: "https://devnet.bundlr.network",
+      providerUrl: "https://api.devnet.solana.com",
+      timeout: 60000,
+    })
+  );
 
   const [nftSelected, setNftSelected] = useState([]);
   const [nftAddr, setNftAddr] = useState("");
@@ -45,6 +60,7 @@ export const ListRetire = () => {
 
         if (res.data.success === true) {
           setNfts(res.data.result);
+          console.log(nfts);
 
           let flag = 0;
           nfts?.forEach((element) => {
@@ -95,72 +111,34 @@ export const ListRetire = () => {
       });
   };
 
-  const mintSemiFungibleToken = (e) => {
-    e.preventDefault();
+  let attrib = [
+    // { trait_type: "Carbon Credit Units (tC02e)", value:  },
+    { trait_type: "Units Retired (tC02e)", value: 100 },
+    { trait_type: "Status", value: "Retired" },
+  ];
 
-    //Note, we are not mentioning update_authority here for now
-    let nftUrl = `https://api.shyft.to/sol/v1/nft/read_all?network=mainnet-beta&address=${wallet.publicKey}`;
-    axios({
-      // Endpoint to send files
-      url: nftUrl,
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": xKey,
-      },
-      // Attaching the form data
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log(res.data);
-        setDataFetched(res.data);
-        setLoaded(true);
-      })
 
-      // Catch errors if any
-      .catch((err) => {
-        console.warn(err);
+  const retireNft = async () => {
+    try {
+      const { uri } = await mx.nfts().uploadMetadata({
+        attributes: attrib,
       });
+
+      await mx.nfts().update({
+        nftOrSft: mintAddress,
+        name: "Updated Name",
+        // uri: uri,
+      });
+
+    } catch (err) {
+      if (err.message !== "User rejected the request.") {
+        throw err;
+      }
+    }
   };
 
   return (
     <>
-      <div className="grd-back">
-        <div className="container-lg">
-          {/* {!wallet.publicKey && <></>}
-          {wallet.publicKey && (
-            <div className="w-50 border border-primary rounded-3 mx-auto">
-              <div className="form-container p-3">
-                <form>
-                  <div className="row d-flex justify-content-center">
-                    <div className="col-12 p-2">
-                      <select
-                        name="network"
-                        className="form-control form-select"
-                        id=""
-                        onChange={(e) => setNetwork(e.target.value)}
-                      >
-                        <option value="devnet">Devnet</option>
-                        <option value="testnet">Testnet</option>
-                        <option value="mainnet-beta">Mainnet Beta</option>
-                      </select>
-                    </div>
-                    <div className="col-12 p-2">
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter Wallet Id"
-                        value={wallet.publicKey}
-                      />
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          )} */}
-        </div>
-      </div>
-
       {loading ? <Loading /> : <></>}
 
       {!wallet.publicKey ? (
@@ -177,24 +155,27 @@ export const ListRetire = () => {
                         <figure>
                           <img
                             src={nft.image_uri}
-                            width={250}
-                            height={250}
+                            width={300}
+                            // height={100vh}
                             className="fract-img"
                             alt=""
                           />
                         </figure>
                         <div className="card-body">
-                          <h2 className="card-title">
+                          <p className="text-center font-bold">
                             {nft.name ? nft.name : "No name"}
-                          </h2>
+                          </p>
+                          {/* <p>{nft.name ? "Available units (tC02): " + nft.mint : "DNE"}</p> */}
+                          <p>
+                            {nft.attributes.Vintage
+                              ? "Vintage: " + nft.attributes.Vintage
+                              : "DNE"}
+                          </p>
+
                           <div className="card-buttons">
                             {/* <AiOutlinePlusCircle size={35} /> */}
-                            <button className="btn fract-btn">
-                              Fractionalize
-                            </button>
-                            <button className="btn fract-btn">
-                              Retire
-                            </button>
+
+                            <button className="btn retire-btn" onClick={retireNft}>Retire</button>
                           </div>
                         </div>
                       </div>
