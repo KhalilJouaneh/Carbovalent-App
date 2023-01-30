@@ -20,6 +20,8 @@ export const ListRetire = () => {
   const wallet = useWallet(); //solana wallet object
   const connection = new Connection(clusterApiUrl("devnet"));
   const mx = Metaplex.make(connection);
+  const [amountToRetire, setAmountToRetire] = useState(0);
+  const [counter, setCounter] = useState(1);
 
   mx.use(walletAdapterIdentity(wallet)).use(
     bundlrStorage({
@@ -111,25 +113,34 @@ export const ListRetire = () => {
       });
   };
 
-  let attrib = [
-    // { trait_type: "Carbon Credit Units (tC02e)", value:  },
-    { trait_type: "Units Retired (tC02e)", value: 100 },
-    { trait_type: "Status", value: "Retired" },
-  ];
 
-
-  const retireNft = async () => {
+  const retireNft = async (mintAddr) => {
     try {
-      const { uri } = await mx.nfts().uploadMetadata({
-        attributes: attrib,
+      const nft = await mx
+        .nfts()
+        .findByMint({ mintAddress: new PublicKey(mintAddr) });
+      console.log(nft);
+
+      const updatedAttributes = nft.json.attributes.map((attribute) => {
+        if (attribute.trait_type === "Carbon_Credit_Units") {
+          return { trait_type: "Carbon_Credit_Units", value: nft.json.attributes. };
+        } else if (attribute.trait_type === "Status") {
+          return { trait_type: "Status", value: "Retired" };
+        } else if (attribute.trait_type === "Units_Retired") {
+          return { trait_type: "Units_Retired", value: amountToRetire };
+        }
+        else return attribute;
+      });
+
+      const { uri: newUri } = await mx.nfts().uploadMetadata({
+        ...nft.json,
+        attributes: updatedAttributes,
       });
 
       await mx.nfts().update({
-        nftOrSft: mintAddress,
-        name: "Updated Name",
-        // uri: uri,
+        nftOrSft: nft,
+        uri: newUri,
       });
-
     } catch (err) {
       if (err.message !== "User rejected the request.") {
         throw err;
@@ -155,27 +166,104 @@ export const ListRetire = () => {
                         <figure>
                           <img
                             src={nft.image_uri}
-                            width={300}
+                            width={500}
                             // height={100vh}
                             className="fract-img"
-                            alt=""
+                            alt="image of nft"
                           />
                         </figure>
                         <div className="card-body">
-                          <p className="text-center font-bold">
+                          <p className="text-center font-bold mb-5">
                             {nft.name ? nft.name : "No name"}
                           </p>
-                          {/* <p>{nft.name ? "Available units (tC02): " + nft.mint : "DNE"}</p> */}
+                          <p className="mb-5">
+                            {nft.attributes.Carbon_Credit_Units
+                              ? "Available units (tC02): " +
+                                nft.attributes.Carbon_Credit_Units
+                              : "DNE"}
+                          </p>
+                          <p className="mb-5">
+                            {"Retired units (tC02): " +
+                              nft.attributes.Units_Retired - amountToRetire}
+                          </p>
+                          <p className="mb-5">
+                            {nft.attributes.Vintage
+                              ? "Status: " + nft.attributes.Status
+                              : "DNE"}
+                          </p>
+                          {/* <p>
+                            {nft.attributes.Carbon_Type
+                              ? "Type: " + nft.attributes.Carbon_Type
+                              : "DNE"}
+                          </p>
+                          <p>
+                            {nft.attributes.Carbon_Type
+                              ? "Type: " + nft.attributes.Carbon_Type
+                              : "DNE"}
+                          </p>
                           <p>
                             {nft.attributes.Vintage
                               ? "Vintage: " + nft.attributes.Vintage
                               : "DNE"}
                           </p>
+                          }
+                          {/* <p>
+                            {nft.attributes.Vintage
+                              ? "Methodology: " + nft.attributes.Methodology
+                              : "DNE"}
+                          </p> */}
 
                           <div className="card-buttons">
                             {/* <AiOutlinePlusCircle size={35} /> */}
 
-                            <button className="btn retire-btn" onClick={retireNft}>Retire</button>
+                            {/* <div>
+                              <label for="Quantity" class="sr-only ">
+                                {" "}
+                                Quantity{" "}
+                              </label>
+
+                              <div class="flex gap-3 ml-[40px]">
+                                <button
+                                  type="button"
+                                  className=" h-10 leading-10 text-gray-600 transition hover:opacity-75"
+                                  onClick={() => {setCounter(counter-1)}}
+                                >
+                                  &minus;
+                                </button>
+
+                                <input
+                                  type="number"
+                                  id="Quantity"
+                                  value={counter}
+                                  className="w-20 h-10 border-gray-200 retirement-input"
+                                  // onChange={() => {setAmountToRetire(counte  r)}}
+                                />
+
+                                <button
+                                  type="button"
+                                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75"
+                                  onClick={() => {setCounter(counter+1)}}
+                                >
+                                  &#43;
+                                </button>
+                              </div>
+                            </div> */}
+
+                            <input
+                              type="text"
+                              placeholder="Enter amount to retire"
+                              className="mb-10 p-4"
+                              onChange={(event) => setAmountToRetire(event.target.value)}
+                            />
+
+                            <button
+                              className="btn retire-btn"
+                              onClick={(event) => {
+                                retireNft(nft.mint);
+                              }}
+                            >
+                              Retire
+                            </button>
                           </div>
                         </div>
                       </div>

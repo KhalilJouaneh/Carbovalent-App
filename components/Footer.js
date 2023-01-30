@@ -9,17 +9,18 @@ import { BsInstagram } from "react-icons/bs";
 export function Footer() {
   return (
     <>
-      <footer className="footer p-10 bg-[#1B71E8] text-base text-white h-[250px]">
+      <footer className="footer p-10 bg-[#1B71E8] text-base text-white h-[250px] ">
           <div>
             <Image
               src={carbovalentWhiteText}
               height={225}
               width={225}
               alt="Carbovalent logo"
+              className="pt-20"
             />
             <p>info@carbovalent.com</p>
 
-            <div className="pt-4">
+            <div className="pt-20">
               <div className="grid grid-flow-col gap-5">
                 <a
                   href="https://carbovalent.com/"
@@ -51,16 +52,15 @@ export function Footer() {
                 </a>
               </div>
             </div>
-
           </div>
 
-          <div className="">
+          <div className="pt-20">
             <a className="link link-hover">Home</a>
             <a className="link link-hover">App</a>
             <a className="link link-hover">ThinkCarbon</a>
             <a className="link link-hover">Contact Us</a>
           </div>
-          <div>
+          <div className="pt-20">
             <a className="link link-hover">Disclaimer</a>
             <a className="link link-hover">Documentation</a>
             <a className="link link-hover">Terms &amp; Conditions</a>
@@ -68,7 +68,7 @@ export function Footer() {
           </div>
       </footer>
 
-      <footer className="footer px-10 py-10 text-base-content bg-[#1B71E8] h-[300px]">
+      <footer className="footer px-10 py-[150px] text-base-content bg-[#1B71E8] h-[300px]">
         <div className="items-center grid-flow-col text-white">
           <p>Copyright &copy; 2022, carbovalent.com. All Rights Reserved.</p>
         </div>

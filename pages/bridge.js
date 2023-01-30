@@ -15,8 +15,7 @@ import {
 import { signAndConfirmTransaction } from "../utils/utilityfunc.js";
 import { SignMessage } from "../components/SignMessage";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
+
 import toast, { Toaster } from "react-hot-toast";
 import carbovalentLogo from "../public/carbovalentlogo.png";
 
@@ -108,8 +107,8 @@ const Bridge = () => {
   let attrib = [
     { trait_type: "Project_Name", value: projectName },
     { trait_type: "Country", value: country },
-    { trait_type: "Carbon_Credit_Units_(tC02e)", value: quantity },
-    { trait_type: "Units_Retired_(tC02e)", value: 0 },
+    { trait_type: "Carbon_Credit_Units", value: quantity },
+    { trait_type: "Units_Retired", value: "0" },
     {
       trait_type: "Carbon_Type",
       value: classification()
@@ -123,6 +122,10 @@ const Bridge = () => {
     { trait_type: "Source_Registry", value: "Gold Standard" },
     { trait_type: "Serial_Number", value: serialNumber },
   ];
+
+  const parseCreditNumber = parseInt(
+    quantity
+  ).toLocaleString(); //format number of credits with commas
 
   function mintNft() {
     // e.preventDefault();
@@ -245,7 +248,6 @@ const Bridge = () => {
       setFormNo(formNo + 1);
     } else if (formNo === 5) {
       //save state of retired credits
-      setFormNo(formNo + 1);
       mintRefrenceNft();
     } else if (formNo === 6) {
       setFormNo(formNo - formNo + 1);
@@ -334,7 +336,7 @@ const Bridge = () => {
               </div>
 
               {formNo === 1 && (
-                <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5 box-border">
+                <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5 box-border mb-20">
                   <div className="flex flex-col mb-2 max-w-xl">
                     <h4 className="text-3xl leading-normal mt-2 mb-2 m-auto font-bold">
                       Select Source Registry
@@ -384,7 +386,7 @@ const Bridge = () => {
               )}
 
               {formNo === 2 && (
-                <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5">
+                <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5 mb-20">
                   <div className="flex flex-col mb-2 max-w-xl">
                     <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Issuance Serial Number
@@ -430,7 +432,7 @@ const Bridge = () => {
               )}
 
               {formNo === 3 && (
-                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5">
+                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5 mb-20">
                   <div className="flex flex-col mb-2 max-w-xl">
                     <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Initiate Bridge
@@ -495,7 +497,7 @@ const Bridge = () => {
               )}
 
               {formNo === 4 && (
-                <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5">
+                <div className="rounded-5xl outline outline-offset-1 outline-[#1B71E8] p-7 mt-5 mb-20">
                   <SignMessage />
                   <div className="flex flex-col mb-2 max-w-xl">
                     <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
@@ -511,7 +513,7 @@ const Bridge = () => {
                       <br />
                       <button
                         onClick={copyToClipboard}
-                        className="bg-white text-gray-700 font-semibold py-4 px-4 border rounded-4xl border-blue-500 text-left italic min-w-fit"
+                        className="bg-white text-gray-700 font-semibold py-4 px-4 border rounded-4xl border-blue-500 text-left italic min-w-fit text-base"
                       >
                         {copied
                           ? "Copied"
@@ -558,7 +560,7 @@ const Bridge = () => {
               )}
 
               {formNo === 5 && (
-                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5">
+                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5 mb-20">
                   <div className="flex flex-col mb-2 max-w-xl">
                     <h4 className="text-3xl leading-normal mt-2 mb-2 font-bold mx-auto">
                       Bridge Credits
@@ -622,11 +624,11 @@ const Bridge = () => {
               )}
 
               {formNo === 6 && (
-                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5 ">
+                <div className="rounded-5xl outline outline-[#1B71E8] p-7 mt-5 mb-20 ">
                   <div className="flex flex-col mb-2 max-w-xl">
                     <p className="text-center text-[20px] pb-5">
                       You have succesfully migrated{" "}
-                      <b>{quantity} carbon credits</b> to Carbovalent's meta
+                      <b>{parseCreditNumber} carbon credits</b> to Carbovalent's meta
                       registry. Find bridged carbon credits in the connected
                       Solana wallet.
                     </p>

@@ -2,7 +2,7 @@ import { useWallet } from "@solana/wallet-adapter-react";
 import React from "react";
 import { fetcher, useDataFetch } from "../utils/use-data-fetch";
 import { Button, ButtonState } from "./items/button";
-import { toast } from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import { Transaction } from "@solana/web3.js";
 import { SignCreateData } from "../pages/api/sign/create";
 import { SignValidateData } from "../pages/api/sign/validate";
@@ -81,6 +81,7 @@ export function SignMessage() {
 
 
   return (
-       <></>
+       <>
+       </>
   );
 }

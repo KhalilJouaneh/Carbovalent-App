@@ -40,6 +40,8 @@
     padding-bottom: 30px;
     padding-top: 30px;
     padding-left: 10px;
+    margin: auto;
+    /* display: flex; */
 }
 
 
@@ -47,13 +49,19 @@
     color: #fdfdfd;
     text-transform: capitalize;
     font-size: medium;
-    padding: 15px;
+    /* padding: 15px; */
     border-radius: 50px;  
     background-color: #1b71e8;
-    width: 50%;
+    width: 40%;
     border: none;
+    margin-left: 60px;
+    margin-top: 20px
   }
 
   .fract-btn:hover {
     background-color: #ADD8E6 ;
+  }
+
+  .retirement-input {
+    border-radius: 10px;
   }
