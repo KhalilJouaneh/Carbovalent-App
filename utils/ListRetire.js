@@ -123,7 +123,7 @@ export const ListRetire = () => {
 
       const updatedAttributes = nft.json.attributes.map((attribute) => {
         if (attribute.trait_type === "Carbon_Credit_Units") {
-          return { trait_type: "Carbon_Credit_Units", value: nft.json.attributes. };
+          return { trait_type: "Carbon_Credit_Units", value:  "27055"};
         } else if (attribute.trait_type === "Status") {
           return { trait_type: "Status", value: "Retired" };
         } else if (attribute.trait_type === "Units_Retired") {
@@ -184,7 +184,7 @@ export const ListRetire = () => {
                           </p>
                           <p className="mb-5">
                             {"Retired units (tC02): " +
-                              nft.attributes.Units_Retired - amountToRetire}
+                              nft.attributes.Units_Retired}
                           </p>
                           <p className="mb-5">
                             {nft.attributes.Vintage

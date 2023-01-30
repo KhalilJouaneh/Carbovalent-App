@@ -628,7 +628,7 @@ const Bridge = () => {
                   <div className="flex flex-col mb-2 max-w-xl">
                     <p className="text-center text-[20px] pb-5">
                       You have succesfully migrated{" "}
-                      <b>{parseCreditNumber} carbon credits</b> to Carbovalent's meta
+                      <b>{parseCreditNumber} carbon credits</b> to Carbovalent&apos;s meta
                       registry. Find bridged carbon credits in the connected
                       Solana wallet.
                     </p>
