@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   console.log("req.body", req.body);
 
   const resp = await fetch(
-    `https://api.goldstandard.org/credits?query=&size=25&page=${pageNumber}&issuances=true`
+    `https://api.goldstandard.org/credits?query=${searchQuery}&size=25&page=${pageNumber}&issuances=true&sortColumn=${column}&sortDirection=${direction}`
   );
 
   const data = await resp.json();

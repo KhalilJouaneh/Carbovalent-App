@@ -54,6 +54,7 @@ export default function Registry() {
   const [column, setColumn] = useState("");
   const [direction, setDirection] = useState(""); //direction of sort
   const [GSdata, setGSdata] = useState(); //data retrieved from the gold standard api
+  const [isGSloading, setIsGSloading] = useState(); //loading state for the gold standard api
 
   useEffect(() => {
     async function getGoldStandrad() {
@@ -64,16 +65,11 @@ export default function Registry() {
         direction: direction,
       };
 
-      console.log("body: ", JSON.stringify(body));
-
-
       const res = await fetch("/api/registry/goldstandard", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify(body),
       });
-
-      console.log("res: ", res);
 
       const data = await res.json();
 
@@ -81,24 +77,26 @@ export default function Registry() {
         throw new Error(`Data fetch failed ${data} `);
       }
 
-      console.log("gs data: ", data);
-
       return data;
     }
 
     async function fetchData() {
       try {
+        setIsGSloading(true);
         const data = await getGoldStandrad();
         setGSdata(data); // set the retrieved data to the GSdata state variable
+        setIsGSloading(false);
       } catch (error) {
         console.log(error);
       }
     }
 
     fetchData();
-  }, []);
+  }, [pageNumber, searchQuery, column, direction]);
 
-  const handleDecrementPage = (event) => {
+  if (isGSloading) return <Loading />;
+
+  const handleDecrementPage = () => {
     if (pageNumber === 1) {
       return null;
     } else {
