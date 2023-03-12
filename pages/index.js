@@ -64,10 +64,12 @@ export default function Registry() {
         direction: direction,
       };
 
+      console.log("body: ", JSON.stringify(body));
+
 
       const res = await fetch("/api/registry/goldstandard", {
         method: "POST",
-        headers: { "content-type": "text/plain" },
+        headers: { "content-type": "application/json" },
         body: JSON.stringify(body),
       });
 
