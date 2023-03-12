@@ -12,7 +12,6 @@ import { PublicKey, SystemProgram } from "@solana/web3.js";
 import idl from "../idl.json";
 import { findProgramAddressSync } from "@project-serum/anchor/dist/cjs/utils/pubkey";
 import { utf8 } from "@project-serum/anchor/dist/cjs/utils/bytes";
-import { publicKey } from "@project-serum/anchor/dist/cjs/utils";
 import { Footer } from "../components/Footer";
 import { GoPencil } from "react-icons/go";
 import { IoMdCheckmarkCircle } from "react-icons/io";

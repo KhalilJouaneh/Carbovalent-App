@@ -60,6 +60,8 @@ const wallets = useMemo(
   ],
   [network]
 )
+
+
 {
   return (
     <WalletProvider autoConnect wallets={wallets} >

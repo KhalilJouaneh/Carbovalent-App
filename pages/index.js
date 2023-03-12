@@ -1,6 +1,5 @@
 import { OpenNavbar } from "../components/OpenNavbar";
 import { useWallet } from "@solana/wallet-adapter-react";
-import useSWR from "swr";
 import { Loading } from "../components/Loading";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,14 +7,13 @@ import { useStore } from "../store/store";
 import GoldStandardLogo from "/public/GoldStandard.jpg";
 import BlueCarbonImg from "/public/blue_carbon.png";
 import RenewableCarbonImg from "/public/renewable_energy.png";
-import shallow from "zustand/shallow";
 import { style } from "../components/Header.style.js";
 import { AiOutlineSearch } from "react-icons/ai";
 import { RxTable } from "react-icons/rx";
 import { MdFormatListBulleted } from "react-icons/md";
 import { IoFilter } from "react-icons/io5";
 import { RegistryFilter } from "../components/RegistryFilters";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Footer } from "../components/Footer";
 
 export default function Registry() {
@@ -37,44 +35,66 @@ export default function Registry() {
     setCardTableToggle,
     filterToggle,
     setFilterToggle,
-  ] = useStore(
-    (state) => [
-      state.searchQuery,
-      state.updateSearchQuery,
-      state.pageNumber,
-      state.incrementPage,
-      state.decrementPage,
-      state.resetPageNumber,
-      state.cardTableToggle,
-      state.setCardTableToggle,
-      state.filterToggle,
-      state.setFilterToggle,
-    ],
-    shallow
-  );
+  ] = useStore((state) => [
+    state.searchQuery,
+    state.updateSearchQuery,
+    state.pageNumber,
+    state.incrementPage,
+    state.decrementPage,
+    state.resetPageNumber,
+    state.cardTableToggle,
+    state.setCardTableToggle,
+    state.filterToggle,
+    state.setFilterToggle,
+  ]);
 
   //sortColunm=number_of_credits, vintage, certified_date (issuance_date)
   //sortDirection = asc/desc
 
   const [column, setColumn] = useState("");
-  const [direction, setDirection] = useState("");
+  const [direction, setDirection] = useState(""); //direction of sort
+  const [GSdata, setGSdata] = useState(); //data retrieved from the gold standard api
 
-  const fetcher = async () => {
-    const res = await fetch(
-      `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true&sortColumn=${column}&sortDirection=${direction}`
-    );
-    const data = await res.json();
-    return data;
-  };
+  useEffect(() => {
+    async function getGoldStandrad() {
+      const body = {
+        searchQuery: searchQuery,
+        pageNumber: pageNumber,
+        column: column,
+        direction: direction,
+      };
 
-  const { data, error, isLoading } = useSWR(
-    `https://api.goldstandard.org/credits?query=${searchQuery}&size=30&page=${pageNumber}&issuances=true&sortColumn=${column}&sortDirection=${direction}`,
-    fetcher
-  );
 
-  if (error) return "error";
+      const res = await fetch("/api/registry/goldstandard", {
+        method: "POST",
+        headers: { "content-type": "text/plain" },
+        body: JSON.stringify(body),
+      });
 
-  if (isLoading) return <Loading />;
+      console.log("res: ", res);
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(`Data fetch failed ${data} `);
+      }
+
+      console.log("gs data: ", data);
+
+      return data;
+    }
+
+    async function fetchData() {
+      try {
+        const data = await getGoldStandrad();
+        setGSdata(data); // set the retrieved data to the GSdata state variable
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const handleDecrementPage = (event) => {
     if (pageNumber === 1) {
@@ -167,7 +187,7 @@ export default function Registry() {
 
       {true ? (
         <>
-          {data && cardTableToggle ? (
+          {GSdata && cardTableToggle ? (
             <div className="table-container">
               <div className="flex items-center justify-center w-fit mx-auto">
                 <table className="table-fixed max-w-screen-lg border-seperate ">
@@ -183,7 +203,7 @@ export default function Registry() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((project, idx) => {
+                    {GSdata.map((project, idx) => {
                       const parseCreditNumber = parseInt(
                         project.number_of_credits
                       ).toLocaleString(); //format number of credits with commas
@@ -263,7 +283,7 @@ export default function Registry() {
             </div>
           ) : (
             <div className="card-container grid grid-cols-3 gap-[2.75rem] mx-auto auto-rows-fr justify-center">
-              {data?.map((project) => {
+              {GSdata?.map((project) => {
                 const parseCreditNumber = parseInt(
                   project.number_of_credits
                 ).toLocaleString(); //format number of credits with commas
@@ -285,9 +305,17 @@ export default function Registry() {
                 };
 
                 return (
-                  <div className={`font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card ${classification() ? "bg-[#8bdbd8]" : "bg-[#7df399]"}`}>
+                  <div
+                    className={`font-extralight bg-white shadow-lg py-8 px-0 m-auto main-card ${
+                      classification() ? "bg-[#8bdbd8]" : "bg-[#7df399]"
+                    }`}
+                  >
                     <div className="grid  justify-items-center px-3 py-2">
-                      <div className={`flex w-11/12 rounded-full items-center px-2 py-3 ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
+                      <div
+                        className={`flex w-11/12 rounded-full items-center px-2 py-3 ${
+                          classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"
+                        }`}
+                      >
                         <p className="text-white text-[36px] mx-auto">
                           {parseCreditNumber}
                         </p>
@@ -304,7 +332,11 @@ export default function Registry() {
                         </p>
                       </div>
                     </div>
-                    <div className={`mt-4 text-base text-white text-content ${classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"}`}>
+                    <div
+                      className={`mt-4 text-base text-white text-content ${
+                        classification() ? "bg-[#7ad0c5]" : "bg-[#5ff1ac]"
+                      }`}
+                    >
                       <div className="grid grid-rows-4">
                         <div className="card-content">
                           Type:{" "}

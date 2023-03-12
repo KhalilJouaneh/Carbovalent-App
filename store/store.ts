@@ -8,7 +8,7 @@ type Store = {
   userInitialized : boolean;
   filterToggle: boolean;
   cardTableToggle: boolean;
-  resetPageNumber: (pageNummber: number) => void;
+  resetPageNumber: (pageNummber: number) => void; 
 } 
 
 type Actions = {
