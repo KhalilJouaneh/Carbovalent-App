@@ -62,8 +62,9 @@ export const ListRetire = () => {
 
         if (res.data.success === true) {
           setNfts(res.data.result);
-          console.log(nfts);
+          // console.log(nfts);
 
+          //loop through the nfts
           let flag = 0;
           nfts?.forEach((element) => {
             if (element.update_authority === wallet.publicKey.toString()) {
@@ -85,51 +86,29 @@ export const ListRetire = () => {
       });
   }, [wallet.publicKey, network]);
 
-  const burnNFT = (e) => {
-    e.preventDefault();
-
-    //Note, we are not mentioning update_authority here for now
-    let nftUrl = `https://api.shyft.to/sol/v1/nft/burn_detach?network=${network}&address=${wallet.publicKey}&refresh=refresh`;
-    axios({
-      // Endpoint to send files
-      url: nftUrl,
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": xKey,
-      },
-      // Attaching the form data
-    })
-      // Handle the response from backend here
-      .then((res) => {
-        console.log(res.data);
-        setDataFetched(res.data);
-        setLoaded(true);
-      })
-
-      // Catch errors if any
-      .catch((err) => {
-        console.warn(err);
-      });
-  };
-
 
   const retireNft = async (mintAddr) => {
     try {
       const nft = await mx
         .nfts()
-        .findByMint({ mintAddress: new PublicKey(mintAddr) });
-      console.log(nft);
+        .findByMint({ mintAddress: new PublicKey(mintAddr) }); //find NFT by mint address
 
+      console.log("nft attributes: ", nft.json.attributes);
+      console.log("nft carbon credits: ", nft.json.attributes[2]?.value); //need to decrement 
+      console.log("nft retired credits: ", nft.json.attributes[3]?.value); //need to increment
+
+      let carbonCredits = nft.json.attributes[2]?.value; //Get metadata: carbon credit value of NFT
+      let retiredCredits = nft.json.attributes[3]?.value; //Get metadata: retired credit value of NFT
+      
+      //update attribute of NFT
       const updatedAttributes = nft.json.attributes.map((attribute) => {
         if (attribute.trait_type === "Carbon_Credit_Units") {
-          return { trait_type: "Carbon_Credit_Units", value:  "27055"};
+          return { trait_type: "Carbon_Credit_Units", value: carbonCredits - amountToRetire }; //decrement carbon credits
         } else if (attribute.trait_type === "Status") {
           return { trait_type: "Status", value: "Retired" };
         } else if (attribute.trait_type === "Units_Retired") {
-          return { trait_type: "Units_Retired", value: amountToRetire };
-        }
-        else return attribute;
+          return { trait_type: "Units_Retired", value: parseInt(retiredCredits) + parseInt(amountToRetire) }; //incremenet retired credits
+        } else return attribute;
       });
 
       const { uri: newUri } = await mx.nfts().uploadMetadata({
@@ -141,6 +120,7 @@ export const ListRetire = () => {
         nftOrSft: nft,
         uri: newUri,
       });
+    
     } catch (err) {
       if (err.message !== "User rejected the request.") {
         throw err;
@@ -191,75 +171,21 @@ export const ListRetire = () => {
                               ? "Status: " + nft.attributes.Status
                               : "DNE"}
                           </p>
-                          {/* <p>
-                            {nft.attributes.Carbon_Type
-                              ? "Type: " + nft.attributes.Carbon_Type
-                              : "DNE"}
-                          </p>
-                          <p>
-                            {nft.attributes.Carbon_Type
-                              ? "Type: " + nft.attributes.Carbon_Type
-                              : "DNE"}
-                          </p>
-                          <p>
-                            {nft.attributes.Vintage
-                              ? "Vintage: " + nft.attributes.Vintage
-                              : "DNE"}
-                          </p>
-                          }
-                          {/* <p>
-                            {nft.attributes.Vintage
-                              ? "Methodology: " + nft.attributes.Methodology
-                              : "DNE"}
-                          </p> */}
 
                           <div className="card-buttons">
-                            {/* <AiOutlinePlusCircle size={35} /> */}
-
-                            {/* <div>
-                              <label for="Quantity" class="sr-only ">
-                                {" "}
-                                Quantity{" "}
-                              </label>
-
-                              <div class="flex gap-3 ml-[40px]">
-                                <button
-                                  type="button"
-                                  className=" h-10 leading-10 text-gray-600 transition hover:opacity-75"
-                                  onClick={() => {setCounter(counter-1)}}
-                                >
-                                  &minus;
-                                </button>
-
-                                <input
-                                  type="number"
-                                  id="Quantity"
-                                  value={counter}
-                                  className="w-20 h-10 border-gray-200 retirement-input"
-                                  // onChange={() => {setAmountToRetire(counte  r)}}
-                                />
-
-                                <button
-                                  type="button"
-                                  class="w-10 h-10 leading-10 text-gray-600 transition hover:opacity-75"
-                                  onClick={() => {setCounter(counter+1)}}
-                                >
-                                  &#43;
-                                </button>
-                              </div>
-                            </div> */}
-
                             <input
                               type="text"
                               placeholder="Enter amount to retire"
                               className="mb-10 p-4"
-                              onChange={(event) => setAmountToRetire(event.target.value)}
+                              onChange={(event) =>
+                                setAmountToRetire(event.target.value)
+                              }
                             />
 
                             <button
                               className="btn retire-btn"
                               onClick={(event) => {
-                                retireNft(nft.mint);
+                                retireNft(nft.mint); //pass the NFT mint address to the retireNFT function
                               }}
                             >
                               Retire

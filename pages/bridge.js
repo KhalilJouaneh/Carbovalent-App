@@ -242,7 +242,8 @@ const Bridge = () => {
       setFormNo(formNo + 1);
     } else if (formNo === 4) {
       //switch API to retired credits
-      setSearchQuery(serialNumber);
+      setSearchQuery(serialNumber); //set search query to serial number
+      //set state of retired credits
       setCountry(data[0].project.country);
       setQuantity(data[0].number_of_credits);
       setVintage(data[0].vintage);
@@ -253,7 +254,7 @@ const Bridge = () => {
       setFormNo(formNo + 1);
     } else if (formNo === 5) {
       //save state of retired credits
-      mintRefrenceNft();
+      mintRefrenceNft(); //call mint NFT function
     } else if (formNo === 6) {
       setFormNo(formNo - formNo + 1);
     } else {
