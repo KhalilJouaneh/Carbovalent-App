@@ -11,21 +11,22 @@ import shallow from "zustand/shallow";
 import { useStore } from "../store/store.ts";
 
 export function OpenNavbar() {
+  // Zustand state
   const [searchQuery, updateSearchQuery, resetPageNumber] = useStore(
     (state) => [
       state.searchQuery,
       state.updateSearchQuery,
       state.resetPageNumber,
-    ],
-    shallow
-  );
+    ]);
 
+  //connect wallet adapater 
   const WalletMultiButtonDynamic = dynamic(
     async () =>
       (await import("@solana/wallet-adapter-react-ui")).WalletMultiButton,
     { ssr: false }
   );
 
+  //handle search query on enter key press
   const handleSearchQuery = (event) => {
     if (event.key === "Enter") {
       resetPageNumber(); //set page number to 1 after user searches

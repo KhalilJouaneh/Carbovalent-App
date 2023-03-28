@@ -24,6 +24,7 @@ const Bridge = () => {
   const connection = new Connection(clusterApiUrl("devnet"));
   const mx = Metaplex.make(connection);
 
+  //connect to Metaplex
   mx.use(walletAdapterIdentity(wallet)).use(
     bundlrStorage({
       address: "https://devnet.bundlr.network",
@@ -34,6 +35,7 @@ const Bridge = () => {
 
   const xKey = "7DmQi-SJmO16yq6u"; //shyft api key
   const message_from_backend = `Click to initiate bridge and accept the Carbovalent Terms of Service: https://carbovalent.com/disclaimer/`;
+
 
   function handleSignMessage() {
     if (typeof window !== "undefined" && wallet) {
@@ -58,7 +60,7 @@ const Bridge = () => {
     }
   }
 
-  const formArray = [1, 2, 3, 4, 5];
+  const formArray = [1, 2, 3, 4, 5]; //bridge form steps
   const [formNo, setFormNo] = useState(formArray[0]);
   const [copied, setCopied] = useState(false); //copy to clipboard button on form 1
   const [registryName, setRegistryName] = useState("");
@@ -89,6 +91,7 @@ const Bridge = () => {
     }
   };
 
+  //Function to classify project type
   const classification = function () {
     if (
       projectType === "Energy Efficiency - Domestic" ||
@@ -127,6 +130,7 @@ const Bridge = () => {
     quantity
   ).toLocaleString(); //format number of credits with commas
 
+  //function to mintNFT using Shyft API
   function mintNft() {
     // e.preventDefault();
     let formData = new FormData();
@@ -175,6 +179,7 @@ const Bridge = () => {
       });
   }
 
+  //Mint NFT using Metaplex API
   const mintRefrenceNft = async () => {
     try {
       const { uri } = await mx.nfts().uploadMetadata({
@@ -189,9 +194,9 @@ const Bridge = () => {
 
       await mx.nfts().create(
         {
-          uri: uri,
+          uri: uri, //metadata uri
           name: `Carbon Credit Batch`,
-          sellerFeeBasisPoints: 0,
+          sellerFeeBasisPoints: 0, //0% royalties
           isMutable: true,
           isCollection: true,
         },

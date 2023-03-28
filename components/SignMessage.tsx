@@ -42,13 +42,9 @@ export function SignMessage() {
               headers: { "Content-type": "application/json; charset=UTF-8" },
             }
           );
-
           const tx = Transaction.from(Buffer.from(createTx, "base64"));
-
           // Request signature from wallet
-          const signedTx = await signTransaction(tx);
-
-        
+          const signedTx = await signTransaction(tx);        
 
           // Validate signed transaction
           await fetcher<SignValidateData>("/api/sign/validate", {
@@ -73,7 +69,6 @@ export function SignMessage() {
 
     sign();
   }, [signState, signTransaction, publicKey]);
-
 
   // if (publicKey && signState === "success" ) {
   //   return <Loading />
